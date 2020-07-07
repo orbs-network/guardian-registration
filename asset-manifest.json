@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/static/css/main.5f361e03.chunk.css",
-    "main.js": "/static/js/main.7383b08e.chunk.js",
-    "main.js.map": "/static/js/main.7383b08e.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.429f70b7.js",
-    "runtime-main.js.map": "/static/js/runtime-main.429f70b7.js.map",
-    "static/js/2.1b3099b4.chunk.js": "/static/js/2.1b3099b4.chunk.js",
-    "static/js/2.1b3099b4.chunk.js.map": "/static/js/2.1b3099b4.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.fbbf5e7adff76f1d65d7976e2fe45c8c.js": "/precache-manifest.fbbf5e7adff76f1d65d7976e2fe45c8c.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.5f361e03.chunk.css.map": "/static/css/main.5f361e03.chunk.css.map",
-    "static/js/2.1b3099b4.chunk.js.LICENSE.txt": "/static/js/2.1b3099b4.chunk.js.LICENSE.txt",
-    "static/media/logo.svg": "/static/media/logo.5d5d9eef.svg"
+    "main.css": "/orbs-network.github.io/guardian-registration/static/css/main.5f361e03.chunk.css",
+    "main.js": "/orbs-network.github.io/guardian-registration/static/js/main.70de77e8.chunk.js",
+    "main.js.map": "/orbs-network.github.io/guardian-registration/static/js/main.70de77e8.chunk.js.map",
+    "runtime-main.js": "/orbs-network.github.io/guardian-registration/static/js/runtime-main.8d000487.js",
+    "runtime-main.js.map": "/orbs-network.github.io/guardian-registration/static/js/runtime-main.8d000487.js.map",
+    "static/js/2.1b3099b4.chunk.js": "/orbs-network.github.io/guardian-registration/static/js/2.1b3099b4.chunk.js",
+    "static/js/2.1b3099b4.chunk.js.map": "/orbs-network.github.io/guardian-registration/static/js/2.1b3099b4.chunk.js.map",
+    "index.html": "/orbs-network.github.io/guardian-registration/index.html",
+    "precache-manifest.48e507685cbb464cc986944f170a0875.js": "/orbs-network.github.io/guardian-registration/precache-manifest.48e507685cbb464cc986944f170a0875.js",
+    "service-worker.js": "/orbs-network.github.io/guardian-registration/service-worker.js",
+    "static/css/main.5f361e03.chunk.css.map": "/orbs-network.github.io/guardian-registration/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.1b3099b4.chunk.js.LICENSE.txt": "/orbs-network.github.io/guardian-registration/static/js/2.1b3099b4.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/orbs-network.github.io/guardian-registration/static/media/logo.5d5d9eef.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.429f70b7.js",
+    "static/js/runtime-main.8d000487.js",
     "static/js/2.1b3099b4.chunk.js",
     "static/css/main.5f361e03.chunk.css",
-    "static/js/main.7383b08e.chunk.js"
+    "static/js/main.70de77e8.chunk.js"
   ]
 }
