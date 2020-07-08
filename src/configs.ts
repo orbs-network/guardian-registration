@@ -10,27 +10,35 @@ import { IOrbsPosContractsAddresses } from "orbs-pos-data";
 
 type TSupportedNets = "local" | "ropsten" | "mainnet";
 // @ts-ignore
-const ethereumNetwork: TSupportedNets = process.env.ETHEREUM_NETWORK;
+const ethereumNetwork: TSupportedNets = process.env.REACT_APP_ETHEREUM_NETWORK;
 
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY;
-
 export const IS_DEV = process.env.NODE_ENV !== "production";
 const SHOULD_OVERRIDE_ADDRESS = IS_DEV || ethereumNetwork === "ropsten";
 
 ////////////// CONFIG VARIABLES ///////////////
 interface IConfig {
   urlBase: string;
+  v2contractsAddressesOverride: Partial<{
+    validatorsRegistration: string;
+  }>;
   ETHEREUM_PROVIDER_WS: string;
 }
 
 const configs: IConfig = {
   urlBase: process.env.PUBLIC_BASE_PATH || "",
+  v2contractsAddressesOverride: {},
   ETHEREUM_PROVIDER_WS: `wss://mainnet.infura.io/ws/v3/${INFURA_KEY}`,
 };
 
 // Webpack will remove this section on production build //
 if (process.env.NODE_ENV !== "production") {
-  // TODO : ORL : Add here dev addresses
+  if (ethereumNetwork === "local") {
+    const addresses = require("./local/addresses.json");
+
+    configs.v2contractsAddressesOverride.validatorsRegistration =
+      addresses.validatorsRegistration;
+  }
 }
 
 export default configs;

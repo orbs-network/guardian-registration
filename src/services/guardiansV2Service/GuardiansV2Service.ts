@@ -14,7 +14,7 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     private web3: Web3,
     validatorsRegistrationAddress: string = MAIN_NET_VALIDATORS_REGISTRATION_ADDRESS
   ) {
-    this.validatorsRegistrationContract = new Contract(
+    this.validatorsRegistrationContract = new this.web3.eth.Contract(
       ValidatorsRegistrationContractJson.abi as AbiItem[],
       validatorsRegistrationAddress
     );

@@ -10,9 +10,12 @@ import {
 import Web3 from "web3";
 import configs from "../configs";
 import { BuildOrbsClient } from "./OrbsClientFactory";
+import { IGuardiansV2Service } from "./guardiansV2Service/IGuardiansV2Service";
+import { GuardiansV2Service } from "./guardiansV2Service/GuardiansV2Service";
 
 export interface IServices {
   cryptoWalletIntegrationService: ICryptoWalletConnectionService;
+  guardiansV2Service: IGuardiansV2Service;
   guardiansService: IGuardiansService;
 }
 
@@ -36,6 +39,10 @@ export function buildServices(ethereumProvider: IEthereumProvider): IServices {
   return {
     cryptoWalletIntegrationService: new CryptoWalletConnectionService(
       ethereumProvider
+    ),
+    guardiansV2Service: new GuardiansV2Service(
+      web3,
+      configs.v2contractsAddressesOverride.validatorsRegistration
     ),
     guardiansService: new GuardiansService(web3, orbsClientService),
   };
