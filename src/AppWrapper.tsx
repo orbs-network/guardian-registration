@@ -15,7 +15,7 @@ const ethereumProvider = (window as any).ethereum;
 const services = buildServices(ethereumProvider);
 const stores = getStores(
   services.cryptoWalletIntegrationService,
-  services.guardiansService
+  services.guardiansV2Service
 );
 
 export const AppWrapper = React.memo<IProps>((props) => {

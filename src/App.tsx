@@ -5,11 +5,10 @@ import { Route, Switch } from "react-router-dom";
 import { useCryptoWalletIntegrationStore } from "./store/storeHooks";
 import { observer } from "mobx-react";
 import { NoEthereumProviderSection } from "./pages/NoEthereumProviderSection";
+import { GuardiansRegisterOrEditPage } from "./pages/GuardiandRegisterOrEdit/GuardianRegisterOrEditPage";
 
 const App = observer(() => {
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
-
-  console.log(cryptoWalletIntegrationStore.isConnectedToWallet);
 
   if (!cryptoWalletIntegrationStore.isConnectedToWallet) {
     return (
@@ -29,7 +28,7 @@ const App = observer(() => {
       <ContentContainer id={"appContainer"}>
         <Switch>
           <Route path={"/"}>
-            <div>Hello</div>
+            <GuardiansRegisterOrEditPage />
           </Route>
         </Switch>
       </ContentContainer>

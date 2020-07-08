@@ -11,6 +11,7 @@ import {
 import { CryptoWalletConnectionStore } from "./CryptoWalletConnectionStore";
 import { ICryptoWalletConnectionService } from "../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
 import { OrbsAccountStore } from "./OrbsAccountStore";
+import { IGuardiansV2Service } from "../services/guardiansV2Service/IGuardiansV2Service";
 
 /**
  * Configures the mobx library. Should get called at App's initialization.
@@ -26,7 +27,7 @@ export function configureMobx() {
  */
 export function getStores(
   cryptoWalletConnectionService: ICryptoWalletConnectionService,
-  guardiansService: IGuardiansService
+  guardiansV2Service: IGuardiansV2Service
 ): IStores {
   // Create stores instances + Hydrate the stores
   const cryptoWalletIntegrationStore = new CryptoWalletConnectionStore(
@@ -34,7 +35,7 @@ export function getStores(
   );
   const orbsAccountStore = new OrbsAccountStore(
     cryptoWalletIntegrationStore,
-    guardiansService
+    guardiansV2Service
   );
 
   const stores: IStores = {

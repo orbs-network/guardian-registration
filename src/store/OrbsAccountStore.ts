@@ -7,11 +7,13 @@ import {
 } from "mobx";
 import { IGuardiansService } from "orbs-pos-data";
 import { CryptoWalletConnectionStore } from "./CryptoWalletConnectionStore";
+import { IGuardiansV2Service } from "../services/guardiansV2Service/IGuardiansV2Service";
 export class OrbsAccountStore {
   @observable public doneLoading = false;
   @observable public errorLoading = false;
+  @observable public isGuardian = false;
 
-  @computed get isGuardian(): boolean {
+  @computed get isRegisteredGuardian(): boolean {
     return true;
   }
 
@@ -19,7 +21,7 @@ export class OrbsAccountStore {
 
   constructor(
     private cryptoWalletIntegrationStore: CryptoWalletConnectionStore,
-    private guardiansService: IGuardiansService
+    private guardiansV2Service: IGuardiansV2Service
   ) {
     this.addressChangeReaction = reaction(
       () => this.cryptoWalletIntegrationStore.mainAddress,
@@ -79,7 +81,18 @@ export class OrbsAccountStore {
     }
   }
 
-  private async readDataForAccount(accountAddress: string) {}
+  private async readDataForAccount(accountAddress: string) {
+    this.readAndSetIsGuardian(accountAddress).catch((e) =>
+      console.error(`Error read-n-set isGuardian ${e}`)
+    );
+  }
+
+  private async readAndSetIsGuardian(accountAddress: string) {
+    const isGuardian = await this.guardiansV2Service.isRegisteredGuardian(
+      accountAddress
+    );
+    this.setIsGuardian(isGuardian);
+  }
 
   // ****  Subscriptions ****
 
@@ -104,5 +117,10 @@ export class OrbsAccountStore {
   @action("setErrorLoading")
   private setErrorLoading(errorLoading: boolean) {
     this.errorLoading = errorLoading;
+  }
+
+  @action("setIsGuardian")
+  private setIsGuardian(isGuardian: boolean) {
+    this.isGuardian = isGuardian;
   }
 }
