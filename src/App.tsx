@@ -2,8 +2,28 @@ import React from "react";
 import "./App.css";
 import { ContentContainer } from "./components/structure/ContentContainer";
 import { Route, Switch } from "react-router-dom";
+import { useCryptoWalletIntegrationStore } from "./store/storeHooks";
+import { observer } from "mobx-react";
+import { NoEthereumProviderSection } from "./pages/NoEthereumProviderSection";
 
-function App() {
+const App = observer(() => {
+  const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
+
+  console.log(cryptoWalletIntegrationStore.isConnectedToWallet);
+
+  if (!cryptoWalletIntegrationStore.isConnectedToWallet) {
+    return (
+      <main className="App">
+        <ContentContainer id={"appContainer"}>
+          <NoEthereumProviderSection
+            walletConnectionPhase={"connect"}
+            actionFunction={() => cryptoWalletIntegrationStore.askToConnect()}
+          />
+        </ContentContainer>
+      </main>
+    );
+  }
+
   return (
     <main className="App">
       <ContentContainer id={"appContainer"}>
@@ -15,6 +35,6 @@ function App() {
       </ContentContainer>
     </main>
   );
-}
+});
 
 export default App;
