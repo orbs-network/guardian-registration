@@ -13,20 +13,20 @@ const SECONDARY_TEXT = "#7B7B7B";
 export const baseTheme = responsiveFontSizes(
   createMuiTheme({
     palette: {
-      type: "dark",
-      primary: {
-        main: COLOR1,
-      },
-      secondary: {
-        main: COLOR3,
-      },
+      // type: "dark",
+      // primary: {
+      //   main: COLOR1,
+      // },
+      // secondary: {
+      //   main: COLOR3,
+      // },
       text: {
-        primary: PRIMARY_TEXT,
-        secondary: SECONDARY_TEXT,
+        // primary: PRIMARY_TEXT,
+        // secondary: SECONDARY_TEXT,
       },
       background: {
         // DEV_NOTE : This sets the app background color
-        default: "#121212",
+        // default: "#121212",
       },
     },
     typography: {
@@ -35,17 +35,17 @@ export const baseTheme = responsiveFontSizes(
     overrides: {
       MuiPaper: {
         root: {
-          backgroundColor: COLOR1,
+          // backgroundColor: COLOR1,
         },
       },
       MuiTypography: {
         colorPrimary: {
-          color: PRIMARY_TEXT,
+          // color: PRIMARY_TEXT,
         },
       },
       MuiLink: {
         root: {
-          color: blue[500],
+          // color: blue[500],
         },
       },
     },
