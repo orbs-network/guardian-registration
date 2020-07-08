@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# Local
+/src/local
+
 # production
 /build
 
