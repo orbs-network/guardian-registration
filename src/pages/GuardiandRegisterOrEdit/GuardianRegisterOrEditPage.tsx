@@ -1,6 +1,9 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { useOrbsAccountStore } from "../../store/storeHooks";
+import {
+  useCryptoWalletIntegrationStore,
+  useOrbsAccountStore,
+} from "../../store/storeHooks";
 import { EditGuardianInfoSection } from "./EditGuardianInfoSection";
 import { RegisterGuardianSection } from "./RegisterGuardianSection";
 
@@ -12,6 +15,7 @@ export const GuardiansRegisterOrEditPage = observer<
   const {} = props;
 
   const orbsAccountStore = useOrbsAccountStore();
+  const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
 
   console.log("Is guardian :", orbsAccountStore.isGuardian);
 
@@ -20,6 +24,13 @@ export const GuardiansRegisterOrEditPage = observer<
   if (orbsAccountStore.isGuardian) {
     return <EditGuardianInfoSection />;
   } else {
-    return <RegisterGuardianSection />;
+    return (
+      <RegisterGuardianSection
+        registerGuardian={(...args) =>
+          orbsAccountStore.registerGuardian(...args)
+        }
+        guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+      />
+    );
   }
 });

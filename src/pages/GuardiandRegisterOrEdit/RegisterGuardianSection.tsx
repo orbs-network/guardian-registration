@@ -1,19 +1,54 @@
-import React from "react";
-import { Button, TextField } from "@material-ui/core";
+import React, { useCallback } from "react";
+import { Button, TextField, Typography } from "@material-ui/core";
 import { useStateful } from "react-hanger";
 
-interface IProps {}
+interface IProps {
+  guardianAddress: string;
+  registerGuardian: (
+    ip: string,
+    orbsAddr: string,
+    name: string,
+    website: string,
+    contact: string
+  ) => void;
+}
 
 export const RegisterGuardianSection = React.memo<IProps>((props) => {
-  const name = useStateful("");
-  const website = useStateful("");
-  const contactInfo = useStateful("");
-  const ipAddress = useStateful("");
-  const guardianAddress = useStateful("");
-  const nodeAddress = useStateful("");
+  const { guardianAddress, registerGuardian } = props;
+  const name = useStateful("A");
+  const website = useStateful("a.com");
+  const contactInfo = useStateful("A's contact info");
+  const ipAddress = useStateful("0x0b16212c");
+  const nodeAddress = useStateful("0xe30a30069209aa4e7e7b07ab391966a0f071afd9");
+
+  // TODO : O.L : Add tx progress indicator
+  const submit = useCallback(() => {
+    // TODO  : ORL : Convert IP to hex
+    registerGuardian(
+      ipAddress.value,
+      nodeAddress.value,
+      name.value,
+      website.value,
+      contactInfo.value
+    );
+  }, [
+    contactInfo.value,
+    ipAddress.value,
+    name.value,
+    nodeAddress.value,
+    registerGuardian,
+    website.value,
+  ]);
 
   return (
     <form>
+      <TextField
+        title={"guardianAddress"}
+        label={"Guardian Address"}
+        value={guardianAddress}
+        disabled
+      />
+      <br />
       <TextField
         label={"name"}
         value={name.value}
@@ -23,7 +58,6 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       <TextField
         title={"website"}
         label={"website"}
-        // placeholder={"website"}
         value={website.value}
         onChange={(e) => website.setValue(e.target.value)}
       />
@@ -44,22 +78,13 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
 
       <br />
       <TextField
-        title={"guardianAddress"}
-        label={"Guardian Address"}
-        value={guardianAddress.value}
-        onChange={(e) => guardianAddress.setValue(e.target.value)}
-      />
-
-      <br />
-      <TextField
         title={"nodeAddress"}
         label={"Node Address"}
         value={nodeAddress.value}
         onChange={(e) => nodeAddress.setValue(e.target.value)}
       />
-
       <br />
-      <Button> Submit </Button>
+      <Button onClick={submit}> Submit </Button>
     </form>
   );
 });

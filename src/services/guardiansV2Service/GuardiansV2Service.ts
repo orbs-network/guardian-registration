@@ -4,6 +4,7 @@ import { AbiItem } from "web3-utils";
 import ValidatorsRegistrationContractJson from "@orbs-network/orbs-ethereum-contracts-v2/build/contracts/ValidatorsRegistration.json";
 import { IGuardiansV2Service } from "./IGuardiansV2Service";
 import { ValidatorsRegistration } from "../../contracts/ValidatorsRegistration";
+import { PromiEvent, TransactionReceipt } from "web3-core";
 
 // TODO : O.L : Fill it up after deploying,
 const MAIN_NET_VALIDATORS_REGISTRATION_ADDRESS = "";
@@ -21,14 +22,14 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     ) as any) as ValidatorsRegistration;
   }
 
+  setFromAccount(address: string): void {
+    this.validatorsRegistrationContract.options.from = address;
+  }
+
   public async isRegisteredGuardian(address: string): Promise<boolean> {
-    // TODO : O.L : Make this check better after beta
-    try {
-      const guardianInfo = await this.getGuardianInfo(address);
-      return true;
-    } catch (e) {
-      return false;
-    }
+    return this.validatorsRegistrationContract.methods
+      .isRegistered(address)
+      .call();
   }
 
   public async getGuardianInfo(address: string) {
@@ -38,5 +39,17 @@ export class GuardiansV2Service implements IGuardiansV2Service {
         // .getMetadata(address, "key")
         .call()
     );
+  }
+
+  public registerGuardian(
+    ip: string,
+    orbsAddr: string,
+    name: string,
+    website: string,
+    contact: string
+  ): PromiEvent<TransactionReceipt> {
+    return this.validatorsRegistrationContract.methods
+      .registerValidator(ip, orbsAddr, name, website, contact)
+      .send();
   }
 }

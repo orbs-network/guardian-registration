@@ -38,6 +38,34 @@ export class OrbsAccountStore {
 
   // **** Contract interactions ****
 
+  public async registerGuardian(
+    ip: string,
+    orbsAddr: string,
+    name: string,
+    website: string,
+    contact: string
+  ) {
+    try {
+      const promiEvent = await this.guardiansV2Service.registerGuardian(
+        ip,
+        orbsAddr,
+        name,
+        website,
+        contact
+      );
+
+      const res = await promiEvent;
+      console.log("res", res);
+
+      // After registering, lets re-read the data
+      await this.manuallyReadAccountData();
+    } catch (e) {
+      // TODO : Handle the error
+      console.error(`Failed registering guardian ${e}`);
+      throw e;
+    }
+  }
+
   // **** Current address changed ****
 
   private async reactToConnectedAddressChanged(currentAddress: string) {
@@ -61,6 +89,7 @@ export class OrbsAccountStore {
   }
 
   private setDefaultAccountAddress(accountAddress: string) {
+    this.guardiansV2Service.setFromAccount(accountAddress);
     // this.stakingService.setFromAccount(accountAddress);
     // this.orbsTokenService.setFromAccount(accountAddress);
   }
@@ -82,6 +111,7 @@ export class OrbsAccountStore {
   }
 
   private async readDataForAccount(accountAddress: string) {
+    console.log("Reading account data for ", accountAddress);
     this.readAndSetIsGuardian(accountAddress).catch((e) =>
       console.error(`Error read-n-set isGuardian ${e}`)
     );
