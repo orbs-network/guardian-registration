@@ -11,6 +11,9 @@
 # Local
 /src/local
 
+# Generated contracts types
+/src/contracts
+
 # production
 /build
 

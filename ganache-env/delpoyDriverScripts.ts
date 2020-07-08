@@ -12,7 +12,6 @@ const deployDriverScripts = async () => {
     console.log("deploying Orbs PoS V2 contracts");
     const driver = await OrbsV2Driver.new();
     console.log("After deploying Orbs PoS V2 contracts");
-    console.log(driver);
 
     const addresses = {
       validatorsRegistration: driver.validatorsRegistration.address,
