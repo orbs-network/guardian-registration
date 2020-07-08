@@ -2,16 +2,23 @@
 
 // import { log, TestkitDriver } from "rewards-v2/dist/e2e/driver";
 
-const co = require("@orbs-network/orbs-ethereum-contracts-v2");
+import { toWei } from "web3-utils";
 import { Driver as OrbsV2Driver } from "@orbs-network/orbs-ethereum-contracts-v2";
 // import { Driver as OrbsV2Driver } from "@orbs-network/orbs-ethereum-contracts-v2/build/contracts/Rewards.json";
 import fs from "fs";
+
+const co = require("@orbs-network/orbs-ethereum-contracts-v2");
+const BN = require("bn.js");
 
 const deployDriverScripts = async () => {
   try {
     console.log("deploying Orbs PoS V2 contracts");
     const driver = await OrbsV2Driver.new();
     console.log("After deploying Orbs PoS V2 contracts");
+
+    const orbsV2Account = driver.accounts[0];
+    console.log("Assigning ORBS");
+    driver.erc20.assign(orbsV2Account, new BN("1000000000000000000000000000"));
 
     const addresses = {
       validatorsRegistration: driver.validatorsRegistration.address,
