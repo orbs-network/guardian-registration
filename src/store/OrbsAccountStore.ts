@@ -152,6 +152,11 @@ export class OrbsAccountStore {
     try {
       console.log("Reading account data for ", accountAddress);
       await this.readAndSetIsGuardian(accountAddress);
+
+      const freq = await this.guardiansV2Service.readGuardianDistributionFrequency(
+        accountAddress
+      );
+      console.log("Freq", freq);
     } catch (e) {
       console.error(`Error read-n-set isGuardian ${e}`);
     }

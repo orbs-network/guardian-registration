@@ -67,6 +67,19 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     return guardianInfoResponse;
   }
 
+  public async readGuardianDistributionFrequency(address: string) {
+    const REWARDS_FREQUENCY_KEY = "REWARDS_FREQUENCY_SEC";
+    const rewardsFrequency = await this.validatorsRegistrationContract.methods
+      .getMetadata(address, REWARDS_FREQUENCY_KEY)
+      .call();
+
+    if (!!rewardsFrequency || !rewardsFrequency.length) {
+      return 0;
+    }
+
+    return rewardsFrequency;
+  }
+
   public registerGuardian(
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ): PromiEvent<TransactionReceipt> {
