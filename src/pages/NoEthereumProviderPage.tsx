@@ -14,7 +14,7 @@ export const NoEthereumProviderPage = React.memo<IProps>((props) => {
   const installMetaMask = useCallback(() => {
     window.open("https://metamask.io/", "_blank");
     hasPressed.setTrue();
-  }, []);
+  }, [hasPressed]);
 
   return (
     <div style={{ backgroundColor: "gray" }}>

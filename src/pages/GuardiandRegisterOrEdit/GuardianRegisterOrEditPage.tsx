@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { observer } from "mobx-react";
 import {
   useCryptoWalletIntegrationStore,
@@ -18,6 +18,15 @@ export const GuardiansRegisterOrEditPage = observer<
   const orbsAccountStore = useOrbsAccountStore();
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
 
+  // TODO : ORL : Organize all of this loading "ifs
+  if (orbsAccountStore.errorLoading) {
+    return <div>Error loading</div>;
+  }
+
+  if (!orbsAccountStore.doneLoading) {
+    return <div>Loading...</div>;
+  }
+
   if (orbsAccountStore.isGuardian) {
     return (
       <>
@@ -35,8 +44,8 @@ export const GuardiansRegisterOrEditPage = observer<
           currentFrequencyInHours={
             orbsAccountStore.rewardDistributionFrequencyInHours
           }
-          updateRewardsFrequency={(val) =>
-            console.log("Setting new frequency", val)
+          updateRewardsFrequency={(frequencyInHours) =>
+            orbsAccountStore.setGuardianDistributionFrequency(frequencyInHours)
           }
           isUsingDefaultValue={orbsAccountStore.isUsingDefaultRewardFrequency}
         />

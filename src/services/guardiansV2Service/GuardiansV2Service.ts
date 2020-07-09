@@ -10,7 +10,10 @@ import {
 } from "./IGuardiansV2Service";
 import { ValidatorsRegistration } from "../../contracts/ValidatorsRegistration";
 import { PromiEvent, TransactionReceipt } from "web3-core";
-import { EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE } from "./GuardiansV2ServiceConstants";
+import {
+  EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE,
+  REWARDS_FREQUENCY_KEY,
+} from "./GuardiansV2ServiceConstants";
 
 // TODO : O.L : Fill it up after deploying,
 const MAIN_NET_VALIDATORS_REGISTRATION_ADDRESS = "";
@@ -71,16 +74,23 @@ export class GuardiansV2Service implements IGuardiansV2Service {
   public async readGuardianDistributionFrequencyInSeconds(
     address: string
   ): Promise<number> {
-    const REWARDS_FREQUENCY_KEY = "REWARDS_FREQUENCY_SEC";
     const rewardsFrequency = await this.validatorsRegistrationContract.methods
       .getMetadata(address, REWARDS_FREQUENCY_KEY)
       .call();
 
-    if (!!rewardsFrequency || !rewardsFrequency.length) {
+    if (!rewardsFrequency || !rewardsFrequency.length) {
       return EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE;
     }
 
     return parseInt(rewardsFrequency);
+  }
+
+  public setGuardianDistributionFrequency(
+    frequencyInSeconds: number
+  ): PromiEvent<TransactionReceipt> {
+    return this.validatorsRegistrationContract.methods
+      .setMetadata(REWARDS_FREQUENCY_KEY, frequencyInSeconds.toString())
+      .send();
   }
 
   public registerGuardian(

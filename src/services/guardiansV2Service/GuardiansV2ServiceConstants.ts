@@ -1,3 +1,5 @@
+export const REWARDS_FREQUENCY_KEY = "REWARDS_FREQUENCY_SEC";
+
 /**
  * The value that will return for a guardian that did not change its distribution frequency.
  */

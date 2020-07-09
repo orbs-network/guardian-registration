@@ -7,6 +7,9 @@ export interface IGuardiansV2Service {
   readGuardianDistributionFrequencyInSeconds: (
     address: string
   ) => Promise<number>;
+  setGuardianDistributionFrequency: (
+    frequencyInSeconds: number
+  ) => PromiEvent<TransactionReceipt>;
   registerGuardian: (
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ) => PromiEvent<TransactionReceipt>;

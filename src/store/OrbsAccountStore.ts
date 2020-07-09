@@ -13,6 +13,7 @@ import {
   TGuardianUpdatePayload,
 } from "../services/guardiansV2Service/IGuardiansV2Service";
 import { EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE } from "../services/guardiansV2Service/GuardiansV2ServiceConstants";
+import { PromiEvent, TransactionReceipt } from "web3-core";
 
 export type TGuardianInfo = {
   ip: string;
@@ -45,6 +46,8 @@ const emptyGuardianContractInteractionTimes: TGuardianContractInteractionTimes =
   registrationTime: 0,
   lastUpdateTime: 0,
 };
+
+const ONE_HOUR_IN_SECONDS = 60 * 60;
 
 export class OrbsAccountStore {
   @observable public doneLoading = false;
@@ -84,17 +87,25 @@ export class OrbsAccountStore {
   }
 
   // **** Contract interactions ****
+  private async handlePromievent(
+    promievent: PromiEvent<TransactionReceipt>,
+    name = "A promivent"
+  ): Promise<TransactionReceipt> {
+    console.log(`Waiting for promievent of ${name}`);
+    const res = await promievent;
+    console.log(`Got Results for promievent of ${name}`);
+    return res;
+  }
 
   public async registerGuardian(
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ) {
     try {
-      const promiEvent = await this.guardiansV2Service.registerGuardian(
+      const promiEvent = this.guardiansV2Service.registerGuardian(
         guardianRegistrationPayload
       );
 
-      const res = await promiEvent;
-      console.log("res", res);
+      await this.handlePromievent(promiEvent, "Register guardian");
 
       // After registering, lets re-read the data
       await this.manuallyReadAccountData();
@@ -109,18 +120,36 @@ export class OrbsAccountStore {
     guardianUpdatePayload: TGuardianUpdatePayload
   ) {
     try {
-      const promiEvent = await this.guardiansV2Service.updateGuardianInfo(
+      const promiEvent = this.guardiansV2Service.updateGuardianInfo(
         guardianUpdatePayload
       );
 
-      const res = await promiEvent;
-      console.log("Guardian update result", res);
+      const res = await this.handlePromievent(promiEvent, "Update guardian");
 
       // After registering, lets re-read the data
       await this.manuallyReadAccountData();
     } catch (e) {
       // TODO : Handle the error
       console.error(`Failed updating guardian info ${e}`);
+      throw e;
+    }
+  }
+
+  public async setGuardianDistributionFrequency(frequencyInHours: number) {
+    const frequencyInSeconds = frequencyInHours * ONE_HOUR_IN_SECONDS;
+
+    const promiEvent = this.guardiansV2Service.setGuardianDistributionFrequency(
+      frequencyInSeconds
+    );
+
+    try {
+      await this.handlePromievent(promiEvent, "Set distribution frequency");
+
+      // After updating, lets re-read the data
+      await this.manuallyReadAccountData();
+    } catch (e) {
+      // TODO : Handle the error
+      console.error(`Failed setting distribution frequency ${e}`);
       throw e;
     }
   }
@@ -173,24 +202,20 @@ export class OrbsAccountStore {
     // DEV_NOTE: We wait to check if this account is a Guardian because it
     //           Affects on whether we need to read more data or not.
     try {
-      console.log("Reading account data for ", accountAddress);
       await this.readAndSetIsGuardian(accountAddress);
 
       const freq = await this.guardiansV2Service.readGuardianDistributionFrequencyInSeconds(
         accountAddress
       );
-      console.log("Freq", freq);
     } catch (e) {
       console.error(`Error read-n-set isGuardian ${e}`);
     }
 
     if (this.isGuardian) {
-      console.log("Reading guardian info");
       this.readAndSetGuardianInfo(accountAddress).catch((e) =>
         console.error(`Error read-n-set Guardian Info ${e}`)
       );
 
-      console.log("Reading rewards frequency");
       this.readAndSetRewardsDistributionFrequency(accountAddress).catch((e) =>
         console.error(`Error read-n-set Rewards Frequency ${e}`)
       );
@@ -239,12 +264,12 @@ export class OrbsAccountStore {
   }
 
   private async readAndSetRewardsDistributionFrequency(accountAddress: string) {
-    const ONE_HOUR_IN_SECONDS = 60 * 60;
     const frequencyInSeconds = await this.guardiansV2Service.readGuardianDistributionFrequencyInSeconds(
       accountAddress
     );
 
     const frequencyInHours = frequencyInSeconds / ONE_HOUR_IN_SECONDS;
+
     this.setRewardDistributionFrequencyInHours(frequencyInHours);
   }
 
