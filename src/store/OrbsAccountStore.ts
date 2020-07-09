@@ -1,21 +1,15 @@
-import {
-  action,
-  computed,
-  IReactionDisposer,
-  observable,
-  reaction,
-} from "mobx";
-import { IGuardiansService } from "orbs-pos-data";
+import { action, IReactionDisposer, observable, reaction } from "mobx";
 import { CryptoWalletConnectionStore } from "./CryptoWalletConnectionStore";
-import { IGuardiansV2Service } from "../services/guardiansV2Service/IGuardiansV2Service";
+import {
+  IGuardiansV2Service,
+  TGuardianInfoResponse,
+  TGuardianRegistrationPayload,
+} from "../services/guardiansV2Service/IGuardiansV2Service";
 export class OrbsAccountStore {
   @observable public doneLoading = false;
   @observable public errorLoading = false;
   @observable public isGuardian = false;
-
-  @computed get isRegisteredGuardian(): boolean {
-    return true;
-  }
+  @observable public guardianInfo?: TGuardianInfoResponse;
 
   private addressChangeReaction: IReactionDisposer;
 
@@ -39,19 +33,11 @@ export class OrbsAccountStore {
   // **** Contract interactions ****
 
   public async registerGuardian(
-    ip: string,
-    orbsAddr: string,
-    name: string,
-    website: string,
-    contact: string
+    guardianRegistrationPayload: TGuardianRegistrationPayload
   ) {
     try {
       const promiEvent = await this.guardiansV2Service.registerGuardian(
-        ip,
-        orbsAddr,
-        name,
-        website,
-        contact
+        guardianRegistrationPayload
       );
 
       const res = await promiEvent;
@@ -111,10 +97,21 @@ export class OrbsAccountStore {
   }
 
   private async readDataForAccount(accountAddress: string) {
-    console.log("Reading account data for ", accountAddress);
-    this.readAndSetIsGuardian(accountAddress).catch((e) =>
-      console.error(`Error read-n-set isGuardian ${e}`)
-    );
+    // DEV_NOTE: We wait to check if this account is a Guardian because it
+    //           Affects on whether we need to read more data or not.
+    try {
+      console.log("Reading account data for ", accountAddress);
+      await this.readAndSetIsGuardian(accountAddress);
+    } catch (e) {
+      console.error(`Error read-n-set isGuardian ${e}`);
+    }
+
+    if (this.isGuardian) {
+      console.log("Reading guardian info");
+      this.readAndSetGuardianInfo(accountAddress).catch((e) =>
+        console.error(`Error read-n-set Guardian Info ${e}`)
+      );
+    }
   }
 
   private async readAndSetIsGuardian(accountAddress: string) {
@@ -122,6 +119,12 @@ export class OrbsAccountStore {
       accountAddress
     );
     this.setIsGuardian(isGuardian);
+  }
+
+  private async readAndSetGuardianInfo(accountAddress: string) {
+    this.guardiansV2Service
+      .readGuardianInfo(accountAddress)
+      .then((guardianInfo) => this.setGuardianInfo(guardianInfo));
   }
 
   // ****  Subscriptions ****
@@ -152,5 +155,10 @@ export class OrbsAccountStore {
   @action("setIsGuardian")
   private setIsGuardian(isGuardian: boolean) {
     this.isGuardian = isGuardian;
+  }
+
+  @action("setGuardianInfo")
+  private setGuardianInfo(guardianInfo: TGuardianInfoResponse) {
+    this.guardianInfo = guardianInfo;
   }
 }

@@ -1,15 +1,12 @@
 import React, { useCallback } from "react";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { useStateful } from "react-hanger";
+import { TGuardianRegistrationPayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
 
 interface IProps {
   guardianAddress: string;
   registerGuardian: (
-    ip: string,
-    orbsAddr: string,
-    name: string,
-    website: string,
-    contact: string
+    guardianRegistrationPayload: TGuardianRegistrationPayload
   ) => void;
 }
 
@@ -23,14 +20,15 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
 
   // TODO : O.L : Add tx progress indicator
   const submit = useCallback(() => {
+    const guardianRegistrationPayload: TGuardianRegistrationPayload = {
+      ip: ipAddress.value,
+      orbsAddr: nodeAddress.value,
+      name: name.value,
+      website: website.value,
+      contact: contactInfo.value,
+    };
     // TODO  : ORL : Convert IP to hex
-    registerGuardian(
-      ipAddress.value,
-      nodeAddress.value,
-      name.value,
-      website.value,
-      contactInfo.value
-    );
+    registerGuardian(guardianRegistrationPayload);
   }, [
     contactInfo.value,
     ipAddress.value,
@@ -84,7 +82,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         onChange={(e) => nodeAddress.setValue(e.target.value)}
       />
       <br />
-      <Button onClick={submit}> Submit </Button>
+      <Button onClick={submit}> Register </Button>
     </form>
   );
 });

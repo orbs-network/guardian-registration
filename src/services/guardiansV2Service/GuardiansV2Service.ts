@@ -2,7 +2,11 @@ import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { AbiItem } from "web3-utils";
 import ValidatorsRegistrationContractJson from "@orbs-network/orbs-ethereum-contracts-v2/build/contracts/ValidatorsRegistration.json";
-import { IGuardiansV2Service } from "./IGuardiansV2Service";
+import {
+  IGuardiansV2Service,
+  TGuardianInfoResponse,
+  TGuardianRegistrationPayload,
+} from "./IGuardiansV2Service";
 import { ValidatorsRegistration } from "../../contracts/ValidatorsRegistration";
 import { PromiEvent, TransactionReceipt } from "web3-core";
 
@@ -32,22 +36,46 @@ export class GuardiansV2Service implements IGuardiansV2Service {
       .call();
   }
 
-  public async getGuardianInfo(address: string) {
-    return (
-      this.validatorsRegistrationContract.methods
-        .getValidatorData(address)
-        // .getMetadata(address, "key")
-        .call()
-    );
+  public async readGuardianInfo(
+    address: string
+  ): Promise<TGuardianInfoResponse> {
+    const rawResponse = await this.validatorsRegistrationContract.methods
+      .getValidatorData(address)
+      .call();
+
+    const {
+      registration_time,
+      orbsAddr,
+      name,
+      last_update_time,
+      ip,
+      contact,
+      website,
+    } = rawResponse;
+
+    const guardianInfoResponse: TGuardianInfoResponse = {
+      contact,
+      ip,
+      lastUpdateTime: last_update_time,
+      name,
+      orbsAddr,
+      registrationTime: registration_time,
+      website,
+    };
+
+    return guardianInfoResponse;
   }
 
   public registerGuardian(
-    ip: string,
-    orbsAddr: string,
-    name: string,
-    website: string,
-    contact: string
+    guardianRegistrationPayload: TGuardianRegistrationPayload
   ): PromiEvent<TransactionReceipt> {
+    const {
+      website,
+      name,
+      orbsAddr,
+      ip,
+      contact,
+    } = guardianRegistrationPayload;
     return this.validatorsRegistrationContract.methods
       .registerValidator(ip, orbsAddr, name, website, contact)
       .send();
