@@ -27,18 +27,19 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
     }
   );
 
+  const setValueFreq = frequency.setValue;
   /**
    * DEV_NOTE : This is done in order to present the correct freq when transitioning
    * from the initial state to the actual state after reading the data.
    */
   useEffect(() => {
-    frequency.setValue(
+    setValueFreq(
       Math.max(
         currentFrequencyInHours,
         GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS
       )
     );
-  }, [currentFrequencyInHours, frequency]);
+  }, [currentFrequencyInHours, setValueFreq]);
 
   const submitUpdate = useCallback(() => {
     updateRewardsFrequency(frequency.value);
