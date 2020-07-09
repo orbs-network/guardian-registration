@@ -203,10 +203,6 @@ export class OrbsAccountStore {
     //           Affects on whether we need to read more data or not.
     try {
       await this.readAndSetIsGuardian(accountAddress);
-
-      const freq = await this.guardiansV2Service.readGuardianDistributionFrequencyInSeconds(
-        accountAddress
-      );
     } catch (e) {
       console.error(`Error read-n-set isGuardian ${e}`);
     }

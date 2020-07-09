@@ -13,6 +13,9 @@ import { ICryptoWalletConnectionService } from "../services/cryptoWalletConnecti
 import { OrbsAccountStore } from "./OrbsAccountStore";
 import { IGuardiansV2Service } from "../services/guardiansV2Service/IGuardiansV2Service";
 
+// This import ensures mobx batching
+import "mobx-react-lite/batchingForReactDom";
+
 /**
  * Configures the mobx library. Should get called at App's initialization.
  */
