@@ -7,15 +7,21 @@ export interface IGuardiansV2Service {
   registerGuardian: (
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ) => PromiEvent<TransactionReceipt>;
+  updateGuardianInfo: (
+    guardianUpdatePayload: TGuardianUpdatePayload
+  ) => PromiEvent<TransactionReceipt>;
 }
 
-export type TGuardianRegistrationPayload = {
+export type TGuardianInfoPayload = {
   ip: string;
   orbsAddr: string;
   name: string;
   website: string;
   contact: string;
 };
+
+export type TGuardianRegistrationPayload = TGuardianInfoPayload;
+export type TGuardianUpdatePayload = TGuardianInfoPayload;
 
 export type TGuardianInfoResponse = {
   ip: string;

@@ -4,6 +4,7 @@ import {
   IGuardiansV2Service,
   TGuardianInfoResponse,
   TGuardianRegistrationPayload,
+  TGuardianUpdatePayload,
 } from "../services/guardiansV2Service/IGuardiansV2Service";
 
 export type TGuardianInfo = {
@@ -77,6 +78,26 @@ export class OrbsAccountStore {
     } catch (e) {
       // TODO : Handle the error
       console.error(`Failed registering guardian ${e}`);
+      throw e;
+    }
+  }
+
+  public async updateGuardianInfo(
+    guardianUpdatePayload: TGuardianUpdatePayload
+  ) {
+    try {
+      const promiEvent = await this.guardiansV2Service.updateGuardianInfo(
+        guardianUpdatePayload
+      );
+
+      const res = await promiEvent;
+      console.log("Guardian update result", res);
+
+      // After registering, lets re-read the data
+      await this.manuallyReadAccountData();
+    } catch (e) {
+      // TODO : Handle the error
+      console.error(`Failed updating guardian info ${e}`);
       throw e;
     }
   }

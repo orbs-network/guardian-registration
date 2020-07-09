@@ -6,6 +6,7 @@ import {
   IGuardiansV2Service,
   TGuardianInfoResponse,
   TGuardianRegistrationPayload,
+  TGuardianUpdatePayload,
 } from "./IGuardiansV2Service";
 import { ValidatorsRegistration } from "../../contracts/ValidatorsRegistration";
 import { PromiEvent, TransactionReceipt } from "web3-core";
@@ -78,6 +79,15 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     } = guardianRegistrationPayload;
     return this.validatorsRegistrationContract.methods
       .registerValidator(ip, orbsAddr, name, website, contact)
+      .send();
+  }
+
+  public updateGuardianInfo(
+    guardianUpdatePayload: TGuardianUpdatePayload
+  ): PromiEvent<TransactionReceipt> {
+    const { contact, ip, name, orbsAddr, website } = guardianUpdatePayload;
+    return this.validatorsRegistrationContract.methods
+      .updateValidator(ip, orbsAddr, name, website, contact)
       .send();
   }
 }
