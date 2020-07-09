@@ -23,7 +23,11 @@ export const GuardiansRegisterOrEditPage = observer<
 
   if (orbsAccountStore.isGuardian) {
     return (
-      <EditGuardianInfoSection guardianInfo={orbsAccountStore.guardianInfo} />
+      <EditGuardianInfoSection
+        guardianInfo={orbsAccountStore.guardianInfo}
+        guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+        updateGuardianDetails={() => console.log("To fill this method")}
+      />
     );
   } else {
     return (

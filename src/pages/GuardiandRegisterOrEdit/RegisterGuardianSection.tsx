@@ -17,8 +17,6 @@ interface IProps {
 
 export const RegisterGuardianSection = React.memo<IProps>((props) => {
   const { guardianAddress, registerGuardian } = props;
-  const name = useStateful("A");
-  const website = useStateful("a.com");
 
   const demoInitialInfo: TGuardianInfo = {
     orbsAddr: "0xe30a30069209aa4e7e7b07ab391966a0f071afd9",
@@ -33,6 +31,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       guardianAddress={guardianAddress}
       submitInfo={registerGuardian}
       guardianInitialInfo={demoInitialInfo}
+      actionButtonTitle={"Register"}
     />
   );
 });

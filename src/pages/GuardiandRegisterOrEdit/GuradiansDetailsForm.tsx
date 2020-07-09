@@ -5,6 +5,7 @@ import { Button, TextField } from "@material-ui/core";
 import { TGuardianInfo } from "../../store/OrbsAccountStore";
 
 interface IProps {
+  actionButtonTitle: string;
   guardianAddress: string;
   guardianInitialInfo: TGuardianInfo;
   submitInfo: (
@@ -16,7 +17,12 @@ interface IProps {
  * A single component to handle both "Guardian registration" and "Guardian Update"
  */
 export const GuardiansDetailsForm = React.memo<IProps>((props) => {
-  const { guardianAddress, guardianInitialInfo, submitInfo } = props;
+  const {
+    guardianAddress,
+    guardianInitialInfo,
+    submitInfo,
+    actionButtonTitle,
+  } = props;
 
   const name = useStateful(guardianInitialInfo.name);
   const website = useStateful(guardianInitialInfo.website);
@@ -88,7 +94,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         onChange={(e) => nodeAddress.setValue(e.target.value)}
       />
       <br />
-      <Button onClick={submit}> Register </Button>
+      <Button onClick={submit}> {actionButtonTitle} </Button>
     </form>
   );
 });
