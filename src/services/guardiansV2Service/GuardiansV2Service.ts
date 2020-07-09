@@ -10,6 +10,7 @@ import {
 } from "./IGuardiansV2Service";
 import { ValidatorsRegistration } from "../../contracts/ValidatorsRegistration";
 import { PromiEvent, TransactionReceipt } from "web3-core";
+import { EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE } from "./GuardiansV2ServiceConstants";
 
 // TODO : O.L : Fill it up after deploying,
 const MAIN_NET_VALIDATORS_REGISTRATION_ADDRESS = "";
@@ -67,17 +68,19 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     return guardianInfoResponse;
   }
 
-  public async readGuardianDistributionFrequency(address: string) {
+  public async readGuardianDistributionFrequencyInSeconds(
+    address: string
+  ): Promise<number> {
     const REWARDS_FREQUENCY_KEY = "REWARDS_FREQUENCY_SEC";
     const rewardsFrequency = await this.validatorsRegistrationContract.methods
       .getMetadata(address, REWARDS_FREQUENCY_KEY)
       .call();
 
     if (!!rewardsFrequency || !rewardsFrequency.length) {
-      return 0;
+      return EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE;
     }
 
-    return rewardsFrequency;
+    return parseInt(rewardsFrequency);
   }
 
   public registerGuardian(

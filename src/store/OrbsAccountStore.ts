@@ -1,4 +1,10 @@
-import { action, IReactionDisposer, observable, reaction } from "mobx";
+import {
+  action,
+  computed,
+  IReactionDisposer,
+  observable,
+  reaction,
+} from "mobx";
 import { CryptoWalletConnectionStore } from "./CryptoWalletConnectionStore";
 import {
   IGuardiansV2Service,
@@ -6,6 +12,7 @@ import {
   TGuardianRegistrationPayload,
   TGuardianUpdatePayload,
 } from "../services/guardiansV2Service/IGuardiansV2Service";
+import { EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE } from "../services/guardiansV2Service/GuardiansV2ServiceConstants";
 
 export type TGuardianInfo = {
   ip: string;
@@ -46,6 +53,8 @@ export class OrbsAccountStore {
   @observable public guardianInfo: TGuardianInfo = emptyGuardianInfo;
   @observable
   public guardianContractInteractionTimes: TGuardianContractInteractionTimes = emptyGuardianContractInteractionTimes;
+  @observable
+  public rewardDistributionFrequencyInHours: number = EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE;
 
   private addressChangeReaction: IReactionDisposer;
 
@@ -63,6 +72,14 @@ export class OrbsAccountStore {
       {
         fireImmediately: true,
       }
+    );
+  }
+
+  // **** Computed values ****
+  @computed public get isUsingDefaultRewardFrequency(): boolean {
+    return (
+      this.rewardDistributionFrequencyInHours ===
+      EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE
     );
   }
 
@@ -159,7 +176,7 @@ export class OrbsAccountStore {
       console.log("Reading account data for ", accountAddress);
       await this.readAndSetIsGuardian(accountAddress);
 
-      const freq = await this.guardiansV2Service.readGuardianDistributionFrequency(
+      const freq = await this.guardiansV2Service.readGuardianDistributionFrequencyInSeconds(
         accountAddress
       );
       console.log("Freq", freq);
@@ -171,6 +188,11 @@ export class OrbsAccountStore {
       console.log("Reading guardian info");
       this.readAndSetGuardianInfo(accountAddress).catch((e) =>
         console.error(`Error read-n-set Guardian Info ${e}`)
+      );
+
+      console.log("Reading rewards frequency");
+      this.readAndSetRewardsDistributionFrequency(accountAddress).catch((e) =>
+        console.error(`Error read-n-set Rewards Frequency ${e}`)
       );
     }
   }
@@ -216,6 +238,16 @@ export class OrbsAccountStore {
       });
   }
 
+  private async readAndSetRewardsDistributionFrequency(accountAddress: string) {
+    const ONE_HOUR_IN_SECONDS = 60 * 60;
+    const frequencyInSeconds = await this.guardiansV2Service.readGuardianDistributionFrequencyInSeconds(
+      accountAddress
+    );
+
+    const frequencyInHours = frequencyInSeconds / ONE_HOUR_IN_SECONDS;
+    this.setRewardDistributionFrequencyInHours(frequencyInHours);
+  }
+
   // ****  Subscriptions ****
 
   private async refreshAccountListeners(accountAddress: string) {
@@ -256,5 +288,12 @@ export class OrbsAccountStore {
     guardianContractInteractionTimes: TGuardianContractInteractionTimes
   ) {
     this.guardianContractInteractionTimes = guardianContractInteractionTimes;
+  }
+
+  @action("setRewardDistributionFrequencyInHours")
+  private setRewardDistributionFrequencyInHours(
+    rewardDistributionFrequencyInHours: number
+  ) {
+    this.rewardDistributionFrequencyInHours = rewardDistributionFrequencyInHours;
   }
 }

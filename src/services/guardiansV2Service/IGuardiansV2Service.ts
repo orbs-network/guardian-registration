@@ -4,7 +4,9 @@ export interface IGuardiansV2Service {
   setFromAccount: (address: string) => void;
   isRegisteredGuardian: (address: string) => Promise<boolean>;
   readGuardianInfo: (address: string) => Promise<TGuardianInfoResponse>;
-  readGuardianDistributionFrequency: (address: string) => Promise<any>;
+  readGuardianDistributionFrequencyInSeconds: (
+    address: string
+  ) => Promise<number>;
   registerGuardian: (
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ) => PromiEvent<TransactionReceipt>;

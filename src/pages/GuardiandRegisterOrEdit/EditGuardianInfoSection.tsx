@@ -8,9 +8,11 @@ import {
   TGuardianRegistrationPayload,
   TGuardianUpdatePayload,
 } from "../../services/guardiansV2Service/IGuardiansV2Service";
+import { RewardsDistributionFrequencyForm } from "./RewardsDistributionFrequencyForm";
 
 interface IProps {
   guardianAddress: string;
+  // Props for Guardian info
   guardianInfo: TGuardianInfo;
   updateGuardianDetails: (
     guardianRegistrationPayload: TGuardianUpdatePayload
@@ -47,6 +49,8 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
         Last updated:{" "}
         {new Date(guardianRegistrationTimeInfo.lastUpdateTime).toLocaleString()}
       </div>
+      <br />
+      <br />
     </>
   );
 });

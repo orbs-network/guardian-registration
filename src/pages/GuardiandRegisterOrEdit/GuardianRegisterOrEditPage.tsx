@@ -6,6 +6,7 @@ import {
 } from "../../store/storeHooks";
 import { EditGuardianInfoSection } from "./EditGuardianInfoSection";
 import { RegisterGuardianSection } from "./RegisterGuardianSection";
+import { RewardsDistributionFrequencyForm } from "./RewardsDistributionFrequencyForm";
 
 interface IProps {}
 
@@ -17,22 +18,29 @@ export const GuardiansRegisterOrEditPage = observer<
   const orbsAccountStore = useOrbsAccountStore();
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
 
-  console.log("Is guardian :", orbsAccountStore.isGuardian);
-
-  // TODO : Start with registration
-
   if (orbsAccountStore.isGuardian) {
     return (
-      <EditGuardianInfoSection
-        guardianInfo={orbsAccountStore.guardianInfo}
-        guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-        guardianRegistrationTimeInfo={
-          orbsAccountStore.guardianContractInteractionTimes
-        }
-        updateGuardianDetails={(guardianRegistrationPayload) =>
-          orbsAccountStore.updateGuardianInfo(guardianRegistrationPayload)
-        }
-      />
+      <>
+        <EditGuardianInfoSection
+          guardianInfo={orbsAccountStore.guardianInfo}
+          guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+          guardianRegistrationTimeInfo={
+            orbsAccountStore.guardianContractInteractionTimes
+          }
+          updateGuardianDetails={(guardianRegistrationPayload) =>
+            orbsAccountStore.updateGuardianInfo(guardianRegistrationPayload)
+          }
+        />
+        <RewardsDistributionFrequencyForm
+          currentFrequencyInHours={
+            orbsAccountStore.rewardDistributionFrequencyInHours
+          }
+          updateRewardsFrequency={(val) =>
+            console.log("Setting new frequency", val)
+          }
+          isUsingDefaultValue={orbsAccountStore.isUsingDefaultRewardFrequency}
+        />
+      </>
     );
   } else {
     return (
