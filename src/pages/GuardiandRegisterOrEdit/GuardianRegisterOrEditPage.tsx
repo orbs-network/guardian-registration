@@ -22,7 +22,9 @@ export const GuardiansRegisterOrEditPage = observer<
   // TODO : Start with registration
 
   if (orbsAccountStore.isGuardian) {
-    return <EditGuardianInfoSection />;
+    return (
+      <EditGuardianInfoSection guardianInfo={orbsAccountStore.guardianInfo} />
+    );
   } else {
     return (
       <RegisterGuardianSection

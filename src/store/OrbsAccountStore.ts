@@ -5,11 +5,40 @@ import {
   TGuardianInfoResponse,
   TGuardianRegistrationPayload,
 } from "../services/guardiansV2Service/IGuardiansV2Service";
+
+export type TGuardianInfo = {
+  ip: string;
+  orbsAddr: string;
+  name: string;
+  website: string;
+  contact: string;
+};
+
+export type TGuardianRegistrationTimeInfo = {
+  registrationTime: string;
+  lastUpdateTime: string;
+};
+
+const emptyGuardianInfo: TGuardianInfo = {
+  orbsAddr: "",
+  contact: "",
+  ip: "",
+  website: "",
+  name: "",
+};
+
+const emptyGuardianRegistrationTimeInfo: TGuardianRegistrationTimeInfo = {
+  registrationTime: "",
+  lastUpdateTime: "",
+};
+
 export class OrbsAccountStore {
   @observable public doneLoading = false;
   @observable public errorLoading = false;
   @observable public isGuardian = false;
-  @observable public guardianInfo?: TGuardianInfoResponse;
+  @observable public guardianInfo: TGuardianInfo = emptyGuardianInfo;
+  @observable
+  public guardianRegistrationTimeInfo: TGuardianRegistrationTimeInfo = emptyGuardianRegistrationTimeInfo;
 
   private addressChangeReaction: IReactionDisposer;
 
@@ -124,7 +153,35 @@ export class OrbsAccountStore {
   private async readAndSetGuardianInfo(accountAddress: string) {
     this.guardiansV2Service
       .readGuardianInfo(accountAddress)
-      .then((guardianInfo) => this.setGuardianInfo(guardianInfo));
+      .then((guardianInfoResponse) => {
+        const {
+          name,
+          website,
+          orbsAddr,
+          ip,
+          contact,
+          registrationTime,
+          lastUpdateTime,
+        } = guardianInfoResponse;
+
+        // DEV_NOTE : We update two different observables, one for the actual data, and the other for
+        //            the creation and editing time.
+        const guardianInfo: TGuardianInfo = {
+          name,
+          website,
+          ip,
+          contact,
+          orbsAddr,
+        };
+
+        const guardianRegistrationTimeInfo: TGuardianRegistrationTimeInfo = {
+          registrationTime,
+          lastUpdateTime,
+        };
+
+        this.setGuardianInfo(guardianInfo);
+        this.setGuardianRegistrationTimeInfo(guardianRegistrationTimeInfo);
+      });
   }
 
   // ****  Subscriptions ****
@@ -158,7 +215,14 @@ export class OrbsAccountStore {
   }
 
   @action("setGuardianInfo")
-  private setGuardianInfo(guardianInfo: TGuardianInfoResponse) {
+  private setGuardianInfo(guardianInfo: TGuardianInfo) {
     this.guardianInfo = guardianInfo;
+  }
+
+  @action("setGuardianRegistrationTimeInfo")
+  private setGuardianRegistrationTimeInfo(
+    guardianRegistrationTimeInfo: TGuardianRegistrationTimeInfo
+  ) {
+    this.guardianRegistrationTimeInfo = guardianRegistrationTimeInfo;
   }
 }
