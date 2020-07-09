@@ -57,10 +57,10 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     const guardianInfoResponse: TGuardianInfoResponse = {
       contact,
       ip,
-      lastUpdateTime: last_update_time,
+      lastUpdateTime: parseInt(last_update_time),
       name,
       orbsAddr,
-      registrationTime: registration_time,
+      registrationTime: parseInt(registration_time),
       website,
     };
 

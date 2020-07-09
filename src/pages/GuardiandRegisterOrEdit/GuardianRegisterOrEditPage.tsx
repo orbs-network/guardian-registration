@@ -26,6 +26,9 @@ export const GuardiansRegisterOrEditPage = observer<
       <EditGuardianInfoSection
         guardianInfo={orbsAccountStore.guardianInfo}
         guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+        guardianRegistrationTimeInfo={
+          orbsAccountStore.guardianContractInteractionTimes
+        }
         updateGuardianDetails={(guardianRegistrationPayload) =>
           orbsAccountStore.updateGuardianInfo(guardianRegistrationPayload)
         }

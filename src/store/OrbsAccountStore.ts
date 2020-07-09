@@ -15,9 +15,15 @@ export type TGuardianInfo = {
   contact: string;
 };
 
-export type TGuardianRegistrationTimeInfo = {
-  registrationTime: string;
-  lastUpdateTime: string;
+export type TGuardianContractInteractionTimes = {
+  /**
+   * Unix timestamp
+   */
+  registrationTime: number;
+  /**
+   * Unix timestamp
+   */
+  lastUpdateTime: number;
 };
 
 const emptyGuardianInfo: TGuardianInfo = {
@@ -28,9 +34,9 @@ const emptyGuardianInfo: TGuardianInfo = {
   name: "",
 };
 
-const emptyGuardianRegistrationTimeInfo: TGuardianRegistrationTimeInfo = {
-  registrationTime: "",
-  lastUpdateTime: "",
+const emptyGuardianContractInteractionTimes: TGuardianContractInteractionTimes = {
+  registrationTime: 0,
+  lastUpdateTime: 0,
 };
 
 export class OrbsAccountStore {
@@ -39,7 +45,7 @@ export class OrbsAccountStore {
   @observable public isGuardian = false;
   @observable public guardianInfo: TGuardianInfo = emptyGuardianInfo;
   @observable
-  public guardianRegistrationTimeInfo: TGuardianRegistrationTimeInfo = emptyGuardianRegistrationTimeInfo;
+  public guardianContractInteractionTimes: TGuardianContractInteractionTimes = emptyGuardianContractInteractionTimes;
 
   private addressChangeReaction: IReactionDisposer;
 
@@ -200,13 +206,13 @@ export class OrbsAccountStore {
           orbsAddr,
         };
 
-        const guardianRegistrationTimeInfo: TGuardianRegistrationTimeInfo = {
+        const guardianRegistrationTimeInfo: TGuardianContractInteractionTimes = {
           registrationTime,
           lastUpdateTime,
         };
 
         this.setGuardianInfo(guardianInfo);
-        this.setGuardianRegistrationTimeInfo(guardianRegistrationTimeInfo);
+        this.setGuardianContractInteractionTimes(guardianRegistrationTimeInfo);
       });
   }
 
@@ -245,10 +251,10 @@ export class OrbsAccountStore {
     this.guardianInfo = guardianInfo;
   }
 
-  @action("setGuardianRegistrationTimeInfo")
-  private setGuardianRegistrationTimeInfo(
-    guardianRegistrationTimeInfo: TGuardianRegistrationTimeInfo
+  @action("setGuardianRegistrationTimes")
+  private setGuardianContractInteractionTimes(
+    guardianContractInteractionTimes: TGuardianContractInteractionTimes
   ) {
-    this.guardianRegistrationTimeInfo = guardianRegistrationTimeInfo;
+    this.guardianContractInteractionTimes = guardianContractInteractionTimes;
   }
 }

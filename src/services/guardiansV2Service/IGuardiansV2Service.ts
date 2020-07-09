@@ -30,6 +30,12 @@ export type TGuardianInfoResponse = {
   name: string;
   website: string;
   contact: string;
-  registrationTime: string;
-  lastUpdateTime: string;
+  /**
+   * Unix timestamp
+   */
+  registrationTime: number;
+  /**
+   * Unix timestamp
+   */
+  lastUpdateTime: number;
 };
