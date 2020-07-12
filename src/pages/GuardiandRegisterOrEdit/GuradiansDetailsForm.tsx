@@ -122,7 +122,9 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       <TextField
         fullWidth
         name={"website"}
-        title={"website"}
+        title={
+          "A valid website URL is required. The Guardian website is used by delegators when selecting a Guardian.\n"
+        }
         label={"website"}
         value={website.value}
         onChange={(e) => website.setValue(e.target.value)}
@@ -146,7 +148,9 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       <TextField
         fullWidth
         name={"ipAddress"}
-        title={"ipAddress"}
+        title={
+          "A valid IPv4 address is required to allow the Guardian’s node to connect to the network gossip topology."
+        }
         label={"IP"}
         value={ipAddress.value}
         onChange={(e) => ipAddress.setValue(e.target.value)}
@@ -160,7 +164,9 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       <TextField
         fullWidth
         name={"nodeAddress"}
-        title={"nodeAddress"}
+        title={
+          "The node address is used for signing blocks on Orbs and sending automated \n node notification transactions such as ready or auto voteout."
+        }
         label={"Node Address"}
         value={nodeAddress.value}
         onChange={(e) => nodeAddress.setValue(e.target.value)}
@@ -170,7 +176,10 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         helperText={errorNodeAddress && NODE_ADDRESS_MESSAGE}
       />
       <br />
-      <Button type={"submit"}> {actionButtonTitle} </Button>
+      <br />
+      <Button variant={"outlined"} type={"submit"}>
+        {actionButtonTitle}
+      </Button>
     </form>
   );
 });
