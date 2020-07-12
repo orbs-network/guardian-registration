@@ -6,19 +6,8 @@ import { useCryptoWalletIntegrationStore } from "./store/storeHooks";
 import { observer } from "mobx-react";
 import { NoEthereumProviderSection } from "./pages/NoEthereumProviderSection";
 import { GuardiansRegisterOrEditPage } from "./pages/GuardiandRegisterOrEdit/GuardianRegisterOrEditPage";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles((theme) => ({
-  centeredContainer: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-}));
 
 const App = observer(() => {
-  const classes = useStyles();
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
 
   if (!cryptoWalletIntegrationStore.isConnectedToWallet) {
@@ -36,10 +25,7 @@ const App = observer(() => {
 
   return (
     <main className="App">
-      <ContentContainer
-        id={"appContainer"}
-        className={classes.centeredContainer}
-      >
+      <ContentContainer id={"appContainer"}>
         <Switch>
           <Route path={"/"}>
             <GuardiansRegisterOrEditPage />

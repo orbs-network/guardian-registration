@@ -2,13 +2,13 @@ import React, { useCallback } from "react";
 import { useTheme } from "@material-ui/core";
 import { NoEthereumProviderSection } from "./NoEthereumProviderSection";
 import { useBoolean } from "react-hanger";
+import { ContentContainer } from "../components/structure/ContentContainer";
 
 type TWalletConnectionPhase = "install" | "connect";
 
 interface IProps {}
 
 export const NoEthereumProviderPage = React.memo<IProps>((props) => {
-  const theme = useTheme();
   const hasPressed = useBoolean(false);
 
   const installMetaMask = useCallback(() => {
@@ -17,11 +17,11 @@ export const NoEthereumProviderPage = React.memo<IProps>((props) => {
   }, [hasPressed]);
 
   return (
-    <div style={{ backgroundColor: "gray" }}>
+    <ContentContainer>
       <NoEthereumProviderSection
         walletConnectionPhase={"install"}
         actionFunction={installMetaMask}
       />
-    </div>
+    </ContentContainer>
   );
 });
