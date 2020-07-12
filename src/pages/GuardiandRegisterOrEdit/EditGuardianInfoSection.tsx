@@ -1,14 +1,11 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { fromUnixTime } from "date-fns";
 import {
   TGuardianInfo,
   TGuardianContractInteractionTimes,
 } from "../../store/OrbsAccountStore";
 import { GuardiansDetailsForm } from "./GuradiansDetailsForm";
-import {
-  TGuardianRegistrationPayload,
-  TGuardianUpdatePayload,
-} from "../../services/guardiansV2Service/IGuardiansV2Service";
-import { RewardsDistributionFrequencyForm } from "./RewardsDistributionFrequencyForm";
+import { TGuardianUpdatePayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
 
 interface IProps {
   guardianAddress: string;
@@ -17,7 +14,7 @@ interface IProps {
   updateGuardianDetails: (
     guardianRegistrationPayload: TGuardianUpdatePayload
   ) => void;
-  guardianRegistrationTimeInfo: TGuardianContractInteractionTimes;
+  guardianContractInteractionTimes: TGuardianContractInteractionTimes;
 }
 
 export const EditGuardianInfoSection = React.memo<IProps>((props) => {
@@ -25,9 +22,19 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
     guardianInfo,
     guardianAddress,
     updateGuardianDetails,
-    guardianRegistrationTimeInfo,
+    guardianContractInteractionTimes,
   } = props;
-  // TODO : ORL : Add last update time
+
+  const { lastUpdateTime, registrationTime } = guardianContractInteractionTimes;
+
+  const registrationDate = useMemo(() => {
+    return fromUnixTime(registrationTime);
+  }, [registrationTime]);
+
+  const lastUpdateDate = useMemo(() => {
+    return fromUnixTime(lastUpdateTime);
+  }, [lastUpdateTime]);
+
   return (
     <>
       <GuardiansDetailsForm
@@ -37,18 +44,9 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
         actionButtonTitle={"Update"}
       />
       <br />
-      {/* TODO : ORL : Timestamp is GMT, account for that */}
-      <div>
-        Registered:{" "}
-        {new Date(
-          guardianRegistrationTimeInfo.registrationTime
-        ).toLocaleString()}
-      </div>
+      <div>Registered: {registrationDate.toLocaleString()}</div>
       <br />
-      <div>
-        Last updated:{" "}
-        {new Date(guardianRegistrationTimeInfo.lastUpdateTime).toLocaleString()}
-      </div>
+      <div>Last updated: {lastUpdateDate.toLocaleString()}</div>
       <br />
       <br />
     </>
