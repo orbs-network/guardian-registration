@@ -68,6 +68,7 @@ export const GuardiansRegisterOrEditPage = observer<
             orbsAccountStore.updateGuardianInfo(guardianRegistrationPayload)
           }
         />
+        <Typography variant={"h5"}>Rewards Distribution Frequency</Typography>
         <RewardsDistributionFrequencyForm
           currentFrequencyInHours={
             orbsAccountStore.rewardDistributionFrequencyInHours
@@ -92,7 +93,7 @@ export const GuardiansRegisterOrEditPage = observer<
 
   return (
     <div className={classes.paper}>
-      <Typography>{title}</Typography>
+      <Typography variant={"h5"}>{title}</Typography>
       <Typography>{cryptoWalletIntegrationStore.mainAddress}</Typography>
       {content}
     </div>
