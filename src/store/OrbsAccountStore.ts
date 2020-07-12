@@ -15,6 +15,7 @@ import {
 import { EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE } from "../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { PromiEvent, TransactionReceipt } from "web3-core";
 import { ipvHexToV4 } from "../utils/utils";
+import { JSON_RPC_ERROR_CODES } from "../constants/ethereumErrorCodes";
 
 export type TGuardianInfo = {
   ip: string;
@@ -50,9 +51,16 @@ const emptyGuardianContractInteractionTimes: TGuardianContractInteractionTimes =
 
 const ONE_HOUR_IN_SECONDS = 60 * 60;
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export class OrbsAccountStore {
   @observable public doneLoading = false;
   @observable public errorLoading = false;
+  @observable public txPending = false;
+  @observable public txHadError = false;
+  @observable public txCanceled = false;
   @observable public isGuardian = false;
   @observable public guardianInfo: TGuardianInfo = emptyGuardianInfo;
   @observable
@@ -91,11 +99,28 @@ export class OrbsAccountStore {
   private async handlePromievent(
     promievent: PromiEvent<TransactionReceipt>,
     name = "A promivent"
-  ): Promise<TransactionReceipt> {
+  ): Promise<void> {
+    this.resetTxIndicators();
+
+    // Indicate tx is pending
+    this.setTxPending(true);
     console.log(`Waiting for promievent of ${name}`);
-    const res = await promievent;
-    console.log(`Got Results for promievent of ${name}`);
-    return res;
+
+    try {
+      const res = await promievent;
+      console.log(`Got Results for promievent of ${name}`);
+      return;
+    } catch (e) {
+      if (
+        (e as any).code === JSON_RPC_ERROR_CODES.provider.userRejectedRequest
+      ) {
+        this.setTxCanceled(true);
+      } else {
+        throw e;
+      }
+    } finally {
+      this.setTxPending(false);
+    }
   }
 
   public async registerGuardian(
@@ -284,6 +309,12 @@ export class OrbsAccountStore {
     this.setDoneLoading(true);
   }
 
+  private resetTxIndicators() {
+    this.setTxPending(false);
+    this.setTxHadError(false);
+    this.setTxCanceled(false);
+  }
+
   // ****  Observables setter actions ****
   @action("setDoneLoading")
   private setDoneLoading(doneLoading: boolean) {
@@ -293,6 +324,21 @@ export class OrbsAccountStore {
   @action("setErrorLoading")
   private setErrorLoading(errorLoading: boolean) {
     this.errorLoading = errorLoading;
+  }
+
+  @action("setTxPending")
+  private setTxPending(txPending: boolean) {
+    this.txPending = txPending;
+  }
+
+  @action("setTxCanceled")
+  private setTxCanceled(txCanceled: boolean) {
+    this.txCanceled = txCanceled;
+  }
+
+  @action("setTxHadError")
+  private setTxHadError(txHadError: boolean) {
+    this.txHadError = txHadError;
   }
 
   @action("setIsGuardian")

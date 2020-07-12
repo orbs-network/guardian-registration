@@ -8,12 +8,17 @@ import { EditGuardianInfoSection } from "./EditGuardianInfoSection";
 import { RegisterGuardianSection } from "./RegisterGuardianSection";
 import { RewardsDistributionFrequencyForm } from "./RewardsDistributionFrequencyForm";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import {
+  Backdrop,
+  CircularProgress,
+  Divider,
+  Typography,
+} from "@material-ui/core";
 
 interface IProps {}
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
+  page: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -21,16 +26,9 @@ const useStyles = makeStyles((theme) => ({
     width: "max-content",
     padding: "2em",
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
   },
 }));
 
@@ -68,6 +66,7 @@ export const GuardiansRegisterOrEditPage = observer<
             orbsAccountStore.updateGuardianInfo(guardianRegistrationPayload)
           }
         />
+
         <Typography variant={"h5"}>Rewards Distribution Frequency</Typography>
         <RewardsDistributionFrequencyForm
           currentFrequencyInHours={
@@ -92,10 +91,20 @@ export const GuardiansRegisterOrEditPage = observer<
   }
 
   return (
-    <div className={classes.paper}>
+    <div className={classes.page}>
       <Typography variant={"h5"}>{title}</Typography>
       <Typography>{cryptoWalletIntegrationStore.mainAddress}</Typography>
       {content}
+
+      {orbsAccountStore.txCanceled && (
+        <>
+          <br />
+          <Typography>You have canceled the transaction</Typography>
+        </>
+      )}
+      <Backdrop className={classes.backdrop} open={orbsAccountStore.txPending}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 });
