@@ -23,7 +23,13 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
     isUsingDefaultValue,
   } = props;
 
-  const userWantsToChangeDefault = useBoolean(false);
+  const userWantsToChangeDefault = useBoolean(!!isUsingDefaultValue);
+
+  useEffect(() => {
+    if (!isUsingDefaultValue) {
+      userWantsToChangeDefault.setTrue();
+    }
+  }, [isUsingDefaultValue, userWantsToChangeDefault]);
 
   const frequency = useNumber(
     Math.max(

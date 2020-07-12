@@ -46,10 +46,10 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
       />
       <br />
       <Typography variant={"h6"}>
-        Registered: {registrationDate.toLocaleString()}
+        Guardian registered: {registrationDate.toLocaleString()}
       </Typography>
       <Typography variant={"h6"}>
-        Last updated: {lastUpdateDate.toLocaleString()}
+        Details Last updated: {lastUpdateDate.toLocaleString()}
       </Typography>
       <br />
     </>

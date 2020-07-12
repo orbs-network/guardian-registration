@@ -67,6 +67,8 @@ export const GuardiansRegisterOrEditPage = observer<
           }
         />
 
+        <Divider style={{ width: "100%", height: "3px" }} />
+        <br />
         <Typography variant={"h5"}>Rewards Distribution Frequency</Typography>
         <RewardsDistributionFrequencyForm
           currentFrequencyInHours={
