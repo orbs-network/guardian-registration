@@ -177,7 +177,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       />
       <br />
       <br />
-      <Button variant={"outlined"} type={"submit"}>
+      <Button variant={"outlined"} fullWidth type={"submit"}>
         {actionButtonTitle}
       </Button>
     </form>

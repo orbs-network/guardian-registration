@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { Button, TextField, Typography } from "@material-ui/core";
-import { useNumber } from "react-hanger";
+import { useBoolean, useNumber } from "react-hanger";
 import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { useForm } from "react-hook-form";
 
@@ -23,7 +23,8 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
     isUsingDefaultValue,
   } = props;
 
-  // TODO : ORL : Ensure minimum value is observed + add UI validation.
+  const userWantsToChangeDefault = useBoolean(false);
+
   const frequency = useNumber(
     Math.max(
       currentFrequencyInHours,
@@ -59,28 +60,45 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
       onSubmit={handleSubmit(submitUpdate)}
     >
       <Typography>Default value is 14 days (336 hours)</Typography>
-      <Typography variant={"caption"}>Minimum value is 12 hours</Typography>
-      <Typography color={"secondary"}>{currentlyUsingText}</Typography>
-      <TextField
-        fullWidth
-        name={"rewardsFrequencyInHours"}
-        title={`Rewards Frequency in hours - Minimum ${GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS} hours`}
-        label={"Rewards Frequency in hours"}
-        value={frequency.value}
-        onChange={(e) => frequency.setValue(parseInt(e.target.value) || 0)}
-        required
-        type={"number"}
-        inputRef={register({
-          min: GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
-        })}
-        error={errorRewardsFrequency}
-        helperText={errorRewardsFrequency && REWARDS_FREQUENCY_MESSAGE}
-      />
+
       <br />
-      <br />
-      <Button variant={"outlined"} type={"submit"}>
-        Update
-      </Button>
+
+      {!userWantsToChangeDefault.value && (
+        <Button
+          onClick={userWantsToChangeDefault.setTrue}
+          variant={"outlined"}
+          fullWidth
+        >
+          Change default
+        </Button>
+      )}
+
+      {userWantsToChangeDefault.value && (
+        <>
+          <Typography variant={"caption"}>Minimum value is 12 hours</Typography>
+          <Typography color={"secondary"}>{currentlyUsingText}</Typography>
+          <TextField
+            fullWidth
+            name={"rewardsFrequencyInHours"}
+            title={`Rewards Frequency in hours - Minimum ${GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS} hours`}
+            label={"Rewards Frequency in hours"}
+            value={frequency.value}
+            onChange={(e) => frequency.setValue(parseInt(e.target.value) || 0)}
+            required
+            type={"number"}
+            inputRef={register({
+              min: GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
+            })}
+            error={errorRewardsFrequency}
+            helperText={errorRewardsFrequency && REWARDS_FREQUENCY_MESSAGE}
+          />
+          <br />
+          <br />
+          <Button variant={"outlined"} type={"submit"} fullWidth>
+            Update
+          </Button>
+        </>
+      )}
     </form>
   );
 });
