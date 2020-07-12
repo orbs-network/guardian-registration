@@ -86,16 +86,10 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
     <form
       onSubmit={handleSubmit((formData) => submit(formData))}
       style={{
-        maxWidth: "90%",
-        border: "1px solid red",
-        width: "max-content",
-        padding: "1em",
+        maxWidth: "100%",
+        width: "100%",
       }}
     >
-      <Typography>Guardian Address</Typography>
-      <Typography style={{ textOverflow: "ellipsis" }}>
-        {guardianAddress}
-      </Typography>
       {/*<TextField*/}
       {/*  required*/}
       {/*  style={{*/}

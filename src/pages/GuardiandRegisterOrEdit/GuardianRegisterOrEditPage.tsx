@@ -7,18 +7,42 @@ import {
 import { EditGuardianInfoSection } from "./EditGuardianInfoSection";
 import { RegisterGuardianSection } from "./RegisterGuardianSection";
 import { RewardsDistributionFrequencyForm } from "./RewardsDistributionFrequencyForm";
+import { makeStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
 
 interface IProps {}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    border: "1px solid black",
+    width: "max-content",
+    padding: "2em",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 export const GuardiansRegisterOrEditPage = observer<
   React.FunctionComponent<IProps>
 >((props) => {
-  const {} = props;
+  const classes = useStyles();
 
   const orbsAccountStore = useOrbsAccountStore();
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
 
-  // TODO : ORL : Organize all of this loading "ifs
+  // TODO : ORL : Organize all of this loading "ifs"
   if (orbsAccountStore.errorLoading) {
     return <div>Error loading</div>;
   }
@@ -27,8 +51,12 @@ export const GuardiansRegisterOrEditPage = observer<
     return <div>Loading...</div>;
   }
 
+  const title = orbsAccountStore.isGuardian
+    ? "Guardian details update"
+    : "Guardian Registration";
+  let content;
   if (orbsAccountStore.isGuardian) {
-    return (
+    content = (
       <>
         <EditGuardianInfoSection
           guardianInfo={orbsAccountStore.guardianInfo}
@@ -52,7 +80,7 @@ export const GuardiansRegisterOrEditPage = observer<
       </>
     );
   } else {
-    return (
+    content = (
       <RegisterGuardianSection
         registerGuardian={(...args) =>
           orbsAccountStore.registerGuardian(...args)
@@ -61,4 +89,12 @@ export const GuardiansRegisterOrEditPage = observer<
       />
     );
   }
+
+  return (
+    <div className={classes.paper}>
+      <Typography>{title}</Typography>
+      <Typography>{cryptoWalletIntegrationStore.mainAddress}</Typography>
+      {content}
+    </div>
+  );
 });

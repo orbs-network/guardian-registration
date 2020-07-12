@@ -6,5 +6,7 @@ export const ContentContainer = React.memo<ContainerProps>((props) => {
   const theme = useTheme();
   const smallOrSmaller = useMediaQuery(theme.breakpoints.down("sm"));
 
-  return <Container disableGutters={smallOrSmaller} {...props} />;
+  return (
+    <Container component={"main"} disableGutters={smallOrSmaller} {...props} />
+  );
 });
