@@ -14,6 +14,7 @@ import {
   EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE,
   REWARDS_FREQUENCY_KEY,
 } from "./GuardiansV2ServiceConstants";
+import { ipv4ToHex } from "../../utils/utils";
 
 // TODO : O.L : Fill it up after deploying,
 const MAIN_NET_VALIDATORS_REGISTRATION_ADDRESS = "";
@@ -103,8 +104,11 @@ export class GuardiansV2Service implements IGuardiansV2Service {
       ip,
       contact,
     } = guardianRegistrationPayload;
+
+    const ipAsHex = ipv4ToHex(ip);
+
     return this.validatorsRegistrationContract.methods
-      .registerValidator(ip, orbsAddr, name, website, contact)
+      .registerValidator(ipAsHex, orbsAddr, name, website, contact)
       .send();
   }
 
@@ -112,8 +116,9 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     guardianUpdatePayload: TGuardianUpdatePayload
   ): PromiEvent<TransactionReceipt> {
     const { contact, ip, name, orbsAddr, website } = guardianUpdatePayload;
+    const ipAsHex = ipv4ToHex(ip);
     return this.validatorsRegistrationContract.methods
-      .updateValidator(ip, orbsAddr, name, website, contact)
+      .updateValidator(ipAsHex, orbsAddr, name, website, contact)
       .send();
   }
 }

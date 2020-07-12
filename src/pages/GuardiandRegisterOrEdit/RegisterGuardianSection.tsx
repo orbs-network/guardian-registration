@@ -1,10 +1,5 @@
-import React, { useCallback } from "react";
-import { Button, TextField, Typography } from "@material-ui/core";
-import { useStateful } from "react-hanger";
-import {
-  TGuardianInfoResponse,
-  TGuardianRegistrationPayload,
-} from "../../services/guardiansV2Service/IGuardiansV2Service";
+import React from "react";
+import { TGuardianRegistrationPayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
 import { GuardiansDetailsForm } from "./GuradiansDetailsForm";
 import { TGuardianInfo } from "../../store/OrbsAccountStore";
 

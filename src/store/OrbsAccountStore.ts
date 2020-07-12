@@ -14,6 +14,7 @@ import {
 } from "../services/guardiansV2Service/IGuardiansV2Service";
 import { EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE } from "../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { PromiEvent, TransactionReceipt } from "web3-core";
+import { ipvHexToV4 } from "../utils/utils";
 
 export type TGuardianInfo = {
   ip: string;
@@ -244,7 +245,7 @@ export class OrbsAccountStore {
         const guardianInfo: TGuardianInfo = {
           name,
           website,
-          ip,
+          ip: ipvHexToV4(ip),
           contact,
           orbsAddr,
         };
