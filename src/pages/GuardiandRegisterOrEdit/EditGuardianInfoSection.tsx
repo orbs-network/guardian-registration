@@ -6,6 +6,7 @@ import {
 } from "../../store/OrbsAccountStore";
 import { GuardiansDetailsForm } from "./GuradiansDetailsForm";
 import { TGuardianUpdatePayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
+import { Typography } from "@material-ui/core";
 
 interface IProps {
   guardianAddress: string;
@@ -44,10 +45,12 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
         actionButtonTitle={"Update"}
       />
       <br />
-      <div>Registered: {registrationDate.toLocaleString()}</div>
-      <br />
-      <div>Last updated: {lastUpdateDate.toLocaleString()}</div>
-      <br />
+      <Typography variant={"h6"}>
+        Registered: {registrationDate.toLocaleString()}
+      </Typography>
+      <Typography variant={"h6"}>
+        Last updated: {lastUpdateDate.toLocaleString()}
+      </Typography>
       <br />
     </>
   );
