@@ -19,16 +19,18 @@ export const NoEthereumProviderPage = React.memo<IProps>((props) => {
   }, [hasPressed]);
 
   return (
-    <main className="App" style={{ height: "100%" }}>
-      <Background prismVersion={"0.5"} />
+    <>
       <Header />
-      <ContentContainer id={"appContainer"}>
-        <NoEthereumProviderSection
-          walletConnectionPhase={"install"}
-          actionFunction={installMetaMask}
-        />
-      </ContentContainer>
-      <CssBaseline />
-    </main>
+      <main className="App" style={{ height: "100%", marginTop: "2em" }}>
+        <Background prismVersion={"0.5"} />
+        <ContentContainer id={"appContainer"}>
+          <NoEthereumProviderSection
+            walletConnectionPhase={"install"}
+            actionFunction={installMetaMask}
+          />
+        </ContentContainer>
+        <CssBaseline />
+      </main>
+    </>
   );
 });

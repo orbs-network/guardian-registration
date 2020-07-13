@@ -8,8 +8,16 @@ import { GuardiansRegisterOrEditPage } from "./pages/GuardiandRegisterOrEdit/Gua
 import { Background } from "./components/structure/Background";
 import { Header } from "./components/structure/Header";
 import { CssBaseline } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+  app: {
+    height: "100%",
+  },
+}));
 
 const App = observer(() => {
+  const classes = useStyles();
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
 
   const isConnected = cryptoWalletIntegrationStore.isConnectedToWallet;
@@ -34,12 +42,14 @@ const App = observer(() => {
   }, [cryptoWalletIntegrationStore, isConnected]);
 
   return (
-    <main className="App" style={{ height: "100%" }}>
-      <Background prismVersion={"0.5"} />
+    <>
       <Header />
-      <ContentContainer id={"appContainer"}>{appContent}</ContentContainer>
-      <CssBaseline />
-    </main>
+      <main className={classes.app}>
+        <Background prismVersion={"0.5"} />
+        <ContentContainer id={"appContainer"}>{appContent}</ContentContainer>
+        <CssBaseline />
+      </main>
+    </>
   );
 });
 
