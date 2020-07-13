@@ -7,7 +7,10 @@ import { buildServices } from "./services/Services";
 import { StylesProvider, ThemeProvider } from "@material-ui/core/styles";
 import { AppStyles, baseTheme } from "./theme/Theme";
 import { CssBaseline } from "@material-ui/core";
-interface IProps {}
+
+interface IProps {
+  appComponent: React.ReactNode;
+}
 
 configureMobx();
 
@@ -19,14 +22,13 @@ const stores = getStores(
 );
 
 export const AppWrapper = React.memo<IProps>((props) => {
+  console.log("Wrapper render");
+  const { appComponent } = props;
   return (
     <Router>
       <Provider {...stores} {...services}>
         <StylesProvider injectFirst>
-          <ThemeProvider theme={baseTheme}>
-            <App />
-            <CssBaseline />
-          </ThemeProvider>
+          <ThemeProvider theme={baseTheme}>{appComponent}</ThemeProvider>
         </StylesProvider>
       </Provider>
     </Router>

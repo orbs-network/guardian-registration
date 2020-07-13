@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import "./App.css";
 import { ContentContainer } from "./components/structure/ContentContainer";
 import { Route, Switch } from "react-router-dom";
 import { useCryptoWalletIntegrationStore } from "./store/storeHooks";
@@ -8,6 +7,7 @@ import { NoEthereumProviderSection } from "./pages/NoEthereumProviderSection";
 import { GuardiansRegisterOrEditPage } from "./pages/GuardiandRegisterOrEdit/GuardianRegisterOrEditPage";
 import { Background } from "./components/structure/Background";
 import { Header } from "./components/structure/Header";
+import { CssBaseline } from "@material-ui/core";
 
 const App = observer(() => {
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
@@ -34,10 +34,11 @@ const App = observer(() => {
   }, [cryptoWalletIntegrationStore, isConnected]);
 
   return (
-    <main className="App">
+    <main className="App" style={{ height: "100%" }}>
       <Background prismVersion={"0.5"} />
       <Header />
       <ContentContainer id={"appContainer"}>{appContent}</ContentContainer>
+      <CssBaseline />
     </main>
   );
 });

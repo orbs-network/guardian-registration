@@ -61,7 +61,7 @@ export const Background = withStyles(styles)(
     public render() {
       const { classes, prismVersion } = this.props;
       return (
-        <div className={classes.root}>
+        <div id={"appBackground"} className={classes.root}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className={classes.svgElm}

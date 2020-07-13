@@ -4,24 +4,24 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { AppWrapper } from "./AppWrapper";
 import { NoEthereumProviderPage } from "./pages/NoEthereumProviderPage";
+import App from "./App";
 
 const hasEthereumProvider = !!(window as any).ethereum;
 
+let AppComponent;
+
 if (hasEthereumProvider) {
-  ReactDOM.render(
-    <React.StrictMode>
-      <AppWrapper />
-    </React.StrictMode>,
-    document.getElementById("root")
-  );
+  AppComponent = <App />;
 } else {
-  ReactDOM.render(
-    <React.StrictMode>
-      <NoEthereumProviderPage />
-    </React.StrictMode>,
-    document.getElementById("root")
-  );
+  AppComponent = <NoEthereumProviderPage />;
 }
+
+ReactDOM.render(
+  <React.StrictMode>
+    <AppWrapper appComponent={AppComponent} />
+  </React.StrictMode>,
+  document.getElementById("root")
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -1,8 +1,10 @@
 import React, { useCallback } from "react";
-import { useTheme } from "@material-ui/core";
+import { CssBaseline, useTheme } from "@material-ui/core";
 import { NoEthereumProviderSection } from "./NoEthereumProviderSection";
 import { useBoolean } from "react-hanger";
 import { ContentContainer } from "../components/structure/ContentContainer";
+import { Background } from "../components/structure/Background";
+import { Header } from "../components/structure/Header";
 
 type TWalletConnectionPhase = "install" | "connect";
 
@@ -17,11 +19,16 @@ export const NoEthereumProviderPage = React.memo<IProps>((props) => {
   }, [hasPressed]);
 
   return (
-    <ContentContainer>
-      <NoEthereumProviderSection
-        walletConnectionPhase={"install"}
-        actionFunction={installMetaMask}
-      />
-    </ContentContainer>
+    <main className="App" style={{ height: "100%" }}>
+      <Background prismVersion={"0.5"} />
+      <Header />
+      <ContentContainer id={"appContainer"}>
+        <NoEthereumProviderSection
+          walletConnectionPhase={"install"}
+          actionFunction={installMetaMask}
+        />
+      </ContentContainer>
+      <CssBaseline />
+    </main>
   );
 });
