@@ -9,6 +9,7 @@ import { Background } from "./components/structure/Background";
 import { Header } from "./components/structure/Header";
 import { CssBaseline } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Page } from "./components/structure/Page";
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -25,10 +26,12 @@ const App = observer(() => {
   const appContent = useMemo(() => {
     if (!isConnected) {
       return (
-        <NoEthereumProviderSection
-          walletConnectionPhase={"connect"}
-          actionFunction={() => cryptoWalletIntegrationStore.askToConnect()}
-        />
+        <Page>
+          <NoEthereumProviderSection
+            walletConnectionPhase={"connect"}
+            actionFunction={() => cryptoWalletIntegrationStore.askToConnect()}
+          />
+        </Page>
       );
     } else {
       return (

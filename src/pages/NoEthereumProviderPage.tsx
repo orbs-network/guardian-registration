@@ -5,6 +5,7 @@ import { useBoolean } from "react-hanger";
 import { ContentContainer } from "../components/structure/ContentContainer";
 import { Background } from "../components/structure/Background";
 import { Header } from "../components/structure/Header";
+import { Page } from "../components/structure/Page";
 
 type TWalletConnectionPhase = "install" | "connect";
 
@@ -21,13 +22,15 @@ export const NoEthereumProviderPage = React.memo<IProps>((props) => {
   return (
     <>
       <Header />
-      <main className="App" style={{ height: "100%", marginTop: "2em" }}>
+      <main className="App" style={{ height: "100%" }}>
         <Background prismVersion={"0.5"} />
         <ContentContainer id={"appContainer"}>
-          <NoEthereumProviderSection
-            walletConnectionPhase={"install"}
-            actionFunction={installMetaMask}
-          />
+          <Page>
+            <NoEthereumProviderSection
+              walletConnectionPhase={"install"}
+              actionFunction={installMetaMask}
+            />
+          </Page>
         </ContentContainer>
         <CssBaseline />
       </main>
