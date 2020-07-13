@@ -98,12 +98,13 @@ export const GuardiansRegisterOrEditPage = observer<
 
   return (
     <div className={classes.page}>
-      <Typography variant={"h5"}>{title}</Typography>
       <div
         style={{
           maxWidth: "100%",
+          textAlign: "center",
         }}
       >
+        <Typography variant={"h5"}>{title}</Typography>
         <Typography
           style={{
             textOverflow: "ellipsis",
@@ -117,6 +118,7 @@ export const GuardiansRegisterOrEditPage = observer<
       <div
         style={{
           display: "grid",
+          textAlign: "center",
         }}
       >
         {content}
