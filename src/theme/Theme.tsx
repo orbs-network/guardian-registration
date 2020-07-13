@@ -13,20 +13,21 @@ const SECONDARY_TEXT = "#7B7B7B";
 export const baseTheme = responsiveFontSizes(
   createMuiTheme({
     palette: {
-      // type: "dark",
-      // primary: {
-      //   main: COLOR1,
-      // },
-      // secondary: {
-      //   main: COLOR3,
-      // },
+      // TODO : Adjust all styles after structure is done
+      type: "dark",
+      primary: {
+        main: "rgba(16, 34, 91, 0.7)",
+      },
+      secondary: {
+        main: "#7ccbf4",
+      },
       text: {
         // primary: PRIMARY_TEXT,
         // secondary: SECONDARY_TEXT,
       },
       background: {
         // DEV_NOTE : This sets the app background color
-        // default: "#121212",
+        default: "#16317d",
       },
     },
     typography: {
