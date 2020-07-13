@@ -4,9 +4,9 @@ import {
   TGuardianInfo,
   TGuardianContractInteractionTimes,
 } from "../../store/OrbsAccountStore";
-import { GuardiansDetailsForm } from "./GuradiansDetailsForm";
+import { GuardiansDetailsForm } from "./forms/GuradiansDetailsForm";
 import { TGuardianUpdatePayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
-import { Typography } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 
 interface IProps {
   guardianAddress: string;

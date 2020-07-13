@@ -6,22 +6,24 @@ import {
 } from "../../store/storeHooks";
 import { EditGuardianInfoSection } from "./EditGuardianInfoSection";
 import { RegisterGuardianSection } from "./RegisterGuardianSection";
-import { RewardsDistributionFrequencyForm } from "./RewardsDistributionFrequencyForm";
+import { RewardsDistributionFrequencyForm } from "./forms/RewardsDistributionFrequencyForm";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Backdrop,
   CircularProgress,
   Divider,
+  Paper,
   Typography,
 } from "@material-ui/core";
+import { EditRewardsDistributionSection } from "./EditRewardsDistributionSection";
 
 interface IProps {}
 
 const useStyles = makeStyles((theme) => ({
   page: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    // display: "flex",
+    // flexDirection: "column",
+    // alignItems: "center",
     // border: "1px solid black",
     width: "fit-content",
     maxWidth: "100%",
@@ -72,7 +74,7 @@ export const GuardiansRegisterOrEditPage = observer<
         <Divider style={{ width: "100%", height: "3px" }} />
         <br />
         <Typography variant={"h5"}>Rewards Distribution Frequency</Typography>
-        <RewardsDistributionFrequencyForm
+        <EditRewardsDistributionSection
           currentFrequencyInHours={
             orbsAccountStore.rewardDistributionFrequencyInHours
           }
@@ -112,8 +114,16 @@ export const GuardiansRegisterOrEditPage = observer<
           {cryptoWalletIntegrationStore.mainAddress}
         </Typography>
       </div>
-      {content}
+      <div
+        style={{
+          display: "grid",
+        }}
+      >
+        {content}
+      </div>
 
+      <br />
+      <Divider style={{ width: "100%", height: "3px" }} />
       {orbsAccountStore.txCanceled && (
         <>
           <br />

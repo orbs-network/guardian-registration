@@ -1,6 +1,6 @@
 import React from "react";
 import { TGuardianRegistrationPayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
-import { GuardiansDetailsForm } from "./GuradiansDetailsForm";
+import { GuardiansDetailsForm } from "./forms/GuradiansDetailsForm";
 import { TGuardianInfo } from "../../store/OrbsAccountStore";
 
 interface IProps {

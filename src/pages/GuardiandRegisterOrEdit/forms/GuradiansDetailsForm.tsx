@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { useStateful } from "react-hanger";
-import { TGuardianRegistrationPayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
+import { TGuardianRegistrationPayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
 import { Button, TextField, Typography } from "@material-ui/core";
-import { TGuardianInfo } from "../../store/OrbsAccountStore";
+import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { useForm } from "react-hook-form";
 
 interface IProps {
@@ -81,7 +81,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
     [submitInfo]
   );
 
-  // TODO : FUTURE : This form will not look good on mobile, fix the text overflow
+  // TODO : FUTURE : This forms will not look good on mobile, fix the text overflow
   return (
     <form
       onSubmit={handleSubmit((formData) => submit(formData))}

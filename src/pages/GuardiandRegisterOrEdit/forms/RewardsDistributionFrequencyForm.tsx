@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { useBoolean, useNumber } from "react-hanger";
-import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../services/guardiansV2Service/GuardiansV2ServiceConstants";
+import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { useForm } from "react-hook-form";
 
 interface IProps {
@@ -23,7 +23,8 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
     isUsingDefaultValue,
   } = props;
 
-  const userWantsToChangeDefault = useBoolean(!!isUsingDefaultValue);
+  // DEV_NOTE : is the value is already not the default one, we will not hide the input element
+  const userWantsToChangeDefault = useBoolean(!isUsingDefaultValue);
 
   useEffect(() => {
     if (!isUsingDefaultValue) {
@@ -43,7 +44,6 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
-  console.log(errors.rewardsFrequencyInHours);
   const errorRewardsFrequency = !!errors.rewardsFrequencyInHours;
 
   const submitUpdate = useCallback(
@@ -75,7 +75,7 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
           variant={"outlined"}
           fullWidth
         >
-          Change default
+          Set to other value
         </Button>
       )}
 
