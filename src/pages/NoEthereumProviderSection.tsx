@@ -11,20 +11,22 @@ interface IProps {
 }
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
+  noEthereumProviderSection: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    border: "1px solid black",
-    width: "fit-content",
     textAlign: "center",
-    padding: "2em",
+    justifyContent: "space-around",
+    padding: "0.5em",
+    backgroundColor: "rgba(0,0,0, 0.2)",
+    borderRadius: "5%",
+    width: "clamp(20%, 40em, 100%)",
+    height: "clamp(max(25%, 200px), 8em, 50%)",
   },
 }));
 
 export const NoEthereumProviderSection = React.memo<IProps>((props) => {
   const classes = useStyles();
-  const theme = useTheme();
   const { walletConnectionPhase, actionFunction, pressedOnInstall } = props;
 
   const shouldDisplayLegalTicker = walletConnectionPhase === "connect";
@@ -36,15 +38,17 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
     : "Please connect";
   const subTitleText = isInstall
     ? "you should install MetaMask and refresh the page"
-    : 'Press "Connect" and approve';
+    : "To begin, connect your wallet";
   const buttonText =
     walletConnectionPhase === "install" ? "Install" : "Connect";
 
   return (
-    <div className={classes.paper} style={{ backgroundColor: "darkGray" }}>
+    <div className={classes.noEthereumProviderSection}>
       <Typography variant={"h4"}>{titleText}</Typography>
       <Typography>{subTitleText}</Typography>
-      <Button onClick={actionFunction}>{buttonText}</Button>
+      <Button variant={"outlined"} onClick={actionFunction}>
+        {buttonText}
+      </Button>
     </div>
   );
 });

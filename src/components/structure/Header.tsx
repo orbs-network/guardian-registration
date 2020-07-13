@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 export const Header = React.memo<IProps>((props) => {
   const classes = useStyles();
   return (
-    <AppBar position={"static"}>
+    <AppBar position={"absolute"}>
       <Toolbar>
         <div className={classes.title}>
           <Typography variant="h5">ORBS Guardians Management</Typography>
