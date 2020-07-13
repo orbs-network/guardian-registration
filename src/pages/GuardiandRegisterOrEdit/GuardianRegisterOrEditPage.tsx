@@ -23,7 +23,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     // border: "1px solid black",
-    width: "max-content",
+    width: "fit-content",
+    maxWidth: "100%",
+    boxSizing: "border-box",
     padding: "2em",
   },
   backdrop: {
@@ -95,7 +97,21 @@ export const GuardiansRegisterOrEditPage = observer<
   return (
     <div className={classes.page}>
       <Typography variant={"h5"}>{title}</Typography>
-      <Typography>{cryptoWalletIntegrationStore.mainAddress}</Typography>
+      <div
+        style={{
+          maxWidth: "100%",
+        }}
+      >
+        <Typography
+          style={{
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+          }}
+        >
+          {cryptoWalletIntegrationStore.mainAddress}
+        </Typography>
+      </div>
       {content}
 
       {orbsAccountStore.txCanceled && (
