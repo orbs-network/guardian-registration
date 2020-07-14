@@ -38,6 +38,23 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
 
   return (
     <>
+      <div
+        style={{
+          maxWidth: "100%",
+          textAlign: "center",
+        }}
+      >
+        <Typography variant={"h5"}>Guardian details update</Typography>
+        <Typography
+          style={{
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+          }}
+        >
+          {guardianAddress}
+        </Typography>
+      </div>
       <GuardiansDetailsForm
         guardianAddress={guardianAddress}
         submitInfo={updateGuardianDetails}

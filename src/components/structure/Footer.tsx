@@ -84,13 +84,9 @@ export const Footer = React.memo<IProps>((props) => {
               <InTextLink text={"Privacy Policy"} />
             </div>
 
-            <Typography className={classes.appVersion} variant={"caption"}>
-              version {version}
-              {/*<InTextLink*/}
-              {/*  text={`version ${version}`}*/}
-              {/*  style={{ textDecoration: "none" }}*/}
-              {/*/>*/}
-            </Typography>
+            <div className={classes.appVersion}>
+              <Typography variant={"caption"}>version {version}</Typography>
+            </div>
           </div>
         </AppBar>
       </HideOnScroll>

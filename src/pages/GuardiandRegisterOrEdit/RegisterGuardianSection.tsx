@@ -2,6 +2,7 @@ import React from "react";
 import { TGuardianRegistrationPayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
 import { GuardiansDetailsForm } from "./forms/GuradiansDetailsForm";
 import { TGuardianInfo } from "../../store/OrbsAccountStore";
+import { Typography } from "@material-ui/core";
 
 interface IProps {
   guardianAddress: string;
@@ -22,11 +23,30 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
   };
 
   return (
-    <GuardiansDetailsForm
-      guardianAddress={guardianAddress}
-      submitInfo={registerGuardian}
-      guardianInitialInfo={demoInitialInfo}
-      actionButtonTitle={"Register"}
-    />
+    <>
+      <div
+        style={{
+          maxWidth: "100%",
+          textAlign: "center",
+        }}
+      >
+        <Typography variant={"h5"}>Guardian Registration</Typography>
+        <Typography
+          style={{
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+          }}
+        >
+          {guardianAddress}
+        </Typography>
+      </div>
+      <GuardiansDetailsForm
+        guardianAddress={guardianAddress}
+        submitInfo={registerGuardian}
+        guardianInitialInfo={demoInitialInfo}
+        actionButtonTitle={"Register"}
+      />
+    </>
   );
 });
