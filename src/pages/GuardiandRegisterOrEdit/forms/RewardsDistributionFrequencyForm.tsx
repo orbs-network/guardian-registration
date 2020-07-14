@@ -3,6 +3,7 @@ import { Button, TextField, Typography } from "@material-ui/core";
 import { useBoolean, useNumber } from "react-hanger";
 import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { useForm } from "react-hook-form";
+import { config, Transition } from "react-spring/renderprops-universal";
 
 interface IProps {
   currentFrequencyInHours: number;
@@ -69,42 +70,76 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
 
       <br />
 
-      {!userWantsToChangeDefault.value && (
-        <Button
-          onClick={userWantsToChangeDefault.setTrue}
-          variant={"outlined"}
-          fullWidth
-        >
-          Set to other value
-        </Button>
-      )}
+      <Transition
+        items={userWantsToChangeDefault.value}
+        // config={config.gentle}
+        initial={null}
+        // immediate={DISABLE_ANIMATIONS}
 
-      {userWantsToChangeDefault.value && (
-        <>
-          <Typography variant={"caption"}>Minimum value is 12 hours</Typography>
-          <Typography color={"secondary"}>{currentlyUsingText}</Typography>
-          <TextField
-            fullWidth
-            name={"rewardsFrequencyInHours"}
-            title={`Rewards Frequency in hours - Minimum ${GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS} hours`}
-            label={"Rewards Frequency in hours"}
-            value={frequency.value}
-            onChange={(e) => frequency.setValue(parseInt(e.target.value) || 0)}
-            required
-            type={"number"}
-            inputRef={register({
-              min: GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
-            })}
-            error={errorRewardsFrequency}
-            helperText={errorRewardsFrequency && REWARDS_FREQUENCY_MESSAGE}
-          />
-          <br />
-          <br />
-          <Button variant={"outlined"} type={"submit"} fullWidth>
-            Update
-          </Button>
-        </>
-      )}
+        from={{
+          // position: "absolute",
+          opacity: 0,
+          // transform: "translateX(1%)",
+        }}
+        enter={{
+          opacity: 1,
+          // transform: "translateX(0%)",
+        }}
+        leave={{
+          opacity: 0,
+          // transform: "translateX(1%)",
+          // position: "absolute",
+          display: "none",
+        }}
+      >
+        {(toggle) =>
+          toggle
+            ? (props) => (
+                <div style={{ ...props, maxWidth: "100%", width: "100%" }}>
+                  <Typography variant={"caption"}>
+                    Minimum value is 12 hours
+                  </Typography>
+                  <Typography color={"secondary"}>
+                    {currentlyUsingText}
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    name={"rewardsFrequencyInHours"}
+                    title={`Rewards Frequency in hours - Minimum ${GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS} hours`}
+                    label={"Rewards Frequency in hours"}
+                    value={frequency.value}
+                    onChange={(e) =>
+                      frequency.setValue(parseInt(e.target.value) || 0)
+                    }
+                    required
+                    type={"number"}
+                    inputRef={register({
+                      min: GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
+                    })}
+                    error={errorRewardsFrequency}
+                    helperText={
+                      errorRewardsFrequency && REWARDS_FREQUENCY_MESSAGE
+                    }
+                  />
+                  <br />
+                  <br />
+                  <Button variant={"outlined"} type={"submit"} fullWidth>
+                    Update
+                  </Button>
+                </div>
+              )
+            : (props) => (
+                <Button
+                  onClick={userWantsToChangeDefault.setTrue}
+                  variant={"outlined"}
+                  fullWidth
+                  style={props}
+                >
+                  Set to other value
+                </Button>
+              )
+        }
+      </Transition>
     </form>
   );
 });
