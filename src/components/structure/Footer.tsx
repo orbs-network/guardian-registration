@@ -43,7 +43,7 @@ const HideOnScroll = React.memo((props) => {
   console.log(trigger);
 
   return (
-    <Slide appear={false} direction="down" in={!trigger}>
+    <Slide appear={false} direction="up" in={trigger}>
       {children as any}
     </Slide>
   );
@@ -57,39 +57,40 @@ export const Footer = React.memo<IProps>((props) => {
 
   return (
     <>
-      {/*<Toolbar style={{}} />*/}
-      <HideOnScroll>
-        <AppBar className={classes.bottomAppBar} position={"fixed"}>
-          {/*<Toolbar>*/}
+      {/* TODO : This 'Toolbar' is here to keep space between content and footer, should make a better solution */}
+      <Toolbar style={{}} />
+      {/*<HideOnScroll>*/}
+      <AppBar className={classes.bottomAppBar} position={"fixed"}>
+        {/*<Toolbar>*/}
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <div
             style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
+              marginRight: "auto",
+              marginLeft: "auto",
+              position: "absolute",
             }}
           >
-            <div
-              style={{
-                marginRight: "auto",
-                marginLeft: "auto",
-                position: "absolute",
-              }}
-            >
-              <InTextLink
-                text={"Term of use"}
-                style={{ paddingInlineEnd: "1em", justifySelf: "center" }}
-              />
-              <InTextLink text={"Privacy Policy"} />
-            </div>
-
-            <div className={classes.appVersion}>
-              <Typography variant={"caption"}>version {version}</Typography>
-            </div>
+            <InTextLink
+              text={"Term of use"}
+              style={{ paddingInlineEnd: "1em", justifySelf: "center" }}
+            />
+            <InTextLink text={"Privacy Policy"} />
           </div>
-        </AppBar>
-      </HideOnScroll>
+
+          <div className={classes.appVersion}>
+            <Typography variant={"caption"}>version {version}</Typography>
+          </div>
+        </div>
+      </AppBar>
+      {/*</HideOnScroll>*/}
     </>
   );
 });
