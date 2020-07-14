@@ -1,6 +1,7 @@
 import React from "react";
 import {
   AppBar,
+  Button,
   Slide,
   Toolbar,
   Typography,
@@ -53,12 +54,12 @@ const HideOnScroll = React.memo((props) => {
 export const Footer = React.memo<IProps>((props) => {
   const classes = useStyles();
   const { version } = props;
-  console.log("Footer Render");
+
   return (
     <>
       {/*<Toolbar style={{}} />*/}
       <HideOnScroll>
-        <AppBar className={classes.bottomAppBar} position="absolute">
+        <AppBar className={classes.bottomAppBar} position={"fixed"}>
           {/*<Toolbar>*/}
           <div
             style={{
@@ -85,8 +86,11 @@ export const Footer = React.memo<IProps>((props) => {
 
             <Typography className={classes.appVersion} variant={"caption"}>
               version {version}
+              {/*<InTextLink*/}
+              {/*  text={`version ${version}`}*/}
+              {/*  style={{ textDecoration: "none" }}*/}
+              {/*/>*/}
             </Typography>
-            <div style={{}}></div>
           </div>
         </AppBar>
       </HideOnScroll>

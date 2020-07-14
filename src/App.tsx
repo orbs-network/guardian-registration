@@ -18,7 +18,8 @@ import { Footer } from "./components/structure/Footer";
 
 const useStyles = makeStyles(() => ({
   app: {
-    height: "100%",
+    // height: "100%",
+    flex: 1,
   },
 }));
 

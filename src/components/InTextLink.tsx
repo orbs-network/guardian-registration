@@ -9,6 +9,9 @@ interface IProps {
 const useStyles = makeStyles((theme) => ({
   link: {
     color: theme.palette.secondary.light,
+    "&:hover": {
+      color: theme.palette.secondary.main,
+    },
   },
 }));
 
