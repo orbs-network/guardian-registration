@@ -91,6 +91,7 @@ export const GuardiansRegisterOrEditPage = observer<
   return (
     <Page>
       <ContentFitting>
+        {/* Main Title and Address */}
         <div
           style={{
             maxWidth: "100%",
@@ -108,6 +109,7 @@ export const GuardiansRegisterOrEditPage = observer<
             {cryptoWalletIntegrationStore.mainAddress}
           </Typography>
         </div>
+        {/* Content  */}
         <div
           style={{
             display: "grid",
@@ -119,12 +121,20 @@ export const GuardiansRegisterOrEditPage = observer<
 
         <br />
         <Divider style={{ width: "100%", height: "3px" }} />
-        {orbsAccountStore.txCanceled && (
-          <>
-            <br />
-            <Typography>You have canceled the transaction</Typography>
-          </>
-        )}
+
+        {/*/!* Message display *!/*/}
+        {/*{orbsAccountStore.txCanceled && (*/}
+        {/*  <>*/}
+        {/*    <br />*/}
+        {/*    <Typography>You have canceled the transaction</Typography>*/}
+        {/*  </>*/}
+        {/*)}*/}
+        {/*{orbsAccountStore.txHadError && (*/}
+        {/*  <>*/}
+        {/*    <br />*/}
+        {/*    <Typography>Error in TX</Typography>*/}
+        {/*  </>*/}
+        {/*)}*/}
         <Backdrop
           className={classes.backdrop}
           open={orbsAccountStore.txPending}

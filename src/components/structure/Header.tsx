@@ -19,7 +19,7 @@ export const Header = React.memo<IProps>((props) => {
     <AppBar position={"absolute"}>
       <Toolbar>
         <div className={classes.title}>
-          <Typography variant="h5">ORBS Guardians Management</Typography>
+          <Typography variant="h5">ORBS Guardians Portal</Typography>
         </div>
       </Toolbar>
     </AppBar>

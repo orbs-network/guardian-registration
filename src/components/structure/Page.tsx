@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Toolbar } from "@material-ui/core";
+import { Footer } from "./Footer";
 
 interface IProps {}
 

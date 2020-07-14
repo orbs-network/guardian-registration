@@ -7,6 +7,7 @@ import { buildServices } from "./services/Services";
 import { StylesProvider, ThemeProvider } from "@material-ui/core/styles";
 import { AppStyles, baseTheme } from "./theme/Theme";
 import { CssBaseline } from "@material-ui/core";
+import { SnackbarProvider } from "notistack";
 
 interface IProps {
   appComponent: React.ReactNode;
@@ -28,7 +29,9 @@ export const AppWrapper = React.memo<IProps>((props) => {
     <Router>
       <Provider {...stores} {...services}>
         <StylesProvider injectFirst>
-          <ThemeProvider theme={baseTheme}>{appComponent}</ThemeProvider>
+          <ThemeProvider theme={baseTheme}>
+            <SnackbarProvider maxSnack={3}>{appComponent}</SnackbarProvider>
+          </ThemeProvider>
         </StylesProvider>
       </Provider>
     </Router>

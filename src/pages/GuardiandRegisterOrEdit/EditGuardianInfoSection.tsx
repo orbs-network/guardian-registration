@@ -45,9 +45,9 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
         actionButtonTitle={"Update"}
       />
       <br />
-      <Typography variant={"h6"}>
-        Guardian registered: {registrationDate.toLocaleString()}
-      </Typography>
+      {/*<Typography variant={"h6"}>*/}
+      {/*  Guardian registered: {registrationDate.toLocaleString()}*/}
+      {/*</Typography>*/}
       <Typography variant={"h6"}>
         Details Last updated: {lastUpdateDate.toLocaleString()}
       </Typography>

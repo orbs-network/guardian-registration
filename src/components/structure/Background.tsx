@@ -52,14 +52,12 @@ const styles = (theme: Theme) =>
     },
   });
 
-interface IProps extends WithStyles<typeof styles> {
-  prismVersion: string;
-}
+interface IProps extends WithStyles<typeof styles> {}
 
 export const Background = withStyles(styles)(
   class extends React.Component<IProps> {
     public render() {
-      const { classes, prismVersion } = this.props;
+      const { classes } = this.props;
       return (
         <div id={"appBackground"} className={classes.root}>
           <svg
@@ -80,9 +78,9 @@ export const Background = withStyles(styles)(
               d="m32.443882,84.176l58.6,0a6.09,6.09 0 0 0 5.12,-9.4l-29.2,-45.28a5.45,5.45 0 0 0 -9.16,0l-29.93,46.27a5.45,5.45 0 0 0 4.57,8.41z"
             />
           </svg>
-          <Typography className={classes.appVersion} variant="caption">
-            {prismVersion}
-          </Typography>
+          {/*<Typography className={classes.appVersion} variant="caption">*/}
+          {/*  {prismVersion}*/}
+          {/*</Typography>*/}
         </div>
       );
     }

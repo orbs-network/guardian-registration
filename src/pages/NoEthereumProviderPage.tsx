@@ -23,7 +23,7 @@ export const NoEthereumProviderPage = React.memo<IProps>((props) => {
     <>
       <Header />
       <main className="App" style={{ height: "100%" }}>
-        <Background prismVersion={"0.5"} />
+        <Background />
         <ContentContainer id={"appContainer"}>
           <Page>
             <NoEthereumProviderSection

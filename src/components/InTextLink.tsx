@@ -1,4 +1,4 @@
-import React from "react";
+import React, { DetailedHTMLProps } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 interface IProps {
@@ -12,15 +12,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const InTextLink = React.memo<IProps>((props) => {
+export const InTextLink = React.memo<
+  IProps &
+    DetailedHTMLProps<
+      React.AnchorHTMLAttributes<HTMLAnchorElement>,
+      HTMLAnchorElement
+    >
+>((props) => {
   const classes = useStyles();
-  const { text, href } = props;
+  const { text, href, ...others } = props;
   return (
     <a
       className={classes.link}
       href={href || ""}
       target={"_blank"}
       rel={"noopener noreferrer"}
+      // style={{ display: "inline" }}
+      {...others}
     >
       {text}
     </a>

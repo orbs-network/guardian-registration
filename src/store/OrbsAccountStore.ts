@@ -136,6 +136,7 @@ export class OrbsAccountStore {
       // After registering, lets re-read the data
       await this.manuallyReadAccountData();
     } catch (e) {
+      this.setTxHadError(true);
       // TODO : Handle the error
       console.error(`Failed registering guardian ${e}`);
       throw e;
@@ -155,6 +156,7 @@ export class OrbsAccountStore {
       // After registering, lets re-read the data
       await this.manuallyReadAccountData();
     } catch (e) {
+      this.setTxHadError(true);
       // TODO : Handle the error
       console.error(`Failed updating guardian info ${e}`);
       throw e;
