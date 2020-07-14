@@ -71,7 +71,7 @@ export const GuardiansRegisterOrEditPage = observer<
 
         <Divider style={{ width: "100%", height: "3px" }} />
         <br />
-        <Typography variant={"h5"}>Rewards Distribution Frequency</Typography>
+
         <EditRewardsDistributionSection
           currentFrequencyInHours={
             orbsAccountStore.rewardDistributionFrequencyInHours
@@ -102,6 +102,7 @@ export const GuardiansRegisterOrEditPage = observer<
           style={{
             display: "grid",
             textAlign: "center",
+            maxWidth: "100%",
           }}
         >
           {content}

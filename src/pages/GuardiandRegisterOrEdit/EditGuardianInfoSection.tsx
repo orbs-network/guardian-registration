@@ -6,7 +6,10 @@ import {
 } from "../../store/OrbsAccountStore";
 import { GuardiansDetailsForm } from "./forms/GuradiansDetailsForm";
 import { TGuardianUpdatePayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper, Typography, Avatar } from "@material-ui/core";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { makeStyles } from "@material-ui/core/styles";
+import EditIcon from "@material-ui/icons/Edit";
 
 interface IProps {
   guardianAddress: string;
@@ -18,7 +21,17 @@ interface IProps {
   guardianContractInteractionTimes: TGuardianContractInteractionTimes;
 }
 
+const useStyles = makeStyles((theme) => ({
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+}));
+
 export const EditGuardianInfoSection = React.memo<IProps>((props) => {
+  const classes = useStyles();
   const {
     guardianInfo,
     guardianAddress,
@@ -38,10 +51,16 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
 
   return (
     <>
+      <Avatar className={classes.avatar}>
+        <EditIcon />
+      </Avatar>
       <div
         style={{
-          maxWidth: "100%",
           textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignContent: "center",
+          overflow: "hidden",
         }}
       >
         <Typography variant={"h5"}>Guardian details update</Typography>
