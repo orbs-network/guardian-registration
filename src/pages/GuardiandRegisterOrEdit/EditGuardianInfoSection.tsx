@@ -6,10 +6,18 @@ import {
 } from "../../store/OrbsAccountStore";
 import { GuardiansDetailsForm } from "./forms/GuradiansDetailsForm";
 import { TGuardianUpdatePayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
-import { Paper, Typography, Avatar } from "@material-ui/core";
+import {
+  Paper,
+  Typography,
+  Avatar,
+  TextField,
+  Button,
+} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
+import { Transition } from "react-spring/renderprops-universal";
+import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 
 interface IProps {
   guardianAddress: string;
@@ -84,9 +92,36 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
       {/*<Typography variant={"h6"}>*/}
       {/*  Guardian registered: {registrationDate.toLocaleString()}*/}
       {/*</Typography>*/}
-      <Typography variant={"h6"}>
-        Details Last updated: {lastUpdateDate.toLocaleString()}
-      </Typography>
+      <Transition
+        items={lastUpdateDate}
+        // config={config.gentle}
+        // immediate={DISABLE_ANIMATIONS}
+
+        from={{
+          // position: "absolute",
+          opacity: 0,
+          // transform: "translateX(1%)",
+        }}
+        enter={{
+          opacity: 1,
+          // transform: "translateX(0%)",
+        }}
+        leave={{
+          opacity: 0,
+          // transform: "translateX(1%)",
+          // position: "absolute",
+          display: "none",
+        }}
+        update={{
+          opacity: 1,
+        }}
+      >
+        {(toggle) => (props) => (
+          <Typography variant={"h6"} style={props}>
+            Details Last updated: {lastUpdateDate.toLocaleString()}
+          </Typography>
+        )}
+      </Transition>
       <br />
     </>
   );
