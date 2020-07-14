@@ -1,6 +1,16 @@
 import React from "react";
-import { Button, Typography, useTheme } from "@material-ui/core";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  Typography,
+  useTheme,
+  Checkbox,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useBoolean } from "react-hanger";
+import { renderToString } from "react-dom/server";
+import { InTextLink } from "../components/InTextLink";
 
 type TWalletConnectionPhase = "install" | "connect";
 
@@ -29,7 +39,10 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
   const classes = useStyles();
   const { walletConnectionPhase, actionFunction, pressedOnInstall } = props;
 
+  const tickerValue = useBoolean(false);
+
   const shouldDisplayLegalTicker = walletConnectionPhase === "connect";
+  const buttonIsEnabled = !shouldDisplayLegalTicker || tickerValue.value;
 
   const isInstall = walletConnectionPhase === "install";
 
@@ -42,13 +55,41 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
   const buttonText =
     walletConnectionPhase === "install" ? "Install" : "Connect";
 
+  const innerHtmlForLegalAgreement = renderToString(
+    <Typography>
+      I agree to the <InTextLink text={"Terms of Use"} /> and{" "}
+      <InTextLink href="" text={"Privacy Policy"} />
+    </Typography>
+  );
+
   return (
     <div className={classes.noEthereumProviderSection}>
       <Typography variant={"h4"}>{titleText}</Typography>
       <Typography>{subTitleText}</Typography>
-      <Button variant={"outlined"} onClick={actionFunction}>
+      <Button
+        variant={"outlined"}
+        onClick={actionFunction}
+        disabled={!buttonIsEnabled}
+      >
         {buttonText}
       </Button>
+      {shouldDisplayLegalTicker && (
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={tickerValue.value}
+              onChange={(e) => tickerValue.setValue(e.target.checked)}
+              name={"legalTicker"}
+            />
+          }
+          label={
+            <Typography
+              onClick={(e) => e.preventDefault()}
+              dangerouslySetInnerHTML={{ __html: innerHtmlForLegalAgreement }}
+            />
+          }
+        />
+      )}
     </div>
   );
 });
