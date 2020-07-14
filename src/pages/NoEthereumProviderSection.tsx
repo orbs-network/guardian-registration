@@ -26,12 +26,15 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     textAlign: "center",
-    justifyContent: "space-around",
-    padding: "0.5em",
+    // justifyContent: "space-between",
+    padding: "2em",
     backgroundColor: "rgba(0,0,0, 0.2)",
     borderRadius: "5%",
-    width: "clamp(20%, 40em, 100%)",
-    height: "clamp(max(25%, 200px), 8em, 50%)",
+    // width: "clamp(20%, 40em, 100%)",
+    width: "fit-content",
+    maxWidth: "90%",
+    boxSizing: "border-box",
+    // height: "clamp(max(25%, 200px), 8em, 50%)",
   },
 }));
 
@@ -64,8 +67,10 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
 
   return (
     <div className={classes.noEthereumProviderSection}>
-      <Typography variant={"h4"}>{titleText}</Typography>
-      <Typography>{subTitleText}</Typography>
+      <Typography style={{ marginBottom: "0.5rem" }} variant={"h4"}>
+        {titleText}
+      </Typography>
+      <Typography style={{ marginBottom: "1rem" }}>{subTitleText}</Typography>
       <Button
         variant={"outlined"}
         onClick={actionFunction}
@@ -75,6 +80,9 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
       </Button>
       {shouldDisplayLegalTicker && (
         <FormControlLabel
+          style={{
+            marginTop: "0.5rem",
+          }}
           control={
             <Checkbox
               checked={tickerValue.value}
