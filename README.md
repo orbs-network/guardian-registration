@@ -1,7 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Run with local ganache
-### Prepare the local ganche network
+## Run with local Ganache
+### Prepare the local ganche network (use node 12 as 14 failes to properly work with ganache)
 1. `cd ganache-env`
 2. `npm run start-ganache` (This will start a prcess that will block the terminal)
 3. `npm run compile-and-deploy`
