@@ -39,7 +39,8 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "postinstall": "npm run generate_types",
+    "mkd": "mkdir -p ./src/local && mkdir -p ./ganache-env/_out",
+    "postinstall": "npm run generate_types && npm run mkd",
     "generate_types": "typechain --target web3-v1 --outDir ./src/contracts './node_modules/@orbs-network/orbs-ethereum-contracts-v2/build/contracts/*.json'"
   },
   "eslintConfig": {
