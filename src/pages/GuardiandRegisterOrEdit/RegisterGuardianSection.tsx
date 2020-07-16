@@ -33,6 +33,13 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
     website: "a.com",
     name: "A",
   };
+  const emptyInitialInfo: TGuardianInfo = {
+    orbsAddr: "",
+    ip: "",
+    contact: "",
+    website: "",
+    name: "",
+  };
 
   return (
     <>
@@ -60,7 +67,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       <GuardiansDetailsForm
         guardianAddress={guardianAddress}
         submitInfo={registerGuardian}
-        guardianInitialInfo={demoInitialInfo}
+        guardianInitialInfo={emptyInitialInfo}
         actionButtonTitle={"Register"}
       />
     </>
