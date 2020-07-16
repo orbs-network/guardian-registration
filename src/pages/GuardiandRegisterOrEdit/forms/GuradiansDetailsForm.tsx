@@ -66,17 +66,32 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
   const errorIPAddress = !!errors.ipAddress;
   const errorWebsite = !!errors.website;
 
+  // DEV_NOTE : Taking ref for eslint-hooks
+  const nameSetValue = name.setValue;
+  const websiteSetValue = website.setValue;
+  const contactInfoSetValue = contactInfo.setValue;
+  const ipAddressSetValue = ipAddress.setValue;
+  const nodeAddressSetValue = nodeAddress.setValue;
+
   // DEV_NOTE : O.L : This is a hack to enforce update after registration,
   // TODO : O.L : Fix this
   useEffect(() => {
     if (guardianInitialInfo) {
-      name.setValue(guardianInitialInfo.name);
-      website.setValue(guardianInitialInfo.website);
-      contactInfo.setValue(guardianInitialInfo.contact);
-      ipAddress.setValue(guardianInitialInfo.ip);
-      nodeAddress.setValue(guardianInitialInfo.orbsAddr);
+      console.log("Re-setting data");
+      nameSetValue(guardianInitialInfo.name);
+      websiteSetValue(guardianInitialInfo.website);
+      contactInfoSetValue(guardianInitialInfo.contact);
+      ipAddressSetValue(guardianInitialInfo.ip);
+      nodeAddressSetValue(guardianInitialInfo.orbsAddr);
     }
-  }, [contactInfo, guardianInitialInfo, ipAddress, name, nodeAddress, website]);
+  }, [
+    contactInfoSetValue,
+    guardianInitialInfo,
+    ipAddressSetValue,
+    nameSetValue,
+    nodeAddressSetValue,
+    websiteSetValue,
+  ]);
 
   // TODO : O.L : Add tx progress indicator
   const submit = useCallback(
