@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useStateful } from "react-hanger";
 import { TGuardianRegistrationPayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
 import { Button, TextField, Typography } from "@material-ui/core";
@@ -65,6 +65,18 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
   const errorNodeAddress = !!errors.nodeAddress;
   const errorIPAddress = !!errors.ipAddress;
   const errorWebsite = !!errors.website;
+
+  // DEV_NOTE : O.L : This is a hack to enforce update after registration,
+  // TODO : O.L : Fix this
+  useEffect(() => {
+    if (guardianInitialInfo) {
+      name.setValue(guardianInitialInfo.name);
+      website.setValue(guardianInitialInfo.website);
+      contactInfo.setValue(guardianInitialInfo.contact);
+      ipAddress.setValue(guardianInitialInfo.ip);
+      nodeAddress.setValue(guardianInitialInfo.orbsAddr);
+    }
+  }, [contactInfo, guardianInitialInfo, ipAddress, name, nodeAddress, website]);
 
   // TODO : O.L : Add tx progress indicator
   const submit = useCallback(
