@@ -5,6 +5,7 @@ import * as serviceWorker from "./serviceWorker";
 import { AppWrapper } from "./AppWrapper";
 import { NoEthereumProviderPage } from "./pages/NoEthereumProviderPage";
 import App from "./App";
+import { ComingSoonPage } from "./pages/ComingSoonPage";
 
 const hasEthereumProvider = !!(window as any).ethereum;
 
@@ -15,6 +16,8 @@ if (hasEthereumProvider) {
 } else {
   AppComponent = <NoEthereumProviderPage />;
 }
+
+AppComponent = <ComingSoonPage />;
 
 ReactDOM.render(
   <React.StrictMode>
