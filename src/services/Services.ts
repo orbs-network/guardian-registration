@@ -42,7 +42,7 @@ export function buildServices(ethereumProvider: IEthereumProvider): IServices {
     ),
     guardiansV2Service: new GuardiansV2Service(
       web3,
-      configs.v2contractsAddressesOverride.validatorsRegistration
+      configs.v2contractsAddressesOverride.guardiansRegistration
     ),
     guardiansService: new GuardiansService(web3, orbsClientService),
   };

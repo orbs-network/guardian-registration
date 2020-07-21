@@ -58,7 +58,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
 
   const name = useStateful(guardianInitialInfo.name);
   const website = useStateful(guardianInitialInfo.website);
-  const contactInfo = useStateful(guardianInitialInfo.contact);
+  // const contactInfo = useStateful(guardianInitialInfo.contact);
   const ipAddress = useStateful(guardianInitialInfo.ip);
   const nodeAddress = useStateful(guardianInitialInfo.orbsAddr);
 
@@ -69,7 +69,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
   // DEV_NOTE : Taking ref for eslint-hooks
   const nameSetValue = name.setValue;
   const websiteSetValue = website.setValue;
-  const contactInfoSetValue = contactInfo.setValue;
+  // const contactInfoSetValue = contactInfo.setValue;
   const ipAddressSetValue = ipAddress.setValue;
   const nodeAddressSetValue = nodeAddress.setValue;
 
@@ -80,12 +80,12 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       console.log("Re-setting data");
       nameSetValue(guardianInitialInfo.name);
       websiteSetValue(guardianInitialInfo.website);
-      contactInfoSetValue(guardianInitialInfo.contact);
+      // contactInfoSetValue(guardianInitialInfo.contact);
       ipAddressSetValue(guardianInitialInfo.ip);
       nodeAddressSetValue(guardianInitialInfo.orbsAddr);
     }
   }, [
-    contactInfoSetValue,
+    // contactInfoSetValue,
     guardianInitialInfo,
     ipAddressSetValue,
     nameSetValue,
@@ -101,7 +101,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         orbsAddr: formData.nodeAddress,
         name: formData.name,
         website: formData.website,
-        contact: formData.contactInfo,
+        // contact: formData.contactInfo,
       };
       submitInfo(guardianRegistrationPayload);
     },
@@ -117,25 +117,6 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         width: "100%",
       }}
     >
-      {/*<TextField*/}
-      {/*  required*/}
-      {/*  style={{*/}
-      {/*    width: "max-content",*/}
-      {/*  }}*/}
-      {/*  // fullWidth*/}
-      {/*  inputProps={{*/}
-      {/*    style: {*/}
-      {/*      width: "max-content",*/}
-      {/*    },*/}
-      {/*  }}*/}
-      {/*  name={"guardianAddress"}*/}
-      {/*  title={"guardianAddress"}*/}
-      {/*  label={"Guardian Address"}*/}
-      {/*  value={guardianAddress}*/}
-      {/*  disabled*/}
-      {/*  inputRef={register}*/}
-      {/*/>*/}
-      {/*<br />*/}
       <TextField
         fullWidth
         name={"name"}
@@ -160,17 +141,17 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         error={errorWebsite}
         helperText={errorWebsite && WEBSITE_MESSAGE}
       />
-      <br />
-      <TextField
-        fullWidth
-        name={"contactInfo"}
-        title={"contactInfo"}
-        label={"Contact Info"}
-        value={contactInfo.value}
-        onChange={(e) => contactInfo.setValue(e.target.value)}
-        required
-        inputRef={register}
-      />
+      {/*<br />*/}
+      {/*<TextField*/}
+      {/*  fullWidth*/}
+      {/*  name={"contactInfo"}*/}
+      {/*  title={"contactInfo"}*/}
+      {/*  label={"Contact Info"}*/}
+      {/*  value={contactInfo.value}*/}
+      {/*  onChange={(e) => contactInfo.setValue(e.target.value)}*/}
+      {/*  required*/}
+      {/*  inputRef={register}*/}
+      {/*/>*/}
       <br />
       <TextField
         fullWidth

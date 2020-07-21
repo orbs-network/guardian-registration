@@ -25,14 +25,14 @@ const useStyles = makeStyles((theme) => ({
 const demoInitialInfo: TGuardianInfo = {
   orbsAddr: "0xe30a30069209aa4e7e7b07ab391966a0f071afd9",
   ip: "12.114.252.82",
-  contact: "A's contact info",
+  // contact: "A's contact info",
   website: "a.com",
   name: "A",
 };
 const emptyInitialInfo: TGuardianInfo = {
   orbsAddr: "",
   ip: "",
-  contact: "",
+  // contact: "",
   website: "",
   name: "",
 };
@@ -67,7 +67,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       <GuardiansDetailsForm
         guardianAddress={guardianAddress}
         submitInfo={registerGuardian}
-        guardianInitialInfo={emptyInitialInfo}
+        guardianInitialInfo={demoInitialInfo}
         actionButtonTitle={"Register"}
       />
     </>

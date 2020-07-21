@@ -23,7 +23,7 @@ export type TGuardianInfoPayload = {
   orbsAddr: string;
   name: string;
   website: string;
-  contact: string;
+  // contact: string;
 };
 
 export type TGuardianRegistrationPayload = TGuardianInfoPayload;
@@ -34,7 +34,7 @@ export type TGuardianInfoResponse = {
   orbsAddr: string;
   name: string;
   website: string;
-  contact: string;
+  // contact: string;
   /**
    * Unix timestamp
    */

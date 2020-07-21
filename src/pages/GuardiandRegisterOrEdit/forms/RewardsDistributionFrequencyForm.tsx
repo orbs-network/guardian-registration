@@ -25,13 +25,7 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
   } = props;
 
   // DEV_NOTE : is the value is already not the default one, we will not hide the input element
-  const userWantsToChangeDefault = useBoolean(!isUsingDefaultValue);
-
-  useEffect(() => {
-    if (!isUsingDefaultValue) {
-      userWantsToChangeDefault.setTrue();
-    }
-  }, [isUsingDefaultValue, userWantsToChangeDefault]);
+  const userWantsToChangeDefault = useBoolean(false);
 
   const frequency = useNumber(
     Math.max(
@@ -42,6 +36,21 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
       lowerLimit: GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
     }
   );
+
+  // useEffect(() => {
+  //   if (!isUsingDefaultValue) {
+  //     userWantsToChangeDefault.setTrue();
+  //   }
+  // }, [isUsingDefaultValue, userWantsToChangeDefault]);
+
+  useEffect(() => {
+    frequency.setValue(
+      Math.max(
+        currentFrequencyInHours,
+        GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS
+      )
+    );
+  }, [currentFrequencyInHours, frequency]);
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
@@ -56,7 +65,7 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
 
   const currentlyUsingText = isUsingDefaultValue
     ? "Currently using default value"
-    : `Current rewards distribution frequency is ${currentFrequencyInHours} hours`;
+    : `Current frequency is ${currentFrequencyInHours} hours`;
 
   return (
     <form
@@ -67,6 +76,8 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
       onSubmit={handleSubmit(submitUpdate)}
     >
       <Typography>Default value is 14 days (336 hours)</Typography>
+
+      <Typography variant={"body2"}>{currentlyUsingText}</Typography>
 
       <br />
 
@@ -98,9 +109,6 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
                 <div style={{ ...props, maxWidth: "100%", width: "100%" }}>
                   <Typography variant={"caption"}>
                     Minimum value is 12 hours
-                  </Typography>
-                  <Typography color={"secondary"}>
-                    {currentlyUsingText}
                   </Typography>
                   <TextField
                     fullWidth
