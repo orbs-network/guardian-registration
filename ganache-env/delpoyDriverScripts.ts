@@ -21,7 +21,7 @@ const deployDriverScripts = async () => {
     driver.erc20.assign(orbsV2Account, new BN("1000000000000000000000000000"));
 
     const addresses = {
-      validatorsRegistration: driver.validatorsRegistration.address,
+      guardiansRegistration: driver.guardiansRegistration.address,
     };
 
     console.log("Saving addresses to file");

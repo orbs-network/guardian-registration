@@ -2,6 +2,7 @@ import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { AbiItem } from "web3-utils";
 import ValidatorsRegistrationContractJson from "@orbs-network/orbs-ethereum-contracts-v2/build/contracts/ValidatorsRegistration.json";
+import GuardiansRegistrationContractJson from "@orbs-network/orbs-ethereum-contracts-v2/build/contracts/GuardiansRegistration.json";
 import {
   IGuardiansV2Service,
   TGuardianInfoResponse,
@@ -9,6 +10,7 @@ import {
   TGuardianUpdatePayload,
 } from "./IGuardiansV2Service";
 import { ValidatorsRegistration } from "../../contracts/ValidatorsRegistration";
+import { GuardiansRegistration } from "../../contracts/GuardiansRegistration";
 import { PromiEvent, TransactionReceipt } from "web3-core";
 import {
   EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE,
@@ -17,27 +19,27 @@ import {
 import { ipv4ToHex } from "../../utils/utils";
 
 // TODO : O.L : Fill it up after deploying,
-const MAIN_NET_VALIDATORS_REGISTRATION_ADDRESS = "";
+const MAIN_NET_GUARDIANS_REGISTRATION_ADDRESS = "";
 
 export class GuardiansV2Service implements IGuardiansV2Service {
-  private validatorsRegistrationContract: ValidatorsRegistration;
+  private guardiansRegistrationContract: GuardiansRegistration;
 
   constructor(
     private web3: Web3,
-    validatorsRegistrationAddress: string = MAIN_NET_VALIDATORS_REGISTRATION_ADDRESS
+    guardiansRegistrationAddress: string = MAIN_NET_GUARDIANS_REGISTRATION_ADDRESS
   ) {
-    this.validatorsRegistrationContract = (new this.web3.eth.Contract(
-      ValidatorsRegistrationContractJson.abi as AbiItem[],
-      validatorsRegistrationAddress
-    ) as any) as ValidatorsRegistration;
+    this.guardiansRegistrationContract = (new this.web3.eth.Contract(
+      GuardiansRegistrationContractJson.abi as AbiItem[],
+      guardiansRegistrationAddress
+    ) as any) as GuardiansRegistration;
   }
 
   setFromAccount(address: string): void {
-    this.validatorsRegistrationContract.options.from = address;
+    this.guardiansRegistrationContract.options.from = address;
   }
 
   public async isRegisteredGuardian(address: string): Promise<boolean> {
-    return this.validatorsRegistrationContract.methods
+    return this.guardiansRegistrationContract.methods
       .isRegistered(address)
       .call();
   }
@@ -45,8 +47,8 @@ export class GuardiansV2Service implements IGuardiansV2Service {
   public async readGuardianInfo(
     address: string
   ): Promise<TGuardianInfoResponse> {
-    const rawResponse = await this.validatorsRegistrationContract.methods
-      .getValidatorData(address)
+    const rawResponse = await this.guardiansRegistrationContract.methods
+      .getGuardianData(address)
       .call();
 
     const {
@@ -75,7 +77,7 @@ export class GuardiansV2Service implements IGuardiansV2Service {
   public async readGuardianDistributionFrequencyInSeconds(
     address: string
   ): Promise<number> {
-    const rewardsFrequency = await this.validatorsRegistrationContract.methods
+    const rewardsFrequency = await this.guardiansRegistrationContract.methods
       .getMetadata(address, REWARDS_FREQUENCY_KEY)
       .call();
 
@@ -89,7 +91,7 @@ export class GuardiansV2Service implements IGuardiansV2Service {
   public setGuardianDistributionFrequency(
     frequencyInSeconds: number
   ): PromiEvent<TransactionReceipt> {
-    return this.validatorsRegistrationContract.methods
+    return this.guardiansRegistrationContract.methods
       .setMetadata(REWARDS_FREQUENCY_KEY, frequencyInSeconds.toString())
       .send();
   }
@@ -109,8 +111,8 @@ export class GuardiansV2Service implements IGuardiansV2Service {
 
     const emptyDetails = "";
 
-    return this.validatorsRegistrationContract.methods
-      .registerValidator(ipAsHex, orbsAddr, name, website, emptyDetails)
+    return this.guardiansRegistrationContract.methods
+      .registerGuardian(ipAsHex, orbsAddr, name, website, emptyDetails)
       .send();
   }
 
@@ -120,8 +122,8 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     const { ip, name, orbsAddr, website } = guardianUpdatePayload;
     const ipAsHex = ipv4ToHex(ip);
     const emptyDetails = "";
-    return this.validatorsRegistrationContract.methods
-      .updateValidator(ipAsHex, orbsAddr, name, website, emptyDetails)
+    return this.guardiansRegistrationContract.methods
+      .updateGuardian(ipAsHex, orbsAddr, name, website, emptyDetails)
       .send();
   }
 }

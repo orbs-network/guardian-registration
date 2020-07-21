@@ -20,7 +20,7 @@ const SHOULD_OVERRIDE_ADDRESS = IS_DEV || ethereumNetwork === "ropsten";
 interface IConfig {
   urlBase: string;
   v2contractsAddressesOverride: Partial<{
-    validatorsRegistration: string;
+    guardiansRegistration: string;
   }>;
   ETHEREUM_PROVIDER_WS: string;
 }
@@ -36,8 +36,8 @@ if (process.env.NODE_ENV !== "production") {
   if (ethereumNetwork === "local") {
     const addresses = require("./local/addresses.json");
 
-    configs.v2contractsAddressesOverride.validatorsRegistration =
-      addresses.validatorsRegistration;
+    configs.v2contractsAddressesOverride.guardiansRegistration =
+      addresses.guardiansRegistration;
   }
 }
 
