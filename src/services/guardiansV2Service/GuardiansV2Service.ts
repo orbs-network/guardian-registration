@@ -60,7 +60,7 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     } = rawResponse;
 
     const guardianInfoResponse: TGuardianInfoResponse = {
-      contact,
+      // contact,
       ip,
       lastUpdateTime: parseInt(last_update_time),
       name,
@@ -102,23 +102,26 @@ export class GuardiansV2Service implements IGuardiansV2Service {
       name,
       orbsAddr,
       ip,
-      contact,
+      // contact,
     } = guardianRegistrationPayload;
 
     const ipAsHex = ipv4ToHex(ip);
 
+    const emptyDetails = "";
+
     return this.validatorsRegistrationContract.methods
-      .registerValidator(ipAsHex, orbsAddr, name, website, contact)
+      .registerValidator(ipAsHex, orbsAddr, name, website, emptyDetails)
       .send();
   }
 
   public updateGuardianInfo(
     guardianUpdatePayload: TGuardianUpdatePayload
   ): PromiEvent<TransactionReceipt> {
-    const { contact, ip, name, orbsAddr, website } = guardianUpdatePayload;
+    const { ip, name, orbsAddr, website } = guardianUpdatePayload;
     const ipAsHex = ipv4ToHex(ip);
+    const emptyDetails = "";
     return this.validatorsRegistrationContract.methods
-      .updateValidator(ipAsHex, orbsAddr, name, website, contact)
+      .updateValidator(ipAsHex, orbsAddr, name, website, emptyDetails)
       .send();
   }
 }

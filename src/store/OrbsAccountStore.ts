@@ -22,7 +22,7 @@ export type TGuardianInfo = {
   orbsAddr: string;
   name: string;
   website: string;
-  contact: string;
+  // contact: string;
 };
 
 export type TGuardianContractInteractionTimes = {
@@ -38,7 +38,7 @@ export type TGuardianContractInteractionTimes = {
 
 const emptyGuardianInfo: TGuardianInfo = {
   orbsAddr: "",
-  contact: "",
+  // contact: "",
   ip: "",
   website: "",
   name: "",
@@ -262,7 +262,7 @@ export class OrbsAccountStore {
           website,
           orbsAddr,
           ip,
-          contact,
+          // contact,
           registrationTime,
           lastUpdateTime,
         } = guardianInfoResponse;
@@ -273,7 +273,7 @@ export class OrbsAccountStore {
           name,
           website,
           ip: ipvHexToV4(ip),
-          contact,
+          // contact,
           orbsAddr,
         };
 
