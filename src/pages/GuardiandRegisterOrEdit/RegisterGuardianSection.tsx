@@ -67,7 +67,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       <GuardiansDetailsForm
         guardianAddress={guardianAddress}
         submitInfo={registerGuardian}
-        guardianInitialInfo={demoInitialInfo}
+        guardianInitialInfo={emptyInitialInfo}
         actionButtonTitle={"Register"}
       />
     </>
