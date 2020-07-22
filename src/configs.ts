@@ -23,12 +23,18 @@ interface IConfig {
     guardiansRegistration: string;
   }>;
   ETHEREUM_PROVIDER_WS: string;
+
+  termsOfUseUrl: string;
+  privacyPolicyUrl: string;
 }
 
 const configs: IConfig = {
   urlBase: process.env.PUBLIC_BASE_PATH || "",
   v2contractsAddressesOverride: {},
   ETHEREUM_PROVIDER_WS: `wss://mainnet.infura.io/ws/v3/${INFURA_KEY}`,
+
+  privacyPolicyUrl: "https://www.orbs.com/guardian-portal-privacy-policy/",
+  termsOfUseUrl: "https://www.orbs.com/guardian-portal-terms-of-use/",
 };
 
 // Webpack will remove this section on production build //

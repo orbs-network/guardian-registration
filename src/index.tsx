@@ -17,8 +17,6 @@ if (hasEthereumProvider) {
   AppComponent = <NoEthereumProviderPage />;
 }
 
-AppComponent = <ComingSoonPage />;
-
 ReactDOM.render(
   <React.StrictMode>
     <AppWrapper appComponent={AppComponent} />

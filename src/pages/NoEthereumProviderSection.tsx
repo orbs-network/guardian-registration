@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useBoolean } from "react-hanger";
 import { renderToString } from "react-dom/server";
 import { InTextLink } from "../components/InTextLink";
+import configs from "../configs";
 
 type TWalletConnectionPhase = "install" | "connect";
 
@@ -60,8 +61,9 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
 
   const innerHtmlForLegalAgreement = renderToString(
     <Typography>
-      I agree to the <InTextLink text={"Terms of Use"} /> and{" "}
-      <InTextLink href="" text={"Privacy Policy"} />
+      I agree to the{" "}
+      <InTextLink href={configs.termsOfUseUrl} text={"Terms of Use"} /> and{" "}
+      <InTextLink href={configs.privacyPolicyUrl} text={"Privacy Policy"} />
     </Typography>
   );
 
@@ -92,7 +94,7 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
           }
           label={
             <Typography
-              onClick={(e) => e.preventDefault()}
+              // onClick={(e) => e.preventDefault()}
               dangerouslySetInnerHTML={{ __html: innerHtmlForLegalAgreement }}
             />
           }

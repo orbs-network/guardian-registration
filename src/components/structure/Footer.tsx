@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { InTextLink } from "../InTextLink";
+import configs from "../../configs";
 
 interface IProps {
   version?: string;
@@ -80,9 +81,13 @@ export const Footer = React.memo<IProps>((props) => {
           >
             <InTextLink
               text={"Term of use"}
+              href={configs.termsOfUseUrl}
               style={{ paddingInlineEnd: "1em", justifySelf: "center" }}
             />
-            <InTextLink text={"Privacy Policy"} />
+            <InTextLink
+              href={configs.privacyPolicyUrl}
+              text={"Privacy Policy"}
+            />
           </div>
 
           <div className={classes.appVersion}>
