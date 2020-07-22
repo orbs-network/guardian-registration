@@ -19,7 +19,8 @@ import {
 import { ipv4ToHex } from "../../utils/utils";
 
 // TODO : O.L : Fill it up after deploying,
-const MAIN_NET_GUARDIANS_REGISTRATION_ADDRESS = "";
+const MAIN_NET_GUARDIANS_REGISTRATION_ADDRESS =
+  "0xd095e7310616376BDeD74Afc7e0400E6d0894E6F";
 
 export class GuardiansV2Service implements IGuardiansV2Service {
   private guardiansRegistrationContract: GuardiansRegistration;
@@ -28,6 +29,7 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     private web3: Web3,
     guardiansRegistrationAddress: string = MAIN_NET_GUARDIANS_REGISTRATION_ADDRESS
   ) {
+    console.log({ guardiansRegistrationAddress });
     this.guardiansRegistrationContract = (new this.web3.eth.Contract(
       GuardiansRegistrationContractJson.abi as AbiItem[],
       guardiansRegistrationAddress
