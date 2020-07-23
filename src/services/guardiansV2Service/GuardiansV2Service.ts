@@ -22,6 +22,8 @@ import { ipv4ToHex } from "../../utils/utils";
 const MAIN_NET_GUARDIANS_REGISTRATION_ADDRESS =
   "0xd095e7310616376BDeD74Afc7e0400E6d0894E6F";
 
+const EMPTY_CONTACT_DETAILS = ' ';
+
 export class GuardiansV2Service implements IGuardiansV2Service {
   private guardiansRegistrationContract: GuardiansRegistration;
 
@@ -111,10 +113,8 @@ export class GuardiansV2Service implements IGuardiansV2Service {
 
     const ipAsHex = ipv4ToHex(ip);
 
-    const emptyDetails = "";
-
     return this.guardiansRegistrationContract.methods
-      .registerGuardian(ipAsHex, orbsAddr, name, website, emptyDetails)
+      .registerGuardian(ipAsHex, orbsAddr, name, website, EMPTY_CONTACT_DETAILS)
       .send();
   }
 
@@ -123,9 +123,9 @@ export class GuardiansV2Service implements IGuardiansV2Service {
   ): PromiEvent<TransactionReceipt> {
     const { ip, name, orbsAddr, website } = guardianUpdatePayload;
     const ipAsHex = ipv4ToHex(ip);
-    const emptyDetails = "";
+
     return this.guardiansRegistrationContract.methods
-      .updateGuardian(ipAsHex, orbsAddr, name, website, emptyDetails)
+      .updateGuardian(ipAsHex, orbsAddr, name, website, EMPTY_CONTACT_DETAILS)
       .send();
   }
 }
