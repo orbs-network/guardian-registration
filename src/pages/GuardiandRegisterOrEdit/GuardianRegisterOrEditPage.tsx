@@ -144,6 +144,7 @@ export const GuardiansRegisterOrEditPage = observer<
       <RegisterGuardianSection
         registerGuardian={registerGuardian}
         guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+        ethereumBalance={orbsAccountStore.ethBalance}
       />
     );
   }

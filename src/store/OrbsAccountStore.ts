@@ -16,6 +16,7 @@ import { EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE } from "../services/guardiansV2S
 import { PromiEvent, TransactionReceipt } from "web3-core";
 import { ipvHexToV4 } from "../utils/utils";
 import { JSON_RPC_ERROR_CODES } from "../constants/ethereumErrorCodes";
+import { ICryptoWalletConnectionService } from "../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
 
 export type TGuardianInfo = {
   ip: string;
@@ -67,12 +68,14 @@ export class OrbsAccountStore {
   public guardianContractInteractionTimes: TGuardianContractInteractionTimes = emptyGuardianContractInteractionTimes;
   @observable
   public rewardDistributionFrequencyInHours: number = EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE;
+  @observable public ethBalance = 0;
 
   private addressChangeReaction: IReactionDisposer;
 
   constructor(
     private cryptoWalletIntegrationStore: CryptoWalletConnectionStore,
-    private guardiansV2Service: IGuardiansV2Service
+    private guardiansV2Service: IGuardiansV2Service,
+    private cryptoWalletConnectionService: ICryptoWalletConnectionService
   ) {
     this.addressChangeReaction = reaction(
       () => this.cryptoWalletIntegrationStore.mainAddress,
@@ -244,6 +247,10 @@ export class OrbsAccountStore {
         console.error(`Error read-n-set Rewards Frequency ${e}`)
       );
     }
+
+    this.readAndSetEthereumBalance(accountAddress).catch((e) =>
+      console.error(`Error read-n-set Ethereum balance ${e}`)
+    );
   }
 
   private async readAndSetIsGuardian(accountAddress: string) {
@@ -295,6 +302,14 @@ export class OrbsAccountStore {
     const frequencyInHours = frequencyInSeconds / ONE_HOUR_IN_SECONDS;
 
     this.setRewardDistributionFrequencyInHours(frequencyInHours);
+  }
+
+  private async readAndSetEthereumBalance(accountAddress: string) {
+    const ethBalance = await this.cryptoWalletConnectionService.readEthereumBalance(
+      accountAddress
+    );
+
+    this.setEthereumBalance(ethBalance);
   }
 
   // ****  Subscriptions ****
@@ -365,5 +380,10 @@ export class OrbsAccountStore {
     rewardDistributionFrequencyInHours: number
   ) {
     this.rewardDistributionFrequencyInHours = rewardDistributionFrequencyInHours;
+  }
+
+  @action("setEthereumBalance")
+  private setEthereumBalance(ethereumBalance: number) {
+    this.ethBalance = ethereumBalance;
   }
 }

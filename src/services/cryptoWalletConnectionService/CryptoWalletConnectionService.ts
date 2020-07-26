@@ -1,6 +1,7 @@
 import Web3 from "web3";
 import { ICryptoWalletConnectionService } from "./ICryptoWalletConnectionService";
 import { IEthereumProvider } from "./IEthereumProvider";
+import { fromWei, toDecimal } from "web3-utils";
 
 // TODO : FUTURE : O.L : IMPORTANT : Get this service and all other common services into a package
 //        To be used by all web-products.
@@ -53,6 +54,12 @@ export class CryptoWalletConnectionService
   }
 
   // Data "reading"
+  async readEthereumBalance(address: string): Promise<number> {
+    const balance = await this.web3?.eth.getBalance(address);
+    const balanceInDecimal = parseInt(fromWei(balance || "0"));
+    return balanceInDecimal;
+  }
+
   async readMainAddress(): Promise<string> {
     const accounts = (await this.web3?.eth.getAccounts()) || [];
     return accounts[0];
