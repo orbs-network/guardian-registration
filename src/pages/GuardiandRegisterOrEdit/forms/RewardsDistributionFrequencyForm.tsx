@@ -106,7 +106,16 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
       }}
       onSubmit={handleSubmit(submitUpdate)}
     >
-      <Typography variant={"body1"}>{currentlyUsingText}</Typography>
+      {/*<Typography variant={"body1"}>{currentlyUsingText}</Typography>*/}
+      <Typography variant={"body1"} style={{ display: "inline" }}>
+        Current distribution frequency is once every{" "}
+      </Typography>
+      <Typography
+        variant={"body1"}
+        style={{ display: "inline", fontWeight: "bold" }}
+      >
+        {currentFreqInHumanText}
+      </Typography>
       {/*<Typography variant={"body2"}>*/}
       {/*  Default value is 14 days (336 hours)*/}
       {/*</Typography>*/}
@@ -139,9 +148,6 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
           toggle
             ? (props) => (
                 <div style={{ ...props, maxWidth: "100%", width: "100%" }}>
-                  <Typography variant={"caption"}>
-                    Minimum value is 12 hours
-                  </Typography>
                   <TextField
                     fullWidth
                     name={"rewardsFrequencyInHours"}
@@ -160,7 +166,7 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
                     helperText={
                       errorRewardsFrequency
                         ? REWARDS_FREQUENCY_MESSAGE
-                        : "Default value is 14 days (336 hours)"
+                        : "Default frequency is 14 days (336 hours), cannot be lower than half a day (12 hours)"
                     }
                     className={classes.textField}
                   />
