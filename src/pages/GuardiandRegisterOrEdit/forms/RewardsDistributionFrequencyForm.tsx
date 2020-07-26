@@ -53,14 +53,15 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
   //   }
   // }, [isUsingDefaultValue, userWantsToChangeDefault]);
 
+  const setFreq = frequency.setValue;
   useEffect(() => {
-    frequency.setValue(
+    setFreq(
       Math.max(
         currentFrequencyInHours,
         GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS
       )
     );
-  }, [currentFrequencyInHours, frequency]);
+  }, [currentFrequencyInHours, setFreq]);
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
