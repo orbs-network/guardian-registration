@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { TGuardianRegistrationPayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
 import { GuardiansDetailsForm } from "./forms/GuradiansDetailsForm";
 import { TGuardianInfo } from "../../store/OrbsAccountStore";
@@ -11,6 +11,8 @@ interface IProps {
   registerGuardian: (
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ) => void;
+  // DEV_NOTE : This prop might be better placed elsewhere, for now it works
+  ethereumBalance: number;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -37,9 +39,27 @@ const emptyInitialInfo: TGuardianInfo = {
   name: "",
 };
 
+const MINIMAL_REQUIRED_ETH_BALANCE = 1;
+
 export const RegisterGuardianSection = React.memo<IProps>((props) => {
   const classes = useStyles();
-  const { guardianAddress, registerGuardian } = props;
+  const { guardianAddress, registerGuardian, ethereumBalance } = props;
+
+  const { shouldDisable, messageToExplainDisable } = useMemo(() => {
+    let shouldDisable: boolean = false;
+    let messageToExplainDisable: string | undefined = undefined;
+
+    if (ethereumBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
+      shouldDisable = true;
+      messageToExplainDisable =
+        "A minimal balance of 1 Ether is required in order to register as a guardian";
+    }
+
+    return {
+      shouldDisable,
+      messageToExplainDisable,
+    };
+  }, [ethereumBalance]);
 
   return (
     <>
@@ -69,6 +89,8 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         submitInfo={registerGuardian}
         guardianInitialInfo={emptyInitialInfo}
         actionButtonTitle={"Register"}
+        disableSubmit={shouldDisable}
+        messageForDisabledSubmit={messageToExplainDisable}
       />
     </>
   );

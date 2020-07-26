@@ -4,6 +4,7 @@ import { useBoolean, useNumber } from "react-hanger";
 import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { useForm } from "react-hook-form";
 import { config, Transition } from "react-spring/renderprops-universal";
+import { makeStyles } from "@material-ui/core/styles";
 
 interface IProps {
   currentFrequencyInHours: number;
@@ -17,7 +18,16 @@ type TFormData = {
 
 const REWARDS_FREQUENCY_MESSAGE = "Minimum frequency is 12 hours";
 
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    "& label.Mui-focused": {
+      color: "#f5f5f5",
+    },
+  },
+}));
+
 export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
+  const classes = useStyles();
   const {
     currentFrequencyInHours,
     updateRewardsFrequency,
@@ -43,14 +53,15 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
   //   }
   // }, [isUsingDefaultValue, userWantsToChangeDefault]);
 
+  const setFreq = frequency.setValue;
   useEffect(() => {
-    frequency.setValue(
+    setFreq(
       Math.max(
         currentFrequencyInHours,
         GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS
       )
     );
-  }, [currentFrequencyInHours, frequency]);
+  }, [currentFrequencyInHours, setFreq]);
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
@@ -63,9 +74,29 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
     [updateRewardsFrequency]
   );
 
+  // TODO : O.L : Get a better text building code.
+  const freqFullDays = Math.floor(currentFrequencyInHours / 24);
+  const freqRemainingHours = Math.floor(currentFrequencyInHours % 24);
+  const daysText =
+    freqFullDays === 0
+      ? ""
+      : freqFullDays === 1
+      ? `1 day and`
+      : `${freqFullDays} days`;
+  const hoursText =
+    freqRemainingHours === 0
+      ? ""
+      : freqRemainingHours === 1
+      ? "1 hour"
+      : `${freqRemainingHours} hours`;
+  const middleText = daysText !== "" && hoursText !== "" ? " and " : "";
+  const commentText =
+    daysText !== "" ? ` (${currentFrequencyInHours} hours)` : "";
+  const currentFreqInHumanText = `${daysText}${middleText}${hoursText}${commentText}`;
+
   const currentlyUsingText = isUsingDefaultValue
     ? "Currently using default value"
-    : `Current frequency is ${currentFrequencyInHours} hours`;
+    : `Current distribution frequency is once every ${currentFreqInHumanText}`;
 
   return (
     <form
@@ -75,9 +106,19 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
       }}
       onSubmit={handleSubmit(submitUpdate)}
     >
-      <Typography>Default value is 14 days (336 hours)</Typography>
-
-      <Typography variant={"body2"}>{currentlyUsingText}</Typography>
+      {/*<Typography variant={"body1"}>{currentlyUsingText}</Typography>*/}
+      <Typography variant={"body1"} style={{ display: "inline" }}>
+        Current distribution frequency is once every{" "}
+      </Typography>
+      <Typography
+        variant={"body1"}
+        style={{ display: "inline", fontWeight: "bold" }}
+      >
+        {currentFreqInHumanText}
+      </Typography>
+      {/*<Typography variant={"body2"}>*/}
+      {/*  Default value is 14 days (336 hours)*/}
+      {/*</Typography>*/}
 
       <br />
 
@@ -107,9 +148,6 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
           toggle
             ? (props) => (
                 <div style={{ ...props, maxWidth: "100%", width: "100%" }}>
-                  <Typography variant={"caption"}>
-                    Minimum value is 12 hours
-                  </Typography>
                   <TextField
                     fullWidth
                     name={"rewardsFrequencyInHours"}
@@ -126,8 +164,11 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
                     })}
                     error={errorRewardsFrequency}
                     helperText={
-                      errorRewardsFrequency && REWARDS_FREQUENCY_MESSAGE
+                      errorRewardsFrequency
+                        ? REWARDS_FREQUENCY_MESSAGE
+                        : "Default frequency is 14 days (336 hours), cannot be lower than half a day (12 hours)"
                     }
+                    className={classes.textField}
                   />
                   <br />
                   <br />

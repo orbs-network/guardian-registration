@@ -4,6 +4,7 @@ import { TGuardianRegistrationPayload } from "../../../services/guardiansV2Servi
 import { Button, TextField, Typography } from "@material-ui/core";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { useForm } from "react-hook-form";
+import { makeStyles } from "@material-ui/core/styles";
 
 interface IProps {
   actionButtonTitle: string;
@@ -12,6 +13,8 @@ interface IProps {
   submitInfo: (
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ) => void;
+  disableSubmit?: boolean;
+  messageForDisabledSubmit?: string;
 }
 
 const ETHEREUM_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
@@ -43,15 +46,26 @@ type TFormData = {
   nodeAddress: string;
 };
 
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    "& label.Mui-focused": {
+      color: "#f5f5f5",
+    },
+  },
+}));
+
 /**
  * A single component to handle both "Guardian registration" and "Guardian Update"
  */
 export const GuardiansDetailsForm = React.memo<IProps>((props) => {
+  const classes = useStyles();
   const {
     guardianAddress,
     guardianInitialInfo,
     submitInfo,
     actionButtonTitle,
+    disableSubmit,
+    messageForDisabledSubmit,
   } = props;
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
@@ -118,28 +132,30 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       }}
     >
       <TextField
-        fullWidth
         name={"name"}
-        label={"name"}
+        label={"Guardian name"}
         value={name.value}
         onChange={(e) => name.setValue(e.target.value)}
         required
         inputRef={register}
+        fullWidth
+        className={classes.textField}
       />
       <br />
       <TextField
         fullWidth
         name={"website"}
+        label={"Guardian website"}
         title={
           "A valid website URL is required. The Guardian website is used by delegators when selecting a Guardian.\n"
         }
-        label={"website"}
         value={website.value}
         onChange={(e) => website.setValue(e.target.value)}
         required
-        inputRef={register({ validate: validURL })}
         error={errorWebsite}
         helperText={errorWebsite && WEBSITE_MESSAGE}
+        inputRef={register({ validate: validURL })}
+        className={classes.textField}
       />
       {/*<br />*/}
       {/*<TextField*/}
@@ -156,38 +172,50 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       <TextField
         fullWidth
         name={"ipAddress"}
+        label={"Node IP"}
         title={
           "A valid IPv4 address is required to allow the Guardian’s node to connect to the network gossip topology."
         }
-        label={"IP"}
         value={ipAddress.value}
         onChange={(e) => ipAddress.setValue(e.target.value)}
         required
         inputRef={register({ pattern: IP_REGEX })}
         error={errorIPAddress}
         helperText={errorIPAddress && IP_ADDRESS_MESSAGE}
+        className={classes.textField}
       />
 
       <br />
       <TextField
-        fullWidth
         name={"nodeAddress"}
+        label={"Node address"}
         title={
           "The node address is used for signing blocks on Orbs and sending automated \n node notification transactions such as ready or auto voteout."
         }
-        label={"Node Address"}
         value={nodeAddress.value}
         onChange={(e) => nodeAddress.setValue(e.target.value)}
-        required
-        inputRef={register({ pattern: ETHEREUM_ADDRESS_REGEX })}
         error={errorNodeAddress}
         helperText={errorNodeAddress && NODE_ADDRESS_MESSAGE}
+        required
+        inputRef={register({ pattern: ETHEREUM_ADDRESS_REGEX })}
+        fullWidth
+        className={classes.textField}
       />
       <br />
       <br />
-      <Button variant={"outlined"} fullWidth type={"submit"}>
+      <Button
+        variant={"outlined"}
+        fullWidth
+        type={"submit"}
+        disabled={disableSubmit}
+      >
         {actionButtonTitle}
       </Button>
+      {messageForDisabledSubmit && (
+        <Typography variant={"body2"} color={"error"}>
+          {messageForDisabledSubmit}
+        </Typography>
+      )}
     </form>
   );
 });
