@@ -96,11 +96,23 @@ export const GuardiansRegisterOrEditPage = observer<
 
   // TODO : ORL : Organize all of this loading "ifs"
   if (orbsAccountStore.errorLoading) {
-    return <div>Error loading</div>;
+    return (
+      <Page>
+        <ContentFitting>
+          <Typography>Error loading</Typography>
+        </ContentFitting>{" "}
+      </Page>
+    );
   }
 
   if (!orbsAccountStore.doneLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Page>
+        <ContentFitting>
+          <Typography>Loading...</Typography>
+        </ContentFitting>{" "}
+      </Page>
+    );
   }
 
   if (orbsAccountStore.isGuardian) {
