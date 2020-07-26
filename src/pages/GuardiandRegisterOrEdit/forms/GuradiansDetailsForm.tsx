@@ -14,7 +14,7 @@ interface IProps {
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ) => void;
   disableSubmit?: boolean;
-  messageForDisabledSubmit?: string;
+  messageForSubmitButton?: string;
 }
 
 const ETHEREUM_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
@@ -65,7 +65,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
     submitInfo,
     actionButtonTitle,
     disableSubmit,
-    messageForDisabledSubmit,
+    messageForSubmitButton,
   } = props;
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
@@ -211,9 +211,15 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       >
         {actionButtonTitle}
       </Button>
-      {messageForDisabledSubmit && (
-        <Typography variant={"body2"} color={"error"}>
-          {messageForDisabledSubmit}
+      <br />
+      <br />
+      {messageForSubmitButton && (
+        <Typography
+          variant={"body2"}
+          color={"error"}
+          style={{ width: "fit-content" }}
+        >
+          {messageForSubmitButton}
         </Typography>
       )}
     </form>
