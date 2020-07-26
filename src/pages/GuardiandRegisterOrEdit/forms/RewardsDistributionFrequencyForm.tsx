@@ -4,6 +4,7 @@ import { useBoolean, useNumber } from "react-hanger";
 import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { useForm } from "react-hook-form";
 import { config, Transition } from "react-spring/renderprops-universal";
+import { makeStyles } from "@material-ui/core/styles";
 
 interface IProps {
   currentFrequencyInHours: number;
@@ -17,7 +18,16 @@ type TFormData = {
 
 const REWARDS_FREQUENCY_MESSAGE = "Minimum frequency is 12 hours";
 
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    "& label.Mui-focused": {
+      color: "#f5f5f5",
+    },
+  },
+}));
+
 export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
+  const classes = useStyles();
   const {
     currentFrequencyInHours,
     updateRewardsFrequency,
@@ -128,6 +138,7 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
                     helperText={
                       errorRewardsFrequency && REWARDS_FREQUENCY_MESSAGE
                     }
+                    className={classes.textField}
                   />
                   <br />
                   <br />

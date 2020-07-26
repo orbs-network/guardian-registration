@@ -22,7 +22,7 @@ import { ipv4ToHex } from "../../utils/utils";
 const MAIN_NET_GUARDIANS_REGISTRATION_ADDRESS =
   "0xd095e7310616376BDeD74Afc7e0400E6d0894E6F";
 
-const EMPTY_CONTACT_DETAILS = ' ';
+const EMPTY_CONTACT_DETAILS = " ";
 
 export class GuardiansV2Service implements IGuardiansV2Service {
   private guardiansRegistrationContract: GuardiansRegistration;
