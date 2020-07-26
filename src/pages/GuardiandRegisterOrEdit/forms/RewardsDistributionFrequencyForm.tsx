@@ -74,9 +74,29 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
     [updateRewardsFrequency]
   );
 
+  // TODO : O.L : Get a better text building code.
+  const freqFullDays = Math.floor(currentFrequencyInHours / 24);
+  const freqRemainingHours = Math.floor(currentFrequencyInHours % 24);
+  const daysText =
+    freqFullDays === 0
+      ? ""
+      : freqFullDays === 1
+      ? `1 day and`
+      : `${freqFullDays} days`;
+  const hoursText =
+    freqRemainingHours === 0
+      ? ""
+      : freqRemainingHours === 1
+      ? "1 hour"
+      : `${freqRemainingHours} hours`;
+  const middleText = daysText !== "" && hoursText !== "" ? " and " : "";
+  const commentText =
+    daysText !== "" ? ` (${currentFrequencyInHours} hours)` : "";
+  const currentFreqInHumanText = `${daysText}${middleText}${hoursText}${commentText}`;
+
   const currentlyUsingText = isUsingDefaultValue
     ? "Currently using default value"
-    : `Current frequency is ${currentFrequencyInHours} hours`;
+    : `Current distribution frequency is once every ${currentFreqInHumanText}`;
 
   return (
     <form
@@ -86,9 +106,10 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
       }}
       onSubmit={handleSubmit(submitUpdate)}
     >
-      <Typography>Default value is 14 days (336 hours)</Typography>
-
-      <Typography variant={"body2"}>{currentlyUsingText}</Typography>
+      <Typography variant={"body1"}>{currentlyUsingText}</Typography>
+      {/*<Typography variant={"body2"}>*/}
+      {/*  Default value is 14 days (336 hours)*/}
+      {/*</Typography>*/}
 
       <br />
 
@@ -137,7 +158,9 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
                     })}
                     error={errorRewardsFrequency}
                     helperText={
-                      errorRewardsFrequency && REWARDS_FREQUENCY_MESSAGE
+                      errorRewardsFrequency
+                        ? REWARDS_FREQUENCY_MESSAGE
+                        : "Default value is 14 days (336 hours)"
                     }
                     className={classes.textField}
                   />
