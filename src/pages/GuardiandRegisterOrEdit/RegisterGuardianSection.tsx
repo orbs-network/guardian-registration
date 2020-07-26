@@ -1,18 +1,18 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { TGuardianRegistrationPayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
 import { GuardiansDetailsForm } from "./forms/GuradiansDetailsForm";
 import { TGuardianInfo } from "../../store/OrbsAccountStore";
 import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
+import { ICryptoWalletConnectionService } from "../../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
 
 interface IProps {
   guardianAddress: string;
   registerGuardian: (
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ) => void;
-  // DEV_NOTE : This prop might be better placed elsewhere, for now it works
-  ethereumBalance: number;
+  cryptoWalletConnectionService: ICryptoWalletConnectionService;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -43,26 +43,59 @@ const MINIMAL_REQUIRED_ETH_BALANCE = 1;
 
 export const RegisterGuardianSection = React.memo<IProps>((props) => {
   const classes = useStyles();
-  const { guardianAddress, registerGuardian, ethereumBalance } = props;
+  const {
+    guardianAddress,
+    registerGuardian,
+    cryptoWalletConnectionService,
+  } = props;
 
-  const { shouldDisable, messageToExplainDisable } = useMemo(() => {
-    let shouldDisable: boolean = false;
-    let messageToExplainDisable: string | undefined = undefined;
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
 
-    if (ethereumBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
-      shouldDisable = true;
-      messageToExplainDisable =
-        "A minimal balance of 1 Ether is required in order to register as a guardian";
-    }
+  // const { shouldDisable, messageToExplainDisable } = useMemo(() => {
+  //   let shouldDisable: boolean = false;
+  //   let messageToExplainDisable: string | undefined = undefined;
+  //
+  //   if (ethereumBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
+  //     shouldDisable = true;
+  //     messageToExplainDisable =
+  //       "A minimal balance of 1 Ether is required in order to register as a guardian";
+  //   }
+  //
+  //   return {
+  //     shouldDisable,
+  //     messageToExplainDisable,
+  //   };
+  // }, [ethereumBalance]);
 
-    return {
-      shouldDisable,
-      messageToExplainDisable,
-    };
-  }, [ethereumBalance]);
+  const checkBalanceBeforeRegistration = useCallback(
+    async (guardianRegistrationPayload: TGuardianRegistrationPayload) => {
+      const orbsNodeBalance = await cryptoWalletConnectionService.readEthereumBalance(
+        guardianRegistrationPayload.orbsAddr
+      );
+
+      if (orbsNodeBalance >= MINIMAL_REQUIRED_ETH_BALANCE) {
+        registerGuardian(guardianRegistrationPayload);
+      } else {
+        setErrorMessage(
+          `A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian`
+        );
+      }
+    },
+    [cryptoWalletConnectionService]
+  );
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        maxWidth: "100%",
+        overflowX: "hidden",
+      }}
+    >
       <Avatar className={classes.avatar}>
         <PersonIcon />
       </Avatar>
@@ -86,12 +119,11 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       </div>
       <GuardiansDetailsForm
         guardianAddress={guardianAddress}
-        submitInfo={registerGuardian}
-        guardianInitialInfo={emptyInitialInfo}
+        submitInfo={checkBalanceBeforeRegistration}
+        guardianInitialInfo={demoInitialInfo}
         actionButtonTitle={"Register"}
-        disableSubmit={shouldDisable}
-        messageForDisabledSubmit={messageToExplainDisable}
+        messageForSubmitButton={errorMessage}
       />
-    </>
+    </div>
   );
 });

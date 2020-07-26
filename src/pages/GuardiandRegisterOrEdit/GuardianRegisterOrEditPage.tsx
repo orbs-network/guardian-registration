@@ -25,6 +25,7 @@ import {
   TGuardianUpdatePayload,
 } from "../../services/guardiansV2Service/IGuardiansV2Service";
 import { useSnackbar } from "notistack";
+import { useCryptoWalletConnectionService } from "../../services/servicesHooks";
 
 interface IProps {}
 
@@ -47,6 +48,7 @@ export const GuardiansRegisterOrEditPage = observer<
   const { enqueueSnackbar } = useSnackbar();
   const orbsAccountStore = useOrbsAccountStore();
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
+  const cryptoWalletIntegrationService = useCryptoWalletConnectionService();
 
   const title = orbsAccountStore.isGuardian
     ? "Guardian details update"
@@ -144,7 +146,7 @@ export const GuardiansRegisterOrEditPage = observer<
       <RegisterGuardianSection
         registerGuardian={registerGuardian}
         guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-        ethereumBalance={orbsAccountStore.ethBalance}
+        cryptoWalletConnectionService={cryptoWalletIntegrationService}
       />
     );
   }
