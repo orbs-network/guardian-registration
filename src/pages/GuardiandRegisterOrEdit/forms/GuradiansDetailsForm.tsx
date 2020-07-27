@@ -1,10 +1,18 @@
 import React, { useCallback, useEffect } from "react";
 import { useStateful } from "react-hanger";
 import { TGuardianRegistrationPayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
-import { Button, TextField, Typography } from "@material-ui/core";
+import {
+  Button,
+  TextField,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/core/styles";
+import HelpIcon from "@material-ui/icons/Help";
 
 interface IProps {
   actionButtonTitle: string;
@@ -23,6 +31,17 @@ const IP_REGEX = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]
 const NODE_ADDRESS_MESSAGE = "Must use a valid address";
 const IP_ADDRESS_MESSAGE = "Must use a valid IPV4 address";
 const WEBSITE_MESSAGE = "Must use a URL";
+
+const INFO_MESSAGE_GUARDIAN_NAME =
+  "The name that the Guardian will be recognized by.";
+const INFO_MESSAGE_WEBSITE =
+  "The Guardian website is used by Delegators when selecting a Guardian.";
+const INFO_MESSAGE_IP =
+  "A valid IPv4 address is required to allow the Guardian’s node to connect to the network gossip topology.";
+const INFO_MESSAGE_NODE_ADDRESS_OLD =
+  "The node address is used for signing blocks on Orbs and sending automated \n node notification transactions such as ready or auto voteout.";
+const INFO_MESSAGE_NODE_ADDRESS =
+  "Used by the Orbs node to automatically send transactions such as ReadyForCommittee. Should hold ETH for the automated transactions gas. The Orbs Node address should differ from the Guardian address.";
 
 function validURL(str: string) {
   const pattern = new RegExp(
@@ -107,6 +126,28 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
     websiteSetValue,
   ]);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  console.log(isMobile);
+
+  const buildHelperMessage = useCallback(
+    (hasError: boolean, errorText?: string, infoText?: string) => {
+      let message: string | undefined;
+      // DEV_NOTE: O.L :  We would like to display the info text to the user on mobile (no hove effect)
+      if (isMobile) {
+        message = infoText;
+      }
+
+      // If we have an error, we would like to display it
+      if (hasError && errorText) {
+        message = errorText;
+      }
+
+      return message;
+    },
+    [isMobile]
+  );
+
   // TODO : O.L : Add tx progress indicator
   const submit = useCallback(
     (formData: TFormData) => {
@@ -132,8 +173,15 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       }}
     >
       <TextField
+        InputLabelProps={{ style: { pointerEvents: "auto" } }}
         name={"name"}
         label={"Guardian name"}
+        title={INFO_MESSAGE_GUARDIAN_NAME}
+        helperText={buildHelperMessage(
+          false,
+          undefined,
+          INFO_MESSAGE_GUARDIAN_NAME
+        )}
         value={name.value}
         onChange={(e) => name.setValue(e.target.value)}
         required
@@ -146,14 +194,16 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         fullWidth
         name={"website"}
         label={"Guardian website"}
-        title={
-          "A valid website URL is required. The Guardian website is used by delegators when selecting a Guardian.\n"
-        }
+        title={INFO_MESSAGE_WEBSITE}
+        helperText={buildHelperMessage(
+          errorWebsite,
+          WEBSITE_MESSAGE,
+          INFO_MESSAGE_WEBSITE
+        )}
         value={website.value}
         onChange={(e) => website.setValue(e.target.value)}
         required
         error={errorWebsite}
-        helperText={errorWebsite && WEBSITE_MESSAGE}
         inputRef={register({ validate: validURL })}
         className={classes.textField}
       />
@@ -173,15 +223,17 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         fullWidth
         name={"ipAddress"}
         label={"Node IP"}
-        title={
-          "A valid IPv4 address is required to allow the Guardian’s node to connect to the network gossip topology."
-        }
+        title={INFO_MESSAGE_IP}
         value={ipAddress.value}
         onChange={(e) => ipAddress.setValue(e.target.value)}
         required
         inputRef={register({ pattern: IP_REGEX })}
         error={errorIPAddress}
-        helperText={errorIPAddress && IP_ADDRESS_MESSAGE}
+        helperText={buildHelperMessage(
+          errorIPAddress,
+          IP_ADDRESS_MESSAGE,
+          INFO_MESSAGE_IP
+        )}
         className={classes.textField}
       />
 
@@ -189,13 +241,15 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       <TextField
         name={"nodeAddress"}
         label={"Node address"}
-        title={
-          "The node address is used for signing blocks on Orbs and sending automated \n node notification transactions such as ready or auto voteout."
-        }
+        title={INFO_MESSAGE_NODE_ADDRESS}
         value={nodeAddress.value}
         onChange={(e) => nodeAddress.setValue(e.target.value)}
         error={errorNodeAddress}
-        helperText={errorNodeAddress && NODE_ADDRESS_MESSAGE}
+        helperText={buildHelperMessage(
+          errorNodeAddress,
+          NODE_ADDRESS_MESSAGE,
+          INFO_MESSAGE_NODE_ADDRESS
+        )}
         required
         inputRef={register({ pattern: ETHEREUM_ADDRESS_REGEX })}
         fullWidth
@@ -225,3 +279,8 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
     </form>
   );
 });
+const IconWithTooltip = () => (
+  <Tooltip title="Text explaining stuff" style={{ display: "inline" }}>
+    <HelpIcon />
+  </Tooltip>
+);
