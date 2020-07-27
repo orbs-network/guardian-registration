@@ -8,13 +8,16 @@ const COLOR3 = "#03FCF5"; // bright bluish- Tetra
 
 // const PRIMARY_TEXT = '#dbdbdb';
 const PRIMARY_TEXT = "#dbdbdb";
-const SECONDARY_TEXT = "#7B7B7B";
+const SECONDARY_TEXT = "#d0d0d0";
+// const SECONDARY_TEXT = "#7B7B7B";
+
+// DEV_NOTE : Most palette colors taken from https://material-ui.com/customization/palette/#dark-mode
 
 export const baseTheme = responsiveFontSizes(
   createMuiTheme({
     palette: {
       // TODO : Adjust all styles after structure is done
-      type: "dark",
+      // type: "dark",
       primary: {
         main: "rgba(16, 34, 91, 0.7)",
       },
@@ -22,7 +25,9 @@ export const baseTheme = responsiveFontSizes(
         main: "#7ccbf4",
       },
       text: {
-        // primary: PRIMARY_TEXT,
+        primary: PRIMARY_TEXT,
+        secondary: "rgba(255, 255, 255, 0.7)",
+        disabled: "rgba(255, 255, 255, 0.5)",
         // secondary: SECONDARY_TEXT,
       },
       background: {
@@ -30,6 +35,14 @@ export const baseTheme = responsiveFontSizes(
         default: "#16317d",
         // paper: "rgba(0, 31, 107, 0.6)",
       },
+      action: {
+        active: PRIMARY_TEXT,
+        disabled: "gba(255, 255, 255, 0.3)",
+        disabledBackground: "rgba(255, 255, 255, 0.12)",
+        hover: "rgba(255, 255, 255, 0.08)",
+        selected: "rgba(255, 255, 255, 0.16)",
+      },
+      divider: "gba(255, 255, 255, 0.12)",
     },
     typography: {
       // fontFamily: 'Montserrat',
