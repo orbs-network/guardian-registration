@@ -129,7 +129,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       <GuardiansDetailsForm
         guardianAddress={guardianAddress}
         submitInfo={checkBalanceBeforeRegistration}
-        guardianInitialInfo={demoInitialInfo}
+        guardianInitialInfo={emptyInitialInfo}
         actionButtonTitle={"Register"}
         messageForSubmitButton={errorMessage}
       />

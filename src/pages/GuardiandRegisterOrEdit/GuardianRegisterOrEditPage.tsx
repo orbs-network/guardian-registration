@@ -119,7 +119,15 @@ export const GuardiansRegisterOrEditPage = observer<
 
   if (orbsAccountStore.isGuardian) {
     content = (
-      <>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "100%",
+          width: "min-content",
+          textAlign: "center",
+        }}
+      >
         <EditGuardianInfoSection
           guardianInfo={orbsAccountStore.guardianInfo}
           guardianAddress={cryptoWalletIntegrationStore.mainAddress}
@@ -130,7 +138,6 @@ export const GuardiansRegisterOrEditPage = observer<
         />
 
         <Divider style={{ width: "100%", height: "3px" }} />
-        <br />
 
         <EditRewardsDistributionSection
           currentFrequencyInHours={
@@ -139,7 +146,7 @@ export const GuardiansRegisterOrEditPage = observer<
           updateRewardsFrequency={updateRewardsFrequency}
           isUsingDefaultValue={orbsAccountStore.isUsingDefaultRewardFrequency}
         />
-      </>
+      </div>
     );
   } else {
     content = (
