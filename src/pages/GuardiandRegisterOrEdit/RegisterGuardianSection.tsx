@@ -69,31 +69,42 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
   //   };
   // }, [ethereumBalance]);
 
+  /**
+   * We will use this function to perform validations just before calling 'register'
+   */
   const checkBalanceBeforeRegistration = useCallback(
     async (guardianRegistrationPayload: TGuardianRegistrationPayload) => {
+      if (guardianRegistrationPayload.orbsAddr === guardianAddress) {
+        setErrorMessage(
+          `Orbs node address cannot be the same as the Guardian address ${guardianAddress}`
+        );
+        return;
+      }
+
       const orbsNodeBalance = await cryptoWalletConnectionService.readEthereumBalance(
         guardianRegistrationPayload.orbsAddr
       );
 
-      if (orbsNodeBalance >= MINIMAL_REQUIRED_ETH_BALANCE) {
-        registerGuardian(guardianRegistrationPayload);
-      } else {
+      if (orbsNodeBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
         setErrorMessage(
-          `A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian`
+          `A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian.`
         );
+        return;
       }
+
+      registerGuardian(guardianRegistrationPayload);
     },
-    [cryptoWalletConnectionService]
+    [cryptoWalletConnectionService, guardianAddress, registerGuardian]
   );
 
   return (
     <div
+      id={"RegisterGuardianSection"}
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         maxWidth: "100%",
-        overflowX: "hidden",
+        width: "min-content",
       }}
     >
       <Avatar className={classes.avatar}>
@@ -103,14 +114,12 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         style={{
           maxWidth: "100%",
           textAlign: "center",
-          overflow: "hidden",
         }}
       >
         <Typography variant={"h5"}>Guardian Registration</Typography>
         <Typography
           style={{
             textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
             overflow: "hidden",
           }}
         >

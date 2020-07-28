@@ -42,7 +42,7 @@ export const baseTheme = responsiveFontSizes(
         hover: "rgba(255, 255, 255, 0.08)",
         selected: "rgba(255, 255, 255, 0.16)",
       },
-      divider: "gba(255, 255, 255, 0.12)",
+      divider: "rgba(255, 255, 255, 0.12)",
     },
     typography: {
       // fontFamily: 'Montserrat',

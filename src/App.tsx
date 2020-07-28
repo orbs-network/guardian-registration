@@ -68,6 +68,7 @@ const App = observer(() => {
     }
   }, [enqueueSnackbar, txCanceled]);
 
+  // TODO : O.L : Change background image to the orbs one.
   return (
     <>
       <Header />
