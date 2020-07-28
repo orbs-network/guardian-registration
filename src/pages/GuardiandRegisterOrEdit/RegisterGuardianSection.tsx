@@ -92,9 +92,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         maxWidth: "100%",
-        overflowX: "hidden",
         width: "min-content",
       }}
     >
@@ -103,16 +101,12 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       </Avatar>
       <div
         style={{
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
           maxWidth: "100%",
           textAlign: "center",
         }}
       >
         <Typography variant={"h5"}>Guardian Registration</Typography>
         <Typography
-          noWrap
           style={{
             textOverflow: "ellipsis",
             overflow: "hidden",
