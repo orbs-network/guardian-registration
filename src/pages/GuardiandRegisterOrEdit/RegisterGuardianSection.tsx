@@ -88,12 +88,14 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
 
   return (
     <div
+      id={"RegisterGuardianSection"}
       style={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         maxWidth: "100%",
         overflowX: "hidden",
+        width: "min-content",
       }}
     >
       <Avatar className={classes.avatar}>
@@ -101,16 +103,18 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       </Avatar>
       <div
         style={{
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
           maxWidth: "100%",
           textAlign: "center",
-          overflow: "hidden",
         }}
       >
         <Typography variant={"h5"}>Guardian Registration</Typography>
         <Typography
+          noWrap
           style={{
             textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
             overflow: "hidden",
           }}
         >

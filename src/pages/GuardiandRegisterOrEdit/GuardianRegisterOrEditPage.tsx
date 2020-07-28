@@ -157,9 +157,12 @@ export const GuardiansRegisterOrEditPage = observer<
         {/* Content  */}
         <div
           style={{
-            display: "grid",
-            textAlign: "center",
+            display: "flex",
+            // flexDirection: "column",
             maxWidth: "100%",
+            // textAlign: "center",
+            // alignItems: "center",
+            // alignContent: "center",
           }}
         >
           {content}
