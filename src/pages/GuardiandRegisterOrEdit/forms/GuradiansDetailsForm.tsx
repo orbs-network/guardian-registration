@@ -44,7 +44,8 @@ const INFO_MESSAGE_IP = [
 ];
 const INFO_MESSAGE_NODE_ADDRESS = [
   "Used by the Orbs node to automatically send transactions such as ReadyForCommittee.",
-  "Should hold ETH for the automated transactions gas.",
+  "Used to sign blocks on Orbs platform.",
+  "Should hold ETH for the automated transactions gas (A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian).",
   "The Orbs Node address should differ from the Guardian address.",
 ];
 

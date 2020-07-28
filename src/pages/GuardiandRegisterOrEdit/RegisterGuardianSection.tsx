@@ -69,21 +69,32 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
   //   };
   // }, [ethereumBalance]);
 
+  /**
+   * We will use this function to perform validations just before calling 'register'
+   */
   const checkBalanceBeforeRegistration = useCallback(
     async (guardianRegistrationPayload: TGuardianRegistrationPayload) => {
+      if (guardianRegistrationPayload.orbsAddr === guardianAddress) {
+        setErrorMessage(
+          `Orbs node address cannot be the same as the Guardian address ${guardianAddress}`
+        );
+        return;
+      }
+
       const orbsNodeBalance = await cryptoWalletConnectionService.readEthereumBalance(
         guardianRegistrationPayload.orbsAddr
       );
 
-      if (orbsNodeBalance >= MINIMAL_REQUIRED_ETH_BALANCE) {
-        registerGuardian(guardianRegistrationPayload);
-      } else {
+      if (orbsNodeBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
         setErrorMessage(
-          `A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian`
+          `A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian.`
         );
+        return;
       }
+
+      registerGuardian(guardianRegistrationPayload);
     },
-    [cryptoWalletConnectionService]
+    [cryptoWalletConnectionService, guardianAddress, registerGuardian]
   );
 
   return (
@@ -118,7 +129,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       <GuardiansDetailsForm
         guardianAddress={guardianAddress}
         submitInfo={checkBalanceBeforeRegistration}
-        guardianInitialInfo={emptyInitialInfo}
+        guardianInitialInfo={demoInitialInfo}
         actionButtonTitle={"Register"}
         messageForSubmitButton={errorMessage}
       />
