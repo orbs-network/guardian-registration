@@ -114,7 +114,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       style={{
         display: "flex",
         flexDirection: "column",
-        // maxWidth: "100%",
+        maxWidth: "100%",
         alignItems: "center",
         //  DEV_NOTE : 'min-content' will allow us to limit width to the width of the address text (it has max-content width)
         //            removing it will allow us to display the explaining texts.
