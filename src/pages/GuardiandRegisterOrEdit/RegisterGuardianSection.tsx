@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   boldText: {
     fontWeight: "bold",
-    display: "inline",
+    display: "contents",
   },
 }));
 
@@ -122,10 +122,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       >
         <Typography variant={"h5"}>Guardian Registration</Typography>
         <Typography variant={"h6"}>
-          Your{" "}
-          <Typography variant={"h6"} className={classes.boldText}>
-            Guardian address{" "}
-          </Typography>
+          Your <div className={classes.boldText}>Guardian address </div>
           is:
         </Typography>
         <Typography
