@@ -186,6 +186,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       onSubmit={handleSubmit((formData) => submit(formData))}
       style={{
         maxWidth: "100%",
+        // maxWidth: "80ch",
         width: "100%",
       }}
     >

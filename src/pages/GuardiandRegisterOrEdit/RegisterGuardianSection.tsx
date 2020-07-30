@@ -12,6 +12,7 @@ import {
   GUARDIAN_ADDRESS_DETAILS_TEXTS,
   NODE_ADDRESS_DETAILS_TEXTS,
 } from "../../constants/explainingTexts";
+import { GuardianFormDetailsList } from "../GuardianFormDetailsList";
 
 interface IProps {
   guardianAddress: string;
@@ -113,7 +114,8 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       style={{
         display: "flex",
         flexDirection: "column",
-        maxWidth: "100%",
+        // maxWidth: "100%",
+        alignItems: "center",
         //  DEV_NOTE : 'min-content' will allow us to limit width to the width of the address text (it has max-content width)
         //            removing it will allow us to display the explaining texts.
         // width: "min-content",
@@ -143,16 +145,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         </Typography>
       </div>
 
-      <DetailsListContainer>
-        <DetailsList
-          conceptName={"Guardian Address"}
-          details={GUARDIAN_ADDRESS_DETAILS_TEXTS}
-        />
-        <DetailsList
-          conceptName={"Node Address"}
-          details={NODE_ADDRESS_DETAILS_TEXTS}
-        />
-      </DetailsListContainer>
+      <GuardianFormDetailsList />
 
       <GuardiansDetailsForm
         guardianAddress={guardianAddress}

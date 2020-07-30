@@ -40,12 +40,10 @@ export const DetailsList = React.memo<IProps>((props) => {
       </Typography>
       <ul className={classes.textsList}>
         {details.map((detail) => (
-          <li>{detail}</li>
+          <li key={detail!.toString()}>
+            <Typography>{detail}</Typography>
+          </li>
         ))}
-        {/*<li>Represents the Guardian in the Guardians list</li>*/}
-        {/*<li>Used by Delegators to delegate to the Guardian</li>*/}
-        {/*<li>Holds the Guardian's self-delegated stake</li>*/}
-        {/*<li>Receives the Guardians rewards</li>*/}
       </ul>
     </div>
   );

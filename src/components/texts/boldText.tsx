@@ -6,7 +6,7 @@ interface IProps {}
 const useStyles = makeStyles((theme) => ({
   boldText: {
     fontWeight: "bold",
-    display: "inline",
+    display: "contents",
   },
 }));
 

@@ -22,6 +22,7 @@ import { LegalTicker } from "./LegalTicker";
 import { InstallPhaseExtraDetails } from "./InstallPhaseExtraDetails";
 import { DetailsList } from "../detailsList/Detailslist";
 import { GUARDIAN_ADDRESS_DETAILS_TEXTS } from "../../constants/explainingTexts";
+import { BoldText } from "../texts/boldText";
 
 type TWalletConnectionPhase = "install" | "connect";
 
@@ -95,9 +96,7 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
       ) : (
         <>
           To begin, please connect with your{" "}
-          <Typography style={{ fontWeight: "bold", display: "inline" }}>
-            Guardian address.
-          </Typography>
+          <BoldText>Guardian address.</BoldText>
         </>
       ),
       buttonText: walletConnectionPhase === "install" ? "Install" : "Connect",
