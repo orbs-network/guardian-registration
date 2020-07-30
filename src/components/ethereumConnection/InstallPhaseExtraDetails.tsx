@@ -35,10 +35,10 @@ export const InstallPhaseExtraDetails = React.memo<IProps>((props) => {
     <div className={classes.container}>
       <Typography>
         The{" "}
-        <Typography className={classes.boldText}>Guardian Address</Typography>
+        <Typography className={classes.boldText}>Guardian Address:</Typography>
       </Typography>
       <ul className={classes.textsList}>
-        <li>Represent the Guardian in the Guardians list</li>
+        <li>Represents the Guardian in the Guardians list</li>
         <li>Used by Delegators to delegate to the Guardian</li>
         <li>Holds the Guardian's self-delegated stake</li>
         <li>Receives the Guardians rewards</li>

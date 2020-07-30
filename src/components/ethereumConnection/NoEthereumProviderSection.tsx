@@ -94,7 +94,7 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
         <>
           To begin, please connect with your{" "}
           <Typography style={{ fontWeight: "bold", display: "inline" }}>
-            Guardian address
+            Guardian address.
           </Typography>
         </>
       ),
