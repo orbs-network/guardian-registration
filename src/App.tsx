@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Page } from "./components/structure/Page";
 import { useSnackbar } from "notistack";
 import { Footer } from "./components/structure/Footer";
+import { useCryptoWalletConnectionService } from "./services/servicesHooks";
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles(() => ({
 const App = observer(() => {
   const classes = useStyles();
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
+  const cryptoWalletConnectionService = useCryptoWalletConnectionService();
   const orbsAccountStore = useOrbsAccountStore();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -38,6 +40,9 @@ const App = observer(() => {
           <NoEthereumProviderSection
             walletConnectionPhase={"connect"}
             actionFunction={() => cryptoWalletIntegrationStore.askToConnect()}
+            isMetaMaskProvider={
+              cryptoWalletConnectionService.isMetamaskInstalled
+            }
           />
         </Page>
       );
@@ -50,7 +55,11 @@ const App = observer(() => {
         </Switch>
       );
     }
-  }, [cryptoWalletIntegrationStore, isConnected]);
+  }, [
+    cryptoWalletConnectionService.isMetamaskInstalled,
+    cryptoWalletIntegrationStore,
+    isConnected,
+  ]);
 
   // Alert about TX error if happened
   const txHadError = orbsAccountStore.txHadError;

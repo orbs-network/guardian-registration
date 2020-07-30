@@ -26,6 +26,7 @@ interface IProps {
   walletConnectionPhase: TWalletConnectionPhase;
   actionFunction: () => void;
   pressedOnInstall?: boolean;
+  isMetaMaskProvider?: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -48,9 +49,16 @@ const useStyles = makeStyles((theme) => ({
 
 export const NoEthereumProviderSection = React.memo<IProps>((props) => {
   const classes = useStyles();
-  const { walletConnectionPhase, actionFunction, pressedOnInstall } = props;
+  const {
+    walletConnectionPhase,
+    actionFunction,
+    pressedOnInstall,
+    isMetaMaskProvider,
+  } = props;
 
   const [tickerValue, setTickerValue] = useState(false);
+
+  console.log({ tickerValue });
 
   // Display flags
   const {
@@ -69,14 +77,25 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
 
   // Display texts
   const { titleText, buttonText, subTitleText } = useMemo(() => {
+    const ethereumProviderName = isMetaMaskProvider ? "MetaMask" : "Account";
+
     return {
-      titleText: isInstall ? "No Ethereum provider detected" : "Please connect",
-      subTitleText: isInstall
-        ? "you should install MetaMask and refresh the page"
-        : "To begin, connect your wallet",
+      titleText: isInstall
+        ? "No Ethereum provider detected"
+        : `${ethereumProviderName} connection required`,
+      subTitleText: isInstall ? (
+        "you should install MetaMask and refresh the page"
+      ) : (
+        <>
+          To begin, please connect with your{" "}
+          <Typography style={{ fontWeight: "bold", display: "inline" }}>
+            Guardian address
+          </Typography>
+        </>
+      ),
       buttonText: walletConnectionPhase === "install" ? "Install" : "Connect",
     };
-  }, [isInstall, walletConnectionPhase]);
+  }, [isInstall, isMetaMaskProvider, walletConnectionPhase]);
 
   return (
     <div className={classes.noEthereumProviderSection}>
