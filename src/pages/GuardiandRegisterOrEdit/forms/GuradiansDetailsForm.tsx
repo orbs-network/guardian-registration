@@ -14,6 +14,8 @@ import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/core/styles";
 import HelpIcon from "@material-ui/icons/Help";
 import { FormHelperListTexts } from "../../../components/forms/FormHelperListTexts";
+import { InstallPhaseExtraDetails } from "../../../components/ethereumConnection/InstallPhaseExtraDetails";
+import { DetailsList } from "../../../components/detailsList/Detailslist";
 
 interface IProps {
   actionButtonTitle: string;
@@ -43,6 +45,13 @@ const INFO_MESSAGE_IP = [
   "A valid IPv4 address is required to allow the Guardian’s node to connect to the network gossip topology.",
 ];
 const INFO_MESSAGE_NODE_ADDRESS = [
+  <>
+    Should be different from the{" "}
+    <div style={{ display: "contents", fontWeight: "bold" }}>
+      Guardian address
+    </div>
+    .
+  </>,
   "Used by the Orbs node to automatically send transactions such as ReadyForCommittee.",
   "Used to sign blocks on Orbs platform.",
   "Should hold ETH for the automated transactions gas (A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian).",
@@ -137,7 +146,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
   console.log(isMobile);
 
   const buildHelperMessage = useCallback(
-    (hasError: boolean, errorText?: string, infoTexts?: string[]) => {
+    (hasError: boolean, errorText?: string, infoTexts?: React.ReactNode[]) => {
       let message: React.ReactNode | undefined;
       // DEV_NOTE: O.L :  We would like to display the info text to the user on mobile (no hove effect)
       // if (isMobile) {
@@ -180,16 +189,18 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         width: "100%",
       }}
     >
+      {/*<InstallPhaseExtraDetails />*/}
+
       <TextField
         InputLabelProps={{ style: { pointerEvents: "auto" } }}
         name={"name"}
         label={"Guardian name"}
         title={INFO_MESSAGE_GUARDIAN_NAME[0]}
-        helperText={buildHelperMessage(
-          false,
-          undefined,
-          INFO_MESSAGE_GUARDIAN_NAME
-        )}
+        // helperText={buildHelperMessage(
+        //   false,
+        //   undefined,
+        //   INFO_MESSAGE_GUARDIAN_NAME
+        // )}
         value={name.value}
         onChange={(e) => name.setValue(e.target.value)}
         required
@@ -203,11 +214,12 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         name={"website"}
         label={"Guardian website"}
         title={INFO_MESSAGE_WEBSITE[0]}
-        helperText={buildHelperMessage(
-          errorWebsite,
-          WEBSITE_MESSAGE,
-          INFO_MESSAGE_WEBSITE
-        )}
+        // helperText={buildHelperMessage(
+        //   errorWebsite,
+        //   WEBSITE_MESSAGE,
+        //   INFO_MESSAGE_WEBSITE
+        // )}
+        helperText={errorWebsite && WEBSITE_MESSAGE}
         value={website.value}
         onChange={(e) => website.setValue(e.target.value)}
         required
@@ -237,11 +249,12 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         required
         inputRef={register({ pattern: IP_REGEX })}
         error={errorIPAddress}
-        helperText={buildHelperMessage(
-          errorIPAddress,
-          IP_ADDRESS_MESSAGE,
-          INFO_MESSAGE_IP
-        )}
+        // helperText={buildHelperMessage(
+        //   errorIPAddress,
+        //   IP_ADDRESS_MESSAGE,
+        //   INFO_MESSAGE_IP
+        // )}
+        helperText={errorIPAddress && IP_ADDRESS_MESSAGE}
         className={classes.textField}
       />
 
@@ -249,15 +262,16 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       <TextField
         name={"nodeAddress"}
         label={"Node address"}
-        title={INFO_MESSAGE_NODE_ADDRESS[0]}
+        title={INFO_MESSAGE_NODE_ADDRESS[1] as string}
         value={nodeAddress.value}
         onChange={(e) => nodeAddress.setValue(e.target.value)}
         error={errorNodeAddress}
-        helperText={buildHelperMessage(
-          errorNodeAddress,
-          NODE_ADDRESS_MESSAGE,
-          INFO_MESSAGE_NODE_ADDRESS
-        )}
+        // helperText={buildHelperMessage(
+        //   errorNodeAddress,
+        //   NODE_ADDRESS_MESSAGE,
+        //   INFO_MESSAGE_NODE_ADDRESS
+        // )}
+        helperText={errorNodeAddress && NODE_ADDRESS_MESSAGE}
         required
         inputRef={register({ pattern: ETHEREUM_ADDRESS_REGEX })}
         fullWidth
@@ -287,8 +301,3 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
     </form>
   );
 });
-const IconWithTooltip = () => (
-  <Tooltip title="Text explaining stuff" style={{ display: "inline" }}>
-    <HelpIcon />
-  </Tooltip>
-);

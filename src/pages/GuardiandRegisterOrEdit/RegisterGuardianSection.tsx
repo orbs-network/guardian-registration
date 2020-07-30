@@ -6,6 +6,12 @@ import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
 import { ICryptoWalletConnectionService } from "../../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
+import { DetailsList } from "../../components/detailsList/Detailslist";
+import { DetailsListContainer } from "../../components/detailsList/DetailsListContainer";
+import {
+  GUARDIAN_ADDRESS_DETAILS_TEXTS,
+  NODE_ADDRESS_DETAILS_TEXTS,
+} from "../../constants/explainingTexts";
 
 interface IProps {
   guardianAddress: string;
@@ -108,7 +114,9 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         display: "flex",
         flexDirection: "column",
         maxWidth: "100%",
-        width: "min-content",
+        //  DEV_NOTE : 'min-content' will allow us to limit width to the width of the address text (it has max-content width)
+        //            removing it will allow us to display the explaining texts.
+        // width: "min-content",
       }}
     >
       <Avatar className={classes.avatar}>
@@ -134,6 +142,18 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
           {guardianAddress}
         </Typography>
       </div>
+
+      <DetailsListContainer>
+        <DetailsList
+          conceptName={"Guardian Address"}
+          details={GUARDIAN_ADDRESS_DETAILS_TEXTS}
+        />
+        <DetailsList
+          conceptName={"Node Address"}
+          details={NODE_ADDRESS_DETAILS_TEXTS}
+        />
+      </DetailsListContainer>
+
       <GuardiansDetailsForm
         guardianAddress={guardianAddress}
         submitInfo={checkBalanceBeforeRegistration}

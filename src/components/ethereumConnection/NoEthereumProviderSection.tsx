@@ -20,6 +20,8 @@ import configs from "../../configs";
 import { baseTheme } from "../../theme/Theme";
 import { LegalTicker } from "./LegalTicker";
 import { InstallPhaseExtraDetails } from "./InstallPhaseExtraDetails";
+import { DetailsList } from "../detailsList/Detailslist";
+import { GUARDIAN_ADDRESS_DETAILS_TEXTS } from "../../constants/explainingTexts";
 
 type TWalletConnectionPhase = "install" | "connect";
 
@@ -110,7 +112,13 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
       </Typography>
       <Typography style={{ marginBottom: "1rem" }}>{subTitleText}</Typography>
 
-      {hasExtraDetailsSection && <InstallPhaseExtraDetails />}
+      {/*{hasExtraDetailsSection && <InstallPhaseExtraDetails />}*/}
+      {hasExtraDetailsSection && (
+        <DetailsList
+          conceptName={"Guardian Address"}
+          details={GUARDIAN_ADDRESS_DETAILS_TEXTS}
+        />
+      )}
 
       <Button
         variant={"outlined"}
