@@ -6,12 +6,18 @@ import {
   Typography,
   useTheme,
   Checkbox,
+  MuiThemeProvider,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  StylesProvider,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 import { useBoolean } from "react-hanger";
 import { renderToString } from "react-dom/server";
 import { InTextLink } from "../components/InTextLink";
 import configs from "../configs";
+import { baseTheme } from "../theme/Theme";
 
 type TWalletConnectionPhase = "install" | "connect";
 
@@ -59,12 +65,15 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
   const buttonText =
     walletConnectionPhase === "install" ? "Install" : "Connect";
 
+  // DEV_NOTE : IMPORTANT: O.L : While 'rendering to string' we will lose the them if not applying it directly inside the rendered component.
   const innerHtmlForLegalAgreement = renderToString(
-    <Typography>
-      I agree to the{" "}
-      <InTextLink href={configs.termsOfUseUrl} text={"Terms of Use"} /> and{" "}
-      <InTextLink href={configs.privacyPolicyUrl} text={"Privacy Policy"} />
-    </Typography>
+    <ThemeProvider theme={baseTheme}>
+      <Typography>
+        I agree to the{" "}
+        <InTextLink href={configs.termsOfUseUrl} text={"Terms of Use"} /> and{" "}
+        <InTextLink href={configs.privacyPolicyUrl} text={"Privacy Policy"} />
+      </Typography>
+    </ThemeProvider>
   );
 
   return (
