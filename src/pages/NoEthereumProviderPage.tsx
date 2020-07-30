@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { CssBaseline, useTheme } from "@material-ui/core";
-import { NoEthereumProviderSection } from "./NoEthereumProviderSection";
+import { NoEthereumProviderSection } from "../components/ethereumConnection/NoEthereumProviderSection";
 import { useBoolean } from "react-hanger";
 import { ContentContainer } from "../components/structure/ContentContainer";
 import { Background } from "../components/structure/Background";

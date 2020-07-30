@@ -6,7 +6,7 @@ import {
   useOrbsAccountStore,
 } from "./store/storeHooks";
 import { observer } from "mobx-react";
-import { NoEthereumProviderSection } from "./pages/NoEthereumProviderSection";
+import { NoEthereumProviderSection } from "./components/ethereumConnection/NoEthereumProviderSection";
 import { GuardiansRegisterOrEditPage } from "./pages/GuardiandRegisterOrEdit/GuardianRegisterOrEditPage";
 import { Background } from "./components/structure/Background";
 import { Header } from "./components/structure/Header";
