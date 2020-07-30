@@ -102,6 +102,7 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
     };
   }, [isInstall, isMetaMaskProvider, walletConnectionPhase]);
 
+  // TODO : O.L : Fix the button's border color, maybe make a unified button.
   return (
     <div className={classes.noEthereumProviderSection}>
       <Typography style={{ marginBottom: "0.5rem" }} variant={"h4"}>

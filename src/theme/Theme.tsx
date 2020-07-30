@@ -37,7 +37,7 @@ export const baseTheme = responsiveFontSizes(
       },
       action: {
         active: PRIMARY_TEXT,
-        disabled: "gba(255, 255, 255, 0.3)",
+        disabled: "rgba(255, 255, 255, 0.3)",
         disabledBackground: "rgba(255, 255, 255, 0.12)",
         hover: "rgba(255, 255, 255, 0.08)",
         selected: "rgba(255, 255, 255, 0.16)",
