@@ -50,9 +50,6 @@ export const GuardiansRegisterOrEditPage = observer<
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
   const cryptoWalletIntegrationService = useCryptoWalletConnectionService();
 
-  const title = orbsAccountStore.isGuardian
-    ? "Guardian details update"
-    : "Guardian Registration";
   let content;
 
   const updateGuardianDetails = useCallback(

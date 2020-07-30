@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
     marginRight: "auto",
   },
+  boldText: {
+    fontWeight: "bold",
+    display: "inline",
+  },
 }));
 
 const demoInitialInfo: TGuardianInfo = {
@@ -117,6 +121,13 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         }}
       >
         <Typography variant={"h5"}>Guardian Registration</Typography>
+        <Typography variant={"h6"}>
+          Your{" "}
+          <Typography variant={"h6"} className={classes.boldText}>
+            Guardian address{" "}
+          </Typography>
+          is:
+        </Typography>
         <Typography
           style={{
             textOverflow: "ellipsis",
