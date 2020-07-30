@@ -19,6 +19,7 @@ import { InTextLink } from "../InTextLink";
 import configs from "../../configs";
 import { baseTheme } from "../../theme/Theme";
 import { LegalTicker } from "./LegalTicker";
+import { InstallPhaseExtraDetails } from "./InstallPhaseExtraDetails";
 
 type TWalletConnectionPhase = "install" | "connect";
 
@@ -58,6 +59,8 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
 
   const [tickerValue, setTickerValue] = useState(false);
 
+  const isConnectPhase = walletConnectionPhase === "connect";
+
   console.log({ tickerValue });
 
   // Display flags
@@ -65,15 +68,17 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
     shouldDisplayLegalTicker,
     isInstall,
     buttonIsEnabled,
+    hasExtraDetailsSection,
   } = useMemo(() => {
-    const shouldDisplayLegalTicker = walletConnectionPhase === "connect";
+    const shouldDisplayLegalTicker = isConnectPhase;
 
     return {
       shouldDisplayLegalTicker,
+      hasExtraDetailsSection: isConnectPhase,
       buttonIsEnabled: !shouldDisplayLegalTicker || tickerValue,
       isInstall: walletConnectionPhase === "install",
     };
-  }, [tickerValue, walletConnectionPhase]);
+  }, [isConnectPhase, tickerValue, walletConnectionPhase]);
 
   // Display texts
   const { titleText, buttonText, subTitleText } = useMemo(() => {
@@ -103,6 +108,9 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
         {titleText}
       </Typography>
       <Typography style={{ marginBottom: "1rem" }}>{subTitleText}</Typography>
+
+      {hasExtraDetailsSection && <InstallPhaseExtraDetails />}
+
       <Button
         variant={"outlined"}
         onClick={actionFunction}
