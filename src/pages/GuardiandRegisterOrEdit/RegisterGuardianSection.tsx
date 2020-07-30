@@ -119,7 +119,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         //            removing it will allow us to display elements wider than the address.
         // If removed, add 'maxWidth'
         width: "min-content",
-        // maxWidth: "100%",
+        maxWidth: "100%",
       }}
     >
       <Avatar className={classes.avatar}>
