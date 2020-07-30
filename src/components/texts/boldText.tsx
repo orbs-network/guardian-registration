@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
   boldText: {
     fontWeight: "bold",
     display: "contents",
+    color: theme.palette.secondary.main,
   },
 }));
 

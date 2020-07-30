@@ -1,4 +1,4 @@
-import React from "react";
+import React, { DetailedHTMLProps } from "react";
 import { Typography } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { BoldText } from "../texts/boldText";
@@ -6,6 +6,7 @@ import { BoldText } from "../texts/boldText";
 interface IProps {
   conceptName: string;
   details: React.ReactNode[];
+  caption?: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -29,19 +30,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const DetailsList = React.memo<IProps>((props) => {
+export const DetailsList = React.memo<
+  IProps &
+    DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+>((props) => {
   const classes = useStyles();
-  const { conceptName, details } = props;
+  const { conceptName, details, caption, ...others } = props;
 
   return (
-    <div className={classes.container}>
+    <div className={classes.container} {...others}>
       <Typography>
         Your <BoldText>{conceptName}:</BoldText>
       </Typography>
       <ul className={classes.textsList}>
         {details.map((detail) => (
           <li key={detail!.toString()}>
-            <Typography>{detail}</Typography>
+            <Typography variant={caption ? "caption" : "body2"}>
+              {detail}
+            </Typography>
           </li>
         ))}
       </ul>

@@ -116,10 +116,10 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         flexDirection: "column",
         alignItems: "center",
         //  DEV_NOTE : 'min-content' will allow us to limit width to the width of the address text (it has max-content width)
-        //            removing it will allow us to display the explaining texts.
+        //            removing it will allow us to display elements wider than the address.
         // If removed, add 'maxWidth'
-        // width: "min-content",
-        maxWidth: "100%",
+        width: "min-content",
+        // maxWidth: "100%",
       }}
     >
       <Avatar className={classes.avatar}>

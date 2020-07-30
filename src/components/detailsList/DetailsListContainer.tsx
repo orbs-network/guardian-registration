@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     padding: "0.5rem 0",
     display: "flex",
-    // flexDirection: "column",
+    flexDirection: "column",
     flexWrap: "wrap",
     justifyItems: "center",
     justifyContent: "center",
