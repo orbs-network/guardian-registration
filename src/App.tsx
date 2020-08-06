@@ -16,11 +16,20 @@ import { Page } from "./components/structure/Page";
 import { useSnackbar } from "notistack";
 import { Footer } from "./components/structure/Footer";
 import { useCryptoWalletConnectionService } from "./services/servicesHooks";
+import { HEADER_HEIGHT_REM } from "./theme/Theme";
 
 const useStyles = makeStyles(() => ({
   app: {
     // height: "100%",
+    // minHeight: `calc(100% - ${HEADER_HEIGHT_REM}rem)`,
+    minHeight: `100%`,
     flex: 1,
+    backgroundColor: "#06142e",
+    backgroundRepeat: "repeat-y",
+    backgroundImage:
+      "url(https://www.orbs.com/wp-content/uploads/2019/02/technology-background1.png)",
+    backgroundAttachment: "scroll",
+    backgroundPosition: "top center",
   },
 }));
 
@@ -82,7 +91,7 @@ const App = observer(() => {
     <>
       <Header />
       <main className={classes.app}>
-        <Background />
+        {/*<Background />*/}
         <ContentContainer id={"appContainer"}>{appContent}</ContentContainer>
         <CssBaseline />
       </main>

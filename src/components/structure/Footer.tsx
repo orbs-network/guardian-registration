@@ -10,12 +10,18 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { InTextLink } from "../InTextLink";
 import configs from "../../configs";
+import Color from "color";
 
 interface IProps {
   version?: string;
 }
 
 const useStyles = makeStyles((theme) => ({
+  footerContainer: {
+    position: "absolute",
+    bottom: 0,
+    // opacity: "0.5",
+  },
   bottomAppBar: {
     // paddingTop: "1em",
     // paddingBottom: "1em",
@@ -23,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     height: "3em",
     bottom: 0,
     top: "auto",
+    backgroundColor: Color(theme.palette.primary.main).fade(0.3).toString(),
 
     display: "flex",
     flexDirection: "row",
@@ -57,9 +64,9 @@ export const Footer = React.memo<IProps>((props) => {
   const { version } = props;
 
   return (
-    <>
+    <div className={classes.footerContainer}>
       {/* TODO : This 'Toolbar' is here to keep space between content and footer, should make a better solution */}
-      <Toolbar style={{}} />
+      <Toolbar />
       {/*<HideOnScroll>*/}
       <AppBar className={classes.bottomAppBar} position={"fixed"}>
         {/*<Toolbar>*/}
@@ -96,6 +103,6 @@ export const Footer = React.memo<IProps>((props) => {
         </div>
       </AppBar>
       {/*</HideOnScroll>*/}
-    </>
+    </div>
   );
 });
