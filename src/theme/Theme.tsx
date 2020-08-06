@@ -13,16 +13,16 @@ const SECONDARY_TEXT = "#d0d0d0";
 
 // DEV_NOTE : Most palette colors taken from https://material-ui.com/customization/palette/#dark-mode
 
+export const HEADER_HEIGHT_REM = 5;
+
 export const baseTheme = responsiveFontSizes(
   createMuiTheme({
     palette: {
       // TODO : Adjust all styles after structure is done
       // type: "dark",
-      primary: {
-        main: "rgba(16, 34, 91, 0.7)",
-      },
+      primary: { main: "#09142c" },
       secondary: {
-        main: "#7ccbf4",
+        main: "#74f6fd",
       },
       text: {
         primary: PRIMARY_TEXT,
@@ -37,7 +37,7 @@ export const baseTheme = responsiveFontSizes(
       },
       action: {
         active: PRIMARY_TEXT,
-        disabled: "gba(255, 255, 255, 0.3)",
+        disabled: "rgba(255, 255, 255, 0.3)",
         disabledBackground: "rgba(255, 255, 255, 0.12)",
         hover: "rgba(255, 255, 255, 0.08)",
         selected: "rgba(255, 255, 255, 0.16)",

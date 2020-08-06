@@ -6,6 +6,13 @@ import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
 import { ICryptoWalletConnectionService } from "../../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
+import { DetailsList } from "../../components/detailsList/Detailslist";
+import { DetailsListContainer } from "../../components/detailsList/DetailsListContainer";
+import {
+  GUARDIAN_ADDRESS_DETAILS_TEXTS,
+  NODE_ADDRESS_DETAILS_TEXTS,
+} from "../../constants/explainingTexts";
+import { GuardianFormDetailsList } from "../GuardianFormDetailsList";
 
 interface IProps {
   guardianAddress: string;
@@ -21,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     marginLeft: "auto",
     marginRight: "auto",
+  },
+  boldText: {
+    fontWeight: "bold",
+    display: "contents",
   },
 }));
 
@@ -103,8 +114,12 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       style={{
         display: "flex",
         flexDirection: "column",
-        maxWidth: "100%",
+        alignItems: "center",
+        //  DEV_NOTE : 'min-content' will allow us to limit width to the width of the address text (it has max-content width)
+        //            removing it will allow us to display elements wider than the address.
+        // If removed, add 'maxWidth'
         width: "min-content",
+        maxWidth: "100%",
       }}
     >
       <Avatar className={classes.avatar}>
@@ -117,6 +132,10 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         }}
       >
         <Typography variant={"h5"}>Guardian Registration</Typography>
+        <Typography variant={"h6"}>
+          Your <div className={classes.boldText}>Guardian address </div>
+          is:
+        </Typography>
         <Typography
           style={{
             textOverflow: "ellipsis",
@@ -126,6 +145,9 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
           {guardianAddress}
         </Typography>
       </div>
+
+      <GuardianFormDetailsList />
+
       <GuardiansDetailsForm
         guardianAddress={guardianAddress}
         submitInfo={checkBalanceBeforeRegistration}
