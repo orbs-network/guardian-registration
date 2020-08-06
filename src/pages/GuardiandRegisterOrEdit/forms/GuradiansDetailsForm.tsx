@@ -58,6 +58,12 @@ const INFO_MESSAGE_NODE_ADDRESS = [
   "The Orbs Node address should differ from the Guardian address.",
 ];
 
+const PLACE_HOLDER_GUARDIAN_NAME = "For example : Number One ORBS Guardian";
+const PLACE_HOLDER_WEBSITE = "For example : number-one-orbs-guardian.com";
+const PLACE_HOLDER_IP = "For example : 123.17.46.251";
+const PLACE_HOLDER_NODE_ADDRESS =
+  "For example : 0x0cBb46287c93357be4CF60fe9601c2c7A2700dC2";
+
 function validURL(str: string) {
   const pattern = new RegExp(
     "^(https?:\\/\\/)?" + // protocol
@@ -196,6 +202,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         InputLabelProps={{ style: { pointerEvents: "auto" } }}
         name={"name"}
         label={"Guardian name"}
+        placeholder={PLACE_HOLDER_GUARDIAN_NAME}
         title={INFO_MESSAGE_GUARDIAN_NAME[0]}
         // helperText={buildHelperMessage(
         //   false,
@@ -214,6 +221,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         fullWidth
         name={"website"}
         label={"Guardian website"}
+        placeholder={PLACE_HOLDER_WEBSITE}
         title={INFO_MESSAGE_WEBSITE[0]}
         // helperText={buildHelperMessage(
         //   errorWebsite,
@@ -244,6 +252,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         fullWidth
         name={"ipAddress"}
         label={"Node IP"}
+        placeholder={PLACE_HOLDER_IP}
         title={INFO_MESSAGE_IP[0]}
         value={ipAddress.value}
         onChange={(e) => ipAddress.setValue(e.target.value)}
@@ -263,6 +272,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       <TextField
         name={"nodeAddress"}
         label={"Node address"}
+        placeholder={PLACE_HOLDER_NODE_ADDRESS}
         title={INFO_MESSAGE_NODE_ADDRESS[1] as string}
         value={nodeAddress.value}
         onChange={(e) => nodeAddress.setValue(e.target.value)}
