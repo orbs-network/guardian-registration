@@ -59,7 +59,8 @@ const INFO_MESSAGE_NODE_ADDRESS = [
 ];
 
 const PLACE_HOLDER_GUARDIAN_NAME = "For example : Number One ORBS Guardian";
-const PLACE_HOLDER_WEBSITE = "For example : number-one-orbs-guardian.com";
+const PLACE_HOLDER_WEBSITE =
+  "For example : https://www.number-one-orbs-guardian.com";
 const PLACE_HOLDER_IP = "For example : 123.17.46.251";
 const PLACE_HOLDER_NODE_ADDRESS =
   "For example : 0x0cBb46287c93357be4CF60fe9601c2c7A2700dC2";
