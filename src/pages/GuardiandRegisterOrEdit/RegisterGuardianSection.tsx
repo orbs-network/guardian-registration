@@ -85,9 +85,12 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
    */
   const checkBalanceBeforeRegistration = useCallback(
     async (guardianRegistrationPayload: TGuardianRegistrationPayload) => {
-      if (guardianRegistrationPayload.orbsAddr === guardianAddress) {
+      if (
+        guardianRegistrationPayload.orbsAddr.toLowerCase() ===
+        guardianAddress.toLowerCase()
+      ) {
         setErrorMessage(
-          `Orbs node address cannot be the same as the Guardian address ${guardianAddress}`
+          `Your Orbs node address cannot be the same as your Guardian address ${guardianAddress}`
         );
         return;
       }

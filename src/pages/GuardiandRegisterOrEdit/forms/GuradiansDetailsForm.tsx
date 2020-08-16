@@ -31,9 +31,9 @@ interface IProps {
 const ETHEREUM_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
 const IP_REGEX = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
 
-const NODE_ADDRESS_MESSAGE = "Must use a valid address";
-const IP_ADDRESS_MESSAGE = "Must use a valid IPV4 address";
-const WEBSITE_MESSAGE = "Must use a URL";
+const NODE_ADDRESS_MESSAGE = "Please use a valid address";
+const IP_ADDRESS_MESSAGE = "Please use a valid IPV4 address";
+const WEBSITE_MESSAGE = "Please use a valid URL";
 
 const INFO_MESSAGE_GUARDIAN_NAME = [
   "The name that the Guardian will be recognized by.",
