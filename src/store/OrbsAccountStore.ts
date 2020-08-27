@@ -15,7 +15,6 @@ import {
 import {
   EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE,
   GUARDIAN_REWARDS_FREQUENCY_DEFAULT_VALUE_IN_HOURS,
-  GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
 } from "../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { PromiEvent, TransactionReceipt } from "web3-core";
 import { ipvHexToV4 } from "../utils/utils";
