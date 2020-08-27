@@ -12,7 +12,11 @@ import {
   TGuardianRegistrationPayload,
   TGuardianUpdatePayload,
 } from "../services/guardiansV2Service/IGuardiansV2Service";
-import { EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE } from "../services/guardiansV2Service/GuardiansV2ServiceConstants";
+import {
+  EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE,
+  GUARDIAN_REWARDS_FREQUENCY_DEFAULT_VALUE_IN_HOURS,
+  GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
+} from "../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { PromiEvent, TransactionReceipt } from "web3-core";
 import { ipvHexToV4 } from "../utils/utils";
 import { JSON_RPC_ERROR_CODES } from "../constants/ethereumErrorCodes";
@@ -299,7 +303,9 @@ export class OrbsAccountStore {
       accountAddress
     );
 
-    const frequencyInHours = frequencyInSeconds / ONE_HOUR_IN_SECONDS;
+    const frequencyInHours =
+      frequencyInSeconds / ONE_HOUR_IN_SECONDS ||
+      GUARDIAN_REWARDS_FREQUENCY_DEFAULT_VALUE_IN_HOURS;
 
     this.setRewardDistributionFrequencyInHours(frequencyInHours);
   }
