@@ -166,6 +166,25 @@ export class OrbsAccountStore {
     }
   }
 
+  public async unregisterGuardian() {
+    try {
+      const promiEvent = this.guardiansV2Service.unregisterGuardian();
+
+      const res = await this.handlePromievent(
+        promiEvent,
+        "Unregister guardian"
+      );
+
+      // After registering, lets re-read the data
+      await this.manuallyReadAccountData();
+    } catch (e) {
+      this.setTxHadError(true);
+      // TODO : Handle the error
+      console.error(`Failed unregistering guardian ${e}`);
+      throw e;
+    }
+  }
+
   public async setGuardianDistributionFrequency(frequencyInHours: number) {
     const frequencyInSeconds = frequencyInHours * ONE_HOUR_IN_SECONDS;
 

@@ -128,4 +128,10 @@ export class GuardiansV2Service implements IGuardiansV2Service {
       .updateGuardian(ipAsHex, orbsAddr, name, website, EMPTY_CONTACT_DETAILS)
       .send();
   }
+
+  public unregisterGuardian(): PromiEvent<TransactionReceipt> {
+    return this.guardiansRegistrationContract.methods
+      .unregisterGuardian()
+      .send();
+  }
 }

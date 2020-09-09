@@ -26,6 +26,7 @@ import {
 } from "../../services/guardiansV2Service/IGuardiansV2Service";
 import { useSnackbar } from "notistack";
 import { useCryptoWalletConnectionService } from "../../services/servicesHooks";
+import { UnregisterSection } from "./UnregisterSection";
 
 interface IProps {}
 
@@ -79,6 +80,16 @@ export const GuardiansRegisterOrEditPage = observer<
     },
     [enqueueSnackbar, orbsAccountStore]
   );
+
+  const unregisterGuardian = useCallback(async () => {
+    try {
+      await orbsAccountStore.unregisterGuardian();
+    } catch (e) {
+      enqueueSnackbar(`Error in 'Unregister guardian' TX ${e.message}`, {
+        variant: "error",
+      });
+    }
+  }, [enqueueSnackbar, orbsAccountStore]);
 
   const registerGuardian = useCallback(
     async (guardianRegistrationPayload: TGuardianRegistrationPayload) => {
@@ -134,7 +145,9 @@ export const GuardiansRegisterOrEditPage = observer<
           updateGuardianDetails={updateGuardianDetails}
         />
 
-        <Divider style={{ width: "100%", height: "3px" }} />
+        <Divider
+          style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
+        />
 
         <EditRewardsDistributionSection
           currentFrequencyInHours={
@@ -143,6 +156,17 @@ export const GuardiansRegisterOrEditPage = observer<
           updateRewardsFrequency={updateRewardsFrequency}
           isUsingDefaultValue={orbsAccountStore.isUsingDefaultRewardFrequency}
         />
+
+        <Divider
+          style={{
+            width: "100%",
+            height: "3px",
+            marginBottom: "1rem",
+            marginTop: "1rem",
+          }}
+        />
+        <UnregisterSection unregisterGuardian={unregisterGuardian} />
+        <br />
       </div>
     );
   } else {
