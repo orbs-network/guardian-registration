@@ -148,7 +148,12 @@ export const GuardiansRegisterOrEditPage = observer<
         />
 
         <Divider
-          style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
+          style={{
+            width: "100%",
+            height: "3px",
+            marginBottom: "1rem",
+            marginTop: "1rem",
+          }}
         />
         <UnregisterSection
           unregisterGuardian={() => console.log("Unregistering")}

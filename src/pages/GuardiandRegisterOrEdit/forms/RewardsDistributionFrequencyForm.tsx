@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
       color: "#f5f5f5",
     },
   },
+  actionButton: {
+    color: theme.palette.secondary.main,
+    borderColor: theme.palette.secondary.main,
+  },
 }));
 
 export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
@@ -121,6 +125,7 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
       {/*</Typography>*/}
 
       <br />
+      <br />
 
       <Transition
         items={userWantsToChangeDefault.value}
@@ -172,13 +177,19 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
                   />
                   <br />
                   <br />
-                  <Button variant={"outlined"} type={"submit"} fullWidth>
+                  <Button
+                    className={classes.actionButton}
+                    variant={"outlined"}
+                    type={"submit"}
+                    fullWidth
+                  >
                     Update
                   </Button>
                 </div>
               )
             : (props) => (
                 <Button
+                  className={classes.actionButton}
                   onClick={userWantsToChangeDefault.setTrue}
                   variant={"outlined"}
                   fullWidth

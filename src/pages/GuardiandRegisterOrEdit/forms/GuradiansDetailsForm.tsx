@@ -92,6 +92,10 @@ const useStyles = makeStyles((theme) => ({
       color: "#f5f5f5",
     },
   },
+  actionButton: {
+    color: theme.palette.secondary.main,
+    borderColor: theme.palette.secondary.main,
+  },
 }));
 
 /**
@@ -291,6 +295,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       <br />
       <br />
       <Button
+        className={classes.actionButton}
         variant={"outlined"}
         fullWidth
         type={"submit"}
