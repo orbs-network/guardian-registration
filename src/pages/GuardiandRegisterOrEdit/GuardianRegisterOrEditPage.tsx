@@ -26,6 +26,7 @@ import {
 } from "../../services/guardiansV2Service/IGuardiansV2Service";
 import { useSnackbar } from "notistack";
 import { useCryptoWalletConnectionService } from "../../services/servicesHooks";
+import { UnregisterSection } from "./UnregisterSection";
 
 interface IProps {}
 
@@ -134,7 +135,9 @@ export const GuardiansRegisterOrEditPage = observer<
           updateGuardianDetails={updateGuardianDetails}
         />
 
-        <Divider style={{ width: "100%", height: "3px" }} />
+        <Divider
+          style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
+        />
 
         <EditRewardsDistributionSection
           currentFrequencyInHours={
@@ -143,6 +146,14 @@ export const GuardiansRegisterOrEditPage = observer<
           updateRewardsFrequency={updateRewardsFrequency}
           isUsingDefaultValue={orbsAccountStore.isUsingDefaultRewardFrequency}
         />
+
+        <Divider
+          style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
+        />
+        <UnregisterSection
+          unregisterGuardian={() => console.log("Unregistering")}
+        />
+        <br />
       </div>
     );
   } else {
