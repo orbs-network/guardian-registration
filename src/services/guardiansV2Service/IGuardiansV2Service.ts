@@ -16,6 +16,7 @@ export interface IGuardiansV2Service {
   updateGuardianInfo: (
     guardianUpdatePayload: TGuardianUpdatePayload
   ) => PromiEvent<TransactionReceipt>;
+  unregisterGuardian: () => PromiEvent<TransactionReceipt>;
 }
 
 export type TGuardianInfoPayload = {

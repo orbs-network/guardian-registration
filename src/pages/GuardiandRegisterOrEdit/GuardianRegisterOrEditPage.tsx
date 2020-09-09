@@ -81,6 +81,16 @@ export const GuardiansRegisterOrEditPage = observer<
     [enqueueSnackbar, orbsAccountStore]
   );
 
+  const unregisterGuardian = useCallback(async () => {
+    try {
+      await orbsAccountStore.unregisterGuardian();
+    } catch (e) {
+      enqueueSnackbar(`Error in 'Unregister guardian' TX ${e.message}`, {
+        variant: "error",
+      });
+    }
+  }, [enqueueSnackbar, orbsAccountStore]);
+
   const registerGuardian = useCallback(
     async (guardianRegistrationPayload: TGuardianRegistrationPayload) => {
       try {
@@ -155,9 +165,7 @@ export const GuardiansRegisterOrEditPage = observer<
             marginTop: "1rem",
           }}
         />
-        <UnregisterSection
-          unregisterGuardian={() => console.log("Unregistering")}
-        />
+        <UnregisterSection unregisterGuardian={unregisterGuardian} />
         <br />
       </div>
     );
