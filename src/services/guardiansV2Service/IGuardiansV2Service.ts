@@ -7,6 +7,14 @@ export interface IGuardiansV2Service {
   readGuardianDistributionFrequencyInSeconds: (
     address: string
   ) => Promise<number>;
+
+  setDelegatorsCut: (delegatorsCut: number) => PromiEvent<TransactionReceipt>;
+  setGuardianId: (guardianId: string) => PromiEvent<TransactionReceipt>;
+
+  /**
+   *
+   * @deprecated
+   */
   setGuardianDistributionFrequency: (
     frequencyInSeconds: number
   ) => PromiEvent<TransactionReceipt>;

@@ -1,22 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { useBoolean, useNumber } from "react-hanger";
-import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
+import { DELGATORS_SHARE_MAX_PERCENTAGE_VALUE } from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { useForm } from "react-hook-form";
 import { config, Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
 
 interface IProps {
-  delegatorsCut?: number;
-  idFromUrl?: string;
-  updateAdvancedDetails: () => void;
+  currentDelegatorsCut?: number;
+  updateDelegatorsCut: (delegatorsCut: number) => void;
+  isUsingDefaultValue?: boolean;
 }
 
 type TFormData = {
-  rewardsFrequencyInHours: number;
+  delegatorsCut: number;
 };
 
-const REWARDS_FREQUENCY_MESSAGE = "Minimum frequency is 12 hours";
+const REWARDS_FREQUENCY_MESSAGE = `Valid values are between 0 and ${DELGATORS_SHARE_MAX_PERCENTAGE_VALUE}`;
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -30,20 +30,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const AdvancedFeaturesForm = React.memo<IProps>((props) => {
+export const DelegatorsCutForm = React.memo<IProps>((props) => {
   const classes = useStyles();
-  const { delegatorsCut, idFromUrl, updateAdvancedDetails } = props;
+  const { currentDelegatorsCut, updateDelegatorsCut } = props;
 
-  const showEditOptions = useBoolean(false);
+  const showEditOptions = useBoolean(true);
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
-  const errorRewardsFrequency = !!errors.rewardsFrequencyInHours;
+  const delegatorsCut = useNumber(Math.min(currentDelegatorsCut || 0, 66), {
+    upperLimit: DELGATORS_SHARE_MAX_PERCENTAGE_VALUE,
+  });
+
+  const errorDelegatorsCut = !!errors.delegatorsCut;
 
   const submitUpdate = useCallback(
     (formData: TFormData) => {
-      updateAdvancedDetails();
+      updateDelegatorsCut(formData.delegatorsCut);
     },
-    [updateAdvancedDetails]
+    [updateDelegatorsCut]
   );
 
   return (
@@ -51,11 +55,11 @@ export const AdvancedFeaturesForm = React.memo<IProps>((props) => {
       style={{
         maxWidth: "100%",
         width: "100%",
+        display: "relative",
       }}
       onSubmit={handleSubmit(submitUpdate)}
     >
-      {/*<Typography variant={"body1"}>Advanced options</Typography>*/}
-
+      {/*<Typography variant={"body1"}>Delegators cut</Typography>*/}
       <br />
       <br />
 
@@ -87,24 +91,26 @@ export const AdvancedFeaturesForm = React.memo<IProps>((props) => {
                 <div style={{ ...props, maxWidth: "100%", width: "100%" }}>
                   <TextField
                     fullWidth
-                    name={"rewardsFrequencyInHours"}
-                    title={`Rewards Frequency in hours - Minimum ${GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS} hours`}
-                    label={"Rewards Frequency in hours"}
-                    value={delegatorsCut}
-                    onChange={(e) =>
-                      // frequency.setValue(parseInt(e.target.value) || 0)
-                      console.log("VChange")
-                    }
+                    name={"delegatorsCut"}
+                    title={`Delegators cut % out of rewards`}
+                    label={"Delegators cut % out of rewards"}
+                    value={delegatorsCut.value}
+                    inputProps={{
+                      step: 0.001,
+                    }}
+                    onChange={(e) => {
+                      delegatorsCut.setValue(parseFloat(e.target.value) || 0);
+                    }}
                     required
                     type={"number"}
                     inputRef={register({
-                      min: GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
+                      max: DELGATORS_SHARE_MAX_PERCENTAGE_VALUE,
                     })}
-                    error={errorRewardsFrequency}
+                    error={errorDelegatorsCut}
                     helperText={
-                      errorRewardsFrequency
+                      errorDelegatorsCut
                         ? REWARDS_FREQUENCY_MESSAGE
-                        : "Default frequency is 14 days (336 hours), cannot be lower than half a day (12 hours)"
+                        : `The percentage of rewards that will reach your delegators. between 0 and ${DELGATORS_SHARE_MAX_PERCENTAGE_VALUE}`
                     }
                     className={classes.textField}
                   />
@@ -116,10 +122,11 @@ export const AdvancedFeaturesForm = React.memo<IProps>((props) => {
                     type={"submit"}
                     fullWidth
                   >
-                    Update
+                    Update Delegators cut
                   </Button>
                   <br />
                   <br />
+
                   <Button
                     className={classes.actionButton}
                     variant={"outlined"}
@@ -140,7 +147,7 @@ export const AdvancedFeaturesForm = React.memo<IProps>((props) => {
                   fullWidth
                   style={props}
                 >
-                  Edit advanced features
+                  Edit Delegators cut
                 </Button>
               )
         }

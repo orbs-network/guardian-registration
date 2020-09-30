@@ -3,12 +3,13 @@ import { Avatar, Typography } from "@material-ui/core";
 import { RewardsDistributionFrequencyForm } from "../forms/RewardsDistributionFrequencyForm";
 import { makeStyles } from "@material-ui/core/styles";
 import TimelapseIcon from "@material-ui/icons/Timelapse";
-import { AdvancedFeaturesForm } from "../forms/AdvancedFeaturesForm";
+import MoneyIcon from "@material-ui/icons/Money";
+import { DelegatorsCutForm } from "../forms/DelegatorsCutForm";
 
 interface IProps {
   delegatorsCut?: number;
-  idFromUrl?: string;
-  updateAdvancedDetails: () => void;
+  updateDelegatorsCut: (delegatorsCut: number) => void;
+  isUsingDefaultValue?: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -20,19 +21,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const EditAdvancedDataSection = React.memo<IProps>((props) => {
+export const EditDelegatorsCutSection = React.memo<IProps>((props) => {
   const classes = useStyles();
-  const { idFromUrl, delegatorsCut, updateAdvancedDetails } = props;
+  const { delegatorsCut, updateDelegatorsCut, isUsingDefaultValue } = props;
   return (
     <>
       <Avatar className={classes.avatar}>
-        <TimelapseIcon />
+        <MoneyIcon />
       </Avatar>
-      <Typography variant={"h5"}>Advanced Features</Typography>
-      <AdvancedFeaturesForm
-        updateAdvancedDetails={updateAdvancedDetails}
-        idFromUrl={idFromUrl}
-        delegatorsCut={delegatorsCut}
+      <Typography variant={"h5"}>Delegators cut</Typography>
+      <DelegatorsCutForm
+        updateDelegatorsCut={updateDelegatorsCut}
+        currentDelegatorsCut={delegatorsCut}
+        isUsingDefaultValue={isUsingDefaultValue}
       />
     </>
   );

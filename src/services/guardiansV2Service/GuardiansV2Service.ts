@@ -12,7 +12,9 @@ import { ValidatorsRegistration } from "../../contracts/ValidatorsRegistration";
 import { GuardiansRegistration } from "../../contracts/GuardiansRegistration";
 import { PromiEvent, TransactionReceipt } from "web3-core";
 import {
+  DELEGATORS_CUT_KEY,
   EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE,
+  GUARDIAN_ID_KEY,
   REWARDS_FREQUENCY_KEY,
 } from "./GuardiansV2ServiceConstants";
 import { ipv4ToHex } from "../../utils/utils";
@@ -89,6 +91,20 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     }
 
     return parseInt(rewardsFrequency);
+  }
+
+  public setDelegatorsCut(
+    delegatorsCut: number
+  ): PromiEvent<TransactionReceipt> {
+    return this.guardiansRegistrationContract.methods
+      .setMetadata(DELEGATORS_CUT_KEY, delegatorsCut.toString())
+      .send();
+  }
+
+  public setGuardianId(guardianId: string): PromiEvent<TransactionReceipt> {
+    return this.guardiansRegistrationContract.methods
+      .setMetadata(GUARDIAN_ID_KEY, guardianId)
+      .send();
   }
 
   public setGuardianDistributionFrequency(

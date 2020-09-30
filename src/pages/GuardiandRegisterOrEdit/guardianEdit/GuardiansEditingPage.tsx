@@ -12,7 +12,7 @@ import {
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
 import { TGuardianUpdatePayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
-import { EditAdvancedDataSection } from "./EditAdvancedDataSection";
+import { EditDelegatorsCutSection } from "./EditDelegatorsCutSection";
 
 interface IProps {}
 
@@ -104,12 +104,9 @@ export const GuardianEditingPage = React.memo<IProps>((props) => {
               style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
             />
 
-            <EditAdvancedDataSection
-              updateAdvancedDetails={() =>
-                console.log(`Updating advanced features`)
-              }
+            <EditDelegatorsCutSection
+              updateDelegatorsCut={(val) => console.log(val)}
               delegatorsCut={55.22}
-              idFromUrl={undefined}
             />
 
             <Divider

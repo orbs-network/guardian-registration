@@ -1,4 +1,6 @@
 export const REWARDS_FREQUENCY_KEY = "REWARDS_FREQUENCY_SEC";
+export const DELEGATORS_CUT_KEY = "DELEGATORS_CUT_PERCENTAGE";
+export const GUARDIAN_ID_KEY = "GUARDIAN_ID";
 
 /**
  * The value that will return for a guardian that did not change its distribution frequency.
