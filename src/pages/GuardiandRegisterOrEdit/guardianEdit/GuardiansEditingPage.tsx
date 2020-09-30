@@ -12,6 +12,7 @@ import {
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
 import { TGuardianUpdatePayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
+import { EditAdvancedDataSection } from "./EditAdvancedDataSection";
 
 interface IProps {}
 
@@ -103,14 +104,12 @@ export const GuardianEditingPage = React.memo<IProps>((props) => {
               style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
             />
 
-            <EditRewardsDistributionSection
-              currentFrequencyInHours={
-                orbsAccountStore.rewardDistributionFrequencyInHours
+            <EditAdvancedDataSection
+              updateAdvancedDetails={() =>
+                console.log(`Updating advanced features`)
               }
-              updateRewardsFrequency={updateRewardsFrequency}
-              isUsingDefaultValue={
-                orbsAccountStore.isUsingDefaultRewardFrequency
-              }
+              delegatorsCut={55.22}
+              idFromUrl={undefined}
             />
 
             <Divider
