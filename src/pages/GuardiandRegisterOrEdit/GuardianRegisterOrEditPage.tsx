@@ -27,6 +27,8 @@ import {
 import { useSnackbar } from "notistack";
 import { useCryptoWalletConnectionService } from "../../services/servicesHooks";
 import { UnregisterSection } from "./UnregisterSection";
+import { ErrorLoadingPage } from "../error/ErrorLoadingPage";
+import { LoadingPage } from "../loading/LoadingPage";
 
 interface IProps {}
 
@@ -106,23 +108,11 @@ export const GuardiansRegisterOrEditPage = observer<
 
   // TODO : ORL : Organize all of this loading "ifs"
   if (orbsAccountStore.errorLoading) {
-    return (
-      <Page>
-        <ContentFitting>
-          <Typography>Error loading</Typography>
-        </ContentFitting>{" "}
-      </Page>
-    );
+    return <ErrorLoadingPage />;
   }
 
   if (!orbsAccountStore.doneLoading) {
-    return (
-      <Page>
-        <ContentFitting>
-          <Typography>Loading...</Typography>
-        </ContentFitting>{" "}
-      </Page>
-    );
+    return <LoadingPage />;
   }
 
   if (orbsAccountStore.isGuardian) {
