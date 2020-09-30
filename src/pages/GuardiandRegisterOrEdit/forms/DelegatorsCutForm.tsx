@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { useBoolean, useNumber } from "react-hanger";
-import { DELGATORS_SHARE_MAX_PERCENTAGE_VALUE } from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
+import {
+  DELGATORS_SHARE_DEFAULT_PERCENTAGE_VALUE,
+  DELGATORS_SHARE_MAX_PERCENTAGE_VALUE,
+  GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
+} from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { useForm } from "react-hook-form";
 import { config, Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,7 +17,7 @@ interface IProps {
 }
 
 type TFormData = {
-  delegatorsCut: number;
+  delegatorsCut: string;
 };
 
 const REWARDS_FREQUENCY_MESSAGE = `Valid values are between 0 and ${DELGATORS_SHARE_MAX_PERCENTAGE_VALUE}`;
@@ -32,7 +36,11 @@ const useStyles = makeStyles((theme) => ({
 
 export const DelegatorsCutForm = React.memo<IProps>((props) => {
   const classes = useStyles();
-  const { currentDelegatorsCut, updateDelegatorsCut } = props;
+  const {
+    currentDelegatorsCut,
+    updateDelegatorsCut,
+    isUsingDefaultValue,
+  } = props;
 
   const showEditOptions = useBoolean(true);
   const { register, handleSubmit, errors } = useForm<TFormData>();
@@ -45,10 +53,21 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
 
   const submitUpdate = useCallback(
     (formData: TFormData) => {
-      updateDelegatorsCut(formData.delegatorsCut);
+      updateDelegatorsCut(parseFloat(formData.delegatorsCut));
     },
     [updateDelegatorsCut]
   );
+
+  const setDelegCut = delegatorsCut.setValue;
+  useEffect(() => {
+    setDelegCut(
+      Math.min(currentDelegatorsCut || 0, DELGATORS_SHARE_MAX_PERCENTAGE_VALUE)
+    );
+  }, [currentDelegatorsCut, setDelegCut]);
+
+  const titleText = isUsingDefaultValue
+    ? `Current cut : Default value (${DELGATORS_SHARE_DEFAULT_PERCENTAGE_VALUE}%)`
+    : `Current cut : ${delegatorsCut.value}%`;
 
   return (
     <form
@@ -59,7 +78,7 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
       }}
       onSubmit={handleSubmit(submitUpdate)}
     >
-      {/*<Typography variant={"body1"}>Delegators cut</Typography>*/}
+      <Typography variant={"body1"}>{titleText}</Typography>
       <br />
       <br />
 

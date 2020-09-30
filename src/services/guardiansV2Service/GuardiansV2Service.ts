@@ -13,6 +13,7 @@ import { GuardiansRegistration } from "../../contracts/GuardiansRegistration";
 import { PromiEvent, TransactionReceipt } from "web3-core";
 import {
   DELEGATORS_CUT_KEY,
+  DELGATORS_SHARE_PERCENTAGE_PRECISION,
   EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE,
   GUARDIAN_ID_KEY,
   REWARDS_FREQUENCY_KEY,
@@ -93,11 +94,46 @@ export class GuardiansV2Service implements IGuardiansV2Service {
     return parseInt(rewardsFrequency);
   }
 
-  public setDelegatorsCut(
+  public async readDelegatorsCutPercentage(
+    address: string
+  ): Promise<number | null> {
+    const delegatorsCutPercentageString = await this.guardiansRegistrationContract.methods
+      .getMetadata(address, DELEGATORS_CUT_KEY)
+      .call();
+
+    if (
+      !delegatorsCutPercentageString ||
+      !delegatorsCutPercentageString.length
+    ) {
+      return null;
+    }
+
+    return parseFloat(delegatorsCutPercentageString);
+  }
+
+  public async readGuardianId(address: string): Promise<string | null> {
+    const guardianId = await this.guardiansRegistrationContract.methods
+      .getMetadata(address, DELEGATORS_CUT_KEY)
+      .call();
+
+    if (!guardianId || !guardianId.length) {
+      return null;
+    }
+
+    return guardianId;
+  }
+
+  public setDelegatorsCutPercentage(
     delegatorsCut: number
   ): PromiEvent<TransactionReceipt> {
+    console.log("Setting", delegatorsCut);
+    console.log("Func", delegatorsCut.toFixed);
+
     return this.guardiansRegistrationContract.methods
-      .setMetadata(DELEGATORS_CUT_KEY, delegatorsCut.toString())
+      .setMetadata(
+        DELEGATORS_CUT_KEY,
+        delegatorsCut.toFixed(DELGATORS_SHARE_PERCENTAGE_PRECISION)
+      )
       .send();
   }
 

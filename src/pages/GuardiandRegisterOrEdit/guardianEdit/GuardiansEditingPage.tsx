@@ -34,6 +34,9 @@ export const GuardianEditingPage = React.memo<IProps>((props) => {
     async (guardianRegistrationPayload: TGuardianUpdatePayload) => {
       try {
         await orbsAccountStore.updateGuardianInfo(guardianRegistrationPayload);
+        enqueueSnackbar("Guardian details successfully updated", {
+          variant: "success",
+        });
       } catch (e) {
         enqueueSnackbar(`Error in 'Guardian Details Update' TX ${e.message}`, {
           variant: "error",
@@ -49,8 +52,48 @@ export const GuardianEditingPage = React.memo<IProps>((props) => {
         await orbsAccountStore.setGuardianDistributionFrequency(
           frequencyInHours
         );
+        enqueueSnackbar("Rewards frequency successfully updated", {
+          variant: "success",
+        });
       } catch (e) {
         enqueueSnackbar(`Error in 'Rewards Frequency Update' TX ${e.message}`, {
+          variant: "error",
+        });
+      }
+    },
+    [enqueueSnackbar, orbsAccountStore]
+  );
+
+  const updateDelegatorsCut = useCallback(
+    async (delegatorsCutPercentage: number) => {
+      try {
+        await orbsAccountStore.writeGuardianDelegatorsCutPercentage(
+          delegatorsCutPercentage
+        );
+        enqueueSnackbar("Delegators cut successfully updated", {
+          variant: "success",
+        });
+      } catch (e) {
+        enqueueSnackbar(
+          `Error in 'Delegators cut percentage Update' TX ${e.message}`,
+          {
+            variant: "error",
+          }
+        );
+      }
+    },
+    [enqueueSnackbar, orbsAccountStore]
+  );
+
+  const updateGuardianId = useCallback(
+    async (guardianId: string) => {
+      try {
+        await orbsAccountStore.writeGuardianId(guardianId);
+        enqueueSnackbar("Guardian ID successfully updated", {
+          variant: "success",
+        });
+      } catch (e) {
+        enqueueSnackbar(`Error in 'Guardian ID Update' TX ${e.message}`, {
           variant: "error",
         });
       }
@@ -105,8 +148,11 @@ export const GuardianEditingPage = React.memo<IProps>((props) => {
             />
 
             <EditDelegatorsCutSection
-              updateDelegatorsCut={(val) => console.log(val)}
-              delegatorsCut={55.22}
+              updateDelegatorsCut={updateDelegatorsCut}
+              delegatorsCut={orbsAccountStore.delegatorsCutPercentage}
+              isUsingDefaultValue={
+                orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
+              }
             />
 
             <Divider

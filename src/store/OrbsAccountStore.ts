@@ -68,6 +68,12 @@ export class OrbsAccountStore {
   public guardianContractInteractionTimes: TGuardianContractInteractionTimes = emptyGuardianContractInteractionTimes;
   @observable
   public rewardDistributionFrequencyInHours: number = EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE;
+
+  @observable
+  public delegatorsCutPercentage?: number;
+  @observable
+  public guardianId?: string;
+
   @observable public ethBalance = 0;
 
   private addressChangeReaction: IReactionDisposer;
@@ -96,6 +102,14 @@ export class OrbsAccountStore {
       this.rewardDistributionFrequencyInHours ===
       EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE
     );
+  }
+
+  @computed public get isUsingDefaultDelegatorsCutPercentage(): boolean {
+    return this.delegatorsCutPercentage === undefined;
+  }
+
+  @computed public get hasGuardianId(): boolean {
+    return this.guardianId !== undefined;
   }
 
   // **** Contract interactions ****
@@ -204,6 +218,42 @@ export class OrbsAccountStore {
     }
   }
 
+  public async writeGuardianDelegatorsCutPercentage(
+    delegatorsCutPercentage: number
+  ) {
+    console.log(`Writing :`, delegatorsCutPercentage);
+
+    const promiEvent = this.guardiansV2Service.setDelegatorsCutPercentage(
+      delegatorsCutPercentage
+    );
+
+    try {
+      await this.handlePromievent(promiEvent, "Set delegators cut percentage");
+
+      // After updating, lets re-read the data
+      await this.manuallyReadAccountData();
+    } catch (e) {
+      // TODO : Handle the error
+      console.error(`Failed setting delegators cut percentage ${e}`);
+      throw e;
+    }
+  }
+
+  public async writeGuardianId(guardianId: string) {
+    const promiEvent = this.guardiansV2Service.setGuardianId(guardianId);
+
+    try {
+      await this.handlePromievent(promiEvent, "Set Guardian ID");
+
+      // After updating, lets re-read the data
+      await this.manuallyReadAccountData();
+    } catch (e) {
+      // TODO : Handle the error
+      console.error(`Failed setting Guardian ID ${e}`);
+      throw e;
+    }
+  }
+
   // **** Current address changed ****
 
   private async reactToConnectedAddressChanged(currentAddress: string) {
@@ -265,6 +315,10 @@ export class OrbsAccountStore {
       this.readAndSetRewardsDistributionFrequency(accountAddress).catch((e) =>
         console.error(`Error read-n-set Rewards Frequency ${e}`)
       );
+
+      this.readAndSetDelegatorsCut(accountAddress).catch((e) =>
+        console.error(`Error read-n-set delegators cut percentage`)
+      );
     }
 
     this.readAndSetEthereumBalance(accountAddress).catch((e) =>
@@ -321,6 +375,20 @@ export class OrbsAccountStore {
     const frequencyInHours = frequencyInSeconds / ONE_HOUR_IN_SECONDS;
 
     this.setRewardDistributionFrequencyInHours(frequencyInHours);
+  }
+
+  private async readAndSetDelegatorsCut(accountAddress: string) {
+    const delegatorsCut = await this.guardiansV2Service.readDelegatorsCutPercentage(
+      accountAddress
+    );
+
+    console.log("Cut from contract", delegatorsCut);
+
+    if (delegatorsCut === null) {
+      this.setDelegatorsCutPercentage(undefined);
+    } else {
+      this.setDelegatorsCutPercentage(delegatorsCut);
+    }
   }
 
   private async readAndSetEthereumBalance(accountAddress: string) {
@@ -399,6 +467,16 @@ export class OrbsAccountStore {
     rewardDistributionFrequencyInHours: number
   ) {
     this.rewardDistributionFrequencyInHours = rewardDistributionFrequencyInHours;
+  }
+
+  @action("setDelegatorsCutPercentage")
+  private setDelegatorsCutPercentage(delegatorsCutPercentage?: number) {
+    this.delegatorsCutPercentage = delegatorsCutPercentage;
+  }
+
+  @action("setGuardianId")
+  private setGuardianId(guardianId?: string) {
+    this.guardianId = guardianId;
   }
 
   @action("setEthereumBalance")
