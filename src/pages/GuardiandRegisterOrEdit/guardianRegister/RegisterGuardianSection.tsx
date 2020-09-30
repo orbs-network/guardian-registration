@@ -1,18 +1,12 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { TGuardianRegistrationPayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
-import { GuardiansDetailsForm } from "./forms/GuradiansDetailsForm";
-import { TGuardianInfo } from "../../store/OrbsAccountStore";
+import React, { useCallback, useState } from "react";
+import { TGuardianRegistrationPayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
+import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
+import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
-import { ICryptoWalletConnectionService } from "../../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
-import { DetailsList } from "../../components/detailsList/Detailslist";
-import { DetailsListContainer } from "../../components/detailsList/DetailsListContainer";
-import {
-  GUARDIAN_ADDRESS_DETAILS_TEXTS,
-  NODE_ADDRESS_DETAILS_TEXTS,
-} from "../../constants/explainingTexts";
-import { GuardianFormDetailsList } from "../GuardianFormDetailsList";
+import { ICryptoWalletConnectionService } from "../../../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
+import { GuardianFormDetailsList } from "../../GuardianFormDetailsList";
 
 interface IProps {
   guardianAddress: string;

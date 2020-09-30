@@ -1,17 +1,8 @@
-import React, { useMemo } from "react";
-import { fromUnixTime } from "date-fns";
-import {
-  TGuardianInfo,
-  TGuardianContractInteractionTimes,
-} from "../../store/OrbsAccountStore";
-import { GuardiansDetailsForm } from "./forms/GuradiansDetailsForm";
-import { TGuardianUpdatePayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
-import { Avatar, Paper, Typography } from "@material-ui/core";
-import { RewardsDistributionFrequencyForm } from "./forms/RewardsDistributionFrequencyForm";
+import React from "react";
+import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import TimelapseIcon from "@material-ui/icons/Timelapse";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import { UnregisterForm } from "./forms/UnregisterForm";
+import { UnregisterForm } from "../forms/UnregisterForm";
 
 interface IProps {
   unregisterGuardian: () => void;

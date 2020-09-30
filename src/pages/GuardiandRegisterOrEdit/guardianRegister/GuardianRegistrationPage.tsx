@@ -1,16 +1,16 @@
 import React, { useCallback } from "react";
-import { Page } from "../../components/structure/Page";
-import { ContentFitting } from "../../components/structure/ContentFitting";
+import { Page } from "../../../components/structure/Page";
+import { ContentFitting } from "../../../components/structure/ContentFitting";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { RegisterGuardianSection } from "./RegisterGuardianSection";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   useCryptoWalletIntegrationStore,
   useOrbsAccountStore,
-} from "../../store/storeHooks";
-import { TGuardianRegistrationPayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
+} from "../../../store/storeHooks";
+import { TGuardianRegistrationPayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
 import { useSnackbar } from "notistack";
-import { useCryptoWalletConnectionService } from "../../services/servicesHooks";
+import { useCryptoWalletConnectionService } from "../../../services/servicesHooks";
 
 interface IProps {}
 

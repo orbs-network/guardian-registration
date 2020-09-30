@@ -3,8 +3,8 @@ import { observer } from "mobx-react";
 import { useOrbsAccountStore } from "../../store/storeHooks";
 import { ErrorLoadingPage } from "../error/ErrorLoadingPage";
 import { LoadingPage } from "../loading/LoadingPage";
-import { GuardianRegistrationPage } from "./GuardianRegistrationPage";
-import { GuardianEditingPage } from "./GuardiansEditingPage";
+import { GuardianRegistrationPage } from "./guardianRegister/GuardianRegistrationPage";
+import { GuardianEditingPage } from "./guardianEdit/GuardiansEditingPage";
 
 interface IProps {}
 

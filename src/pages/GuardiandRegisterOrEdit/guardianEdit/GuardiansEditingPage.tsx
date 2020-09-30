@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import { Page } from "../../components/structure/Page";
-import { ContentFitting } from "../../components/structure/ContentFitting";
+import { Page } from "../../../components/structure/Page";
+import { ContentFitting } from "../../../components/structure/ContentFitting";
 import { Backdrop, CircularProgress, Divider } from "@material-ui/core";
 import { EditGuardianInfoSection } from "./EditGuardianInfoSection";
 import { EditRewardsDistributionSection } from "./EditRewardsDistributionSection";
@@ -8,10 +8,10 @@ import { UnregisterSection } from "./UnregisterSection";
 import {
   useCryptoWalletIntegrationStore,
   useOrbsAccountStore,
-} from "../../store/storeHooks";
+} from "../../../store/storeHooks";
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
-import { TGuardianUpdatePayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
+import { TGuardianUpdatePayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
 
 interface IProps {}
 
