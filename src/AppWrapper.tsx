@@ -1,12 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "mobx-react";
-import App from "./App";
 import { configureMobx, getStores } from "./store/storesInitialization";
 import { buildServices } from "./services/Services";
 import { StylesProvider, ThemeProvider } from "@material-ui/core/styles";
 import { AppStyles, baseTheme } from "./theme/Theme";
-import { CssBaseline } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 
 interface IProps {
@@ -19,7 +17,8 @@ const ethereumProvider = (window as any).ethereum;
 const services = buildServices(ethereumProvider);
 const stores = getStores(
   services.cryptoWalletIntegrationService,
-  services.guardiansV2Service
+  services.guardiansV2Service,
+  services.rewardsV2Service
 );
 
 export const AppWrapper = React.memo<IProps>((props) => {

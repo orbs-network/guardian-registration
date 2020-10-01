@@ -17,6 +17,11 @@ import { PromiEvent, TransactionReceipt } from "web3-core";
 import { ipvHexToV4 } from "../utils/utils";
 import { JSON_RPC_ERROR_CODES } from "../constants/ethereumErrorCodes";
 import { ICryptoWalletConnectionService } from "../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
+import {
+  IRewardsV2Service,
+  TGuardianRewardsSettings,
+  TRewardsContractSettings,
+} from "../services/rewardsV2Service/IRewardsV2Service";
 
 export type TGuardianInfo = {
   ip: string;
@@ -68,6 +73,24 @@ export class OrbsAccountStore {
   public guardianContractInteractionTimes: TGuardianContractInteractionTimes = emptyGuardianContractInteractionTimes;
   @observable
   public rewardDistributionFrequencyInHours: number = EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE;
+
+  @observable
+  public rewardsContractSettings: TRewardsContractSettings = {
+    maxDelegatorsStakingRewardsPercent: 0,
+    defaultDelegatorsStakingRewardsPercent: 0,
+  };
+
+  @observable
+  public guardianRewardsSettings: TGuardianRewardsSettings = {
+    isUsingDefaultRewardsPercent: true,
+    delegatorsStakingRewardsPercent: 0,
+  };
+
+  @observable
+  public delegatorsCutPercentage?: number;
+  @observable
+  public guardianId?: string;
+
   @observable public ethBalance = 0;
 
   private addressChangeReaction: IReactionDisposer;
@@ -75,6 +98,7 @@ export class OrbsAccountStore {
   constructor(
     private cryptoWalletIntegrationStore: CryptoWalletConnectionStore,
     private guardiansV2Service: IGuardiansV2Service,
+    private rewardsV2Service: IRewardsV2Service,
     private cryptoWalletConnectionService: ICryptoWalletConnectionService
   ) {
     this.addressChangeReaction = reaction(
@@ -96,6 +120,14 @@ export class OrbsAccountStore {
       this.rewardDistributionFrequencyInHours ===
       EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE
     );
+  }
+
+  @computed public get isUsingDefaultDelegatorsCutPercentage(): boolean {
+    return this.guardianRewardsSettings.isUsingDefaultRewardsPercent;
+  }
+
+  @computed public get hasGuardianId(): boolean {
+    return this.guardianId !== undefined;
   }
 
   // **** Contract interactions ****
@@ -204,6 +236,42 @@ export class OrbsAccountStore {
     }
   }
 
+  public async writeGuardianDelegatorsCutPercentage(
+    delegatorsCutPercentage: number
+  ) {
+    console.log(`Writing :`, delegatorsCutPercentage);
+
+    const promiEvent = this.rewardsV2Service.setDelegatorsCutPercentage(
+      delegatorsCutPercentage
+    );
+
+    try {
+      await this.handlePromievent(promiEvent, "Set delegators cut percentage");
+
+      // After updating, lets re-read the data
+      await this.manuallyReadAccountData();
+    } catch (e) {
+      // TODO : Handle the error
+      console.error(`Failed setting delegators cut percentage ${e}`);
+      throw e;
+    }
+  }
+
+  public async writeGuardianId(guardianId: string) {
+    const promiEvent = this.guardiansV2Service.setGuardianId(guardianId);
+
+    try {
+      await this.handlePromievent(promiEvent, "Set Guardian ID");
+
+      // After updating, lets re-read the data
+      await this.manuallyReadAccountData();
+    } catch (e) {
+      // TODO : Handle the error
+      console.error(`Failed setting Guardian ID ${e}`);
+      throw e;
+    }
+  }
+
   // **** Current address changed ****
 
   private async reactToConnectedAddressChanged(currentAddress: string) {
@@ -228,6 +296,7 @@ export class OrbsAccountStore {
 
   private setDefaultAccountAddress(accountAddress: string) {
     this.guardiansV2Service.setFromAccount(accountAddress);
+    this.rewardsV2Service.setFromAccount(accountAddress);
     // this.stakingService.setFromAccount(accountAddress);
     // this.orbsTokenService.setFromAccount(accountAddress);
   }
@@ -265,7 +334,20 @@ export class OrbsAccountStore {
       this.readAndSetRewardsDistributionFrequency(accountAddress).catch((e) =>
         console.error(`Error read-n-set Rewards Frequency ${e}`)
       );
+
+      this.readAndSetDelegatorsCut(accountAddress).catch((e) =>
+        console.error(`Error read-n-set delegators cut percentage ${e}`)
+      );
+
+      this.readAndSetGuardianRewardsSettings(accountAddress).catch((e) =>
+        console.error(`Error read-n-set Guardian rewards settigns ${e}`)
+      );
     }
+
+    // DEV_NOTE : O.L : This piece of info is not directly related to the account
+    this.readAndSetRewardsContractSettings().catch((e) =>
+      console.error(`Error read-n-set Ethereum balance ${e}`)
+    );
 
     this.readAndSetEthereumBalance(accountAddress).catch((e) =>
       console.error(`Error read-n-set Ethereum balance ${e}`)
@@ -321,6 +403,32 @@ export class OrbsAccountStore {
     const frequencyInHours = frequencyInSeconds / ONE_HOUR_IN_SECONDS;
 
     this.setRewardDistributionFrequencyInHours(frequencyInHours);
+  }
+
+  private async readAndSetDelegatorsCut(accountAddress: string) {
+    const delegatorsCut = await this.rewardsV2Service.readDelegatorsCutPercentage(
+      accountAddress
+    );
+
+    if (delegatorsCut === null) {
+      this.setDelegatorsCutPercentage(undefined);
+    } else {
+      this.setDelegatorsCutPercentage(delegatorsCut);
+    }
+  }
+
+  private async readAndSetRewardsContractSettings() {
+    const rewardsContractSettings = await this.rewardsV2Service.readContractRewardsSettings();
+
+    this.setRewardsContractSettings(rewardsContractSettings);
+  }
+
+  private async readAndSetGuardianRewardsSettings(accountAddress: string) {
+    const guardianRewardsSettings = await this.rewardsV2Service.readGuardianRewardsSettings(
+      accountAddress
+    );
+
+    this.setGuardianRewardsSettings(guardianRewardsSettings);
   }
 
   private async readAndSetEthereumBalance(accountAddress: string) {
@@ -399,6 +507,30 @@ export class OrbsAccountStore {
     rewardDistributionFrequencyInHours: number
   ) {
     this.rewardDistributionFrequencyInHours = rewardDistributionFrequencyInHours;
+  }
+
+  @action("setRewardsContractSettings")
+  private setRewardsContractSettings(
+    rewardsContractSettings: TRewardsContractSettings
+  ) {
+    this.rewardsContractSettings = rewardsContractSettings;
+  }
+
+  @action("setGuardianRewardsSettings")
+  private setGuardianRewardsSettings(
+    guardianRewardsSettings: TGuardianRewardsSettings
+  ) {
+    this.guardianRewardsSettings = guardianRewardsSettings;
+  }
+
+  @action("setDelegatorsCutPercentage")
+  private setDelegatorsCutPercentage(delegatorsCutPercentage?: number) {
+    this.delegatorsCutPercentage = delegatorsCutPercentage;
+  }
+
+  @action("setGuardianId")
+  private setGuardianId(guardianId?: string) {
+    this.guardianId = guardianId;
   }
 
   @action("setEthereumBalance")

@@ -15,6 +15,7 @@ import { IGuardiansV2Service } from "../services/guardiansV2Service/IGuardiansV2
 
 // This import ensures mobx batching
 import "mobx-react-lite/batchingForReactDom";
+import { IRewardsV2Service } from "../services/rewardsV2Service/IRewardsV2Service";
 
 /**
  * Configures the mobx library. Should get called at App's initialization.
@@ -30,7 +31,8 @@ export function configureMobx() {
  */
 export function getStores(
   cryptoWalletConnectionService: ICryptoWalletConnectionService,
-  guardiansV2Service: IGuardiansV2Service
+  guardiansV2Service: IGuardiansV2Service,
+  rewardsV2Service: IRewardsV2Service
 ): IStores {
   // Create stores instances + Hydrate the stores
   const cryptoWalletIntegrationStore = new CryptoWalletConnectionStore(
@@ -39,6 +41,7 @@ export function getStores(
   const orbsAccountStore = new OrbsAccountStore(
     cryptoWalletIntegrationStore,
     guardiansV2Service,
+    rewardsV2Service,
     cryptoWalletConnectionService
   );
 

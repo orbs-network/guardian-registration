@@ -3,21 +3,13 @@ import { fromUnixTime } from "date-fns";
 import {
   TGuardianInfo,
   TGuardianContractInteractionTimes,
-} from "../../store/OrbsAccountStore";
-import { GuardiansDetailsForm } from "./forms/GuradiansDetailsForm";
-import { TGuardianUpdatePayload } from "../../services/guardiansV2Service/IGuardiansV2Service";
-import {
-  Paper,
-  Typography,
-  Avatar,
-  TextField,
-  Button,
-} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+} from "../../../store/OrbsAccountStore";
+import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
+import { TGuardianUpdatePayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
+import { Typography, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import { Transition } from "react-spring/renderprops-universal";
-import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 
 interface IProps {
   guardianAddress: string;
