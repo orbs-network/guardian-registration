@@ -8,12 +8,8 @@ export interface IGuardiansV2Service {
     address: string
   ) => Promise<number>;
 
-  readDelegatorsCutPercentage: (address: string) => Promise<number | null>;
   readGuardianId: (address: string) => Promise<string | null>;
 
-  setDelegatorsCutPercentage: (
-    delegatorsCut: number
-  ) => PromiEvent<TransactionReceipt>;
   setGuardianId: (guardianId: string) => PromiEvent<TransactionReceipt>;
 
   /**

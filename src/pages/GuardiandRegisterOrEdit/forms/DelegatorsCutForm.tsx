@@ -1,11 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { useBoolean, useNumber } from "react-hanger";
-import {
-  DELGATORS_SHARE_DEFAULT_PERCENTAGE_VALUE,
-  DELGATORS_SHARE_MAX_PERCENTAGE_VALUE,
-  GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
-} from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { useForm } from "react-hook-form";
 import { config, Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,13 +9,15 @@ interface IProps {
   currentDelegatorsCut?: number;
   updateDelegatorsCut: (delegatorsCut: number) => void;
   isUsingDefaultValue?: boolean;
+
+  // Configs
+  delegatorsCutMaxValue: number;
+  delegatorsCutDefaultValue: number;
 }
 
 type TFormData = {
   delegatorsCut: string;
 };
-
-const REWARDS_FREQUENCY_MESSAGE = `Valid values are between 0 and ${DELGATORS_SHARE_MAX_PERCENTAGE_VALUE}`;
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -40,13 +37,17 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
     currentDelegatorsCut,
     updateDelegatorsCut,
     isUsingDefaultValue,
+    delegatorsCutDefaultValue,
+    delegatorsCutMaxValue,
   } = props;
 
-  const showEditOptions = useBoolean(true);
+  const REWARDS_FREQUENCY_MESSAGE = `Valid values are between 0 and ${delegatorsCutMaxValue}`;
+
+  const showEditOptions = useBoolean(false);
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
   const delegatorsCut = useNumber(Math.min(currentDelegatorsCut || 0, 66), {
-    upperLimit: DELGATORS_SHARE_MAX_PERCENTAGE_VALUE,
+    upperLimit: delegatorsCutMaxValue,
   });
 
   const errorDelegatorsCut = !!errors.delegatorsCut;
@@ -60,13 +61,11 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
 
   const setDelegCut = delegatorsCut.setValue;
   useEffect(() => {
-    setDelegCut(
-      Math.min(currentDelegatorsCut || 0, DELGATORS_SHARE_MAX_PERCENTAGE_VALUE)
-    );
-  }, [currentDelegatorsCut, setDelegCut]);
+    setDelegCut(Math.min(currentDelegatorsCut || 0, delegatorsCutMaxValue));
+  }, [currentDelegatorsCut, delegatorsCutMaxValue, setDelegCut]);
 
   const titleText = isUsingDefaultValue
-    ? `Current cut : Default value (${DELGATORS_SHARE_DEFAULT_PERCENTAGE_VALUE}%)`
+    ? `Current cut : Default value (${delegatorsCutDefaultValue}%)`
     : `Current cut : ${delegatorsCut.value}%`;
 
   return (
@@ -80,7 +79,7 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
     >
       <Typography variant={"body1"}>{titleText}</Typography>
       <br />
-      <br />
+      {/*<br />*/}
 
       <Transition
         items={showEditOptions.value}
@@ -123,13 +122,13 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
                     required
                     type={"number"}
                     inputRef={register({
-                      max: DELGATORS_SHARE_MAX_PERCENTAGE_VALUE,
+                      max: delegatorsCutMaxValue,
                     })}
                     error={errorDelegatorsCut}
                     helperText={
                       errorDelegatorsCut
                         ? REWARDS_FREQUENCY_MESSAGE
-                        : `The percentage of rewards that will reach your delegators. between 0 and ${DELGATORS_SHARE_MAX_PERCENTAGE_VALUE}`
+                        : `The percentage of rewards that will reach your delegators. between 0 and ${delegatorsCutMaxValue}`
                     }
                     className={classes.textField}
                   />

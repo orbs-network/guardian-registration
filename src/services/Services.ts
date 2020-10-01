@@ -12,10 +12,13 @@ import configs from "../configs";
 import { BuildOrbsClient } from "./OrbsClientFactory";
 import { IGuardiansV2Service } from "./guardiansV2Service/IGuardiansV2Service";
 import { GuardiansV2Service } from "./guardiansV2Service/GuardiansV2Service";
+import { IRewardsV2Service } from "./rewardsV2Service/IRewardsV2Service";
+import { RewardsV2Service } from "./rewardsV2Service/RewardsV2Service";
 
 export interface IServices {
   cryptoWalletIntegrationService: ICryptoWalletConnectionService;
   guardiansV2Service: IGuardiansV2Service;
+  rewardsV2Service: IRewardsV2Service;
   guardiansService: IGuardiansService;
 }
 
@@ -42,7 +45,11 @@ export function buildServices(ethereumProvider: IEthereumProvider): IServices {
     ),
     guardiansV2Service: new GuardiansV2Service(
       web3,
-      configs.v2contractsAddressesOverride.guardiansRegistration
+      configs?.v2contractsAddressesOverride?.guardiansRegistration
+    ),
+    rewardsV2Service: new RewardsV2Service(
+      web3,
+      configs?.v2contractsAddressesOverride?.rewards
     ),
     guardiansService: new GuardiansService(web3, orbsClientService),
   };

@@ -21,6 +21,7 @@ interface IConfig {
   urlBase: string;
   v2contractsAddressesOverride: Partial<{
     guardiansRegistration: string;
+    rewards: string;
   }>;
   ETHEREUM_PROVIDER_WS: string;
 
@@ -44,6 +45,7 @@ if (process.env.NODE_ENV !== "production") {
 
     configs.v2contractsAddressesOverride.guardiansRegistration =
       addresses.guardiansRegistration;
+    configs.v2contractsAddressesOverride.rewards = addresses.rewards;
   }
 }
 

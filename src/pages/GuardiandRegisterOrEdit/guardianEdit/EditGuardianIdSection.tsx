@@ -10,10 +10,6 @@ interface IProps {
   delegatorsCut?: number;
   updateDelegatorsCut: (delegatorsCut: number) => void;
   isUsingDefaultValue?: boolean;
-
-  // Configs
-  delegatorsCutMaxValue: number;
-  delegatorsCutDefaultValue: number;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -25,27 +21,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const EditDelegatorsCutSection = React.memo<IProps>((props) => {
+// TODO : C.F.H : O.L : Add the proper form and add this section.
+export const EditGuardianIdSection = React.memo<IProps>((props) => {
   const classes = useStyles();
-  const {
-    delegatorsCut,
-    updateDelegatorsCut,
-    isUsingDefaultValue,
-    delegatorsCutMaxValue,
-    delegatorsCutDefaultValue,
-  } = props;
+  const { delegatorsCut, updateDelegatorsCut, isUsingDefaultValue } = props;
   return (
     <>
       <Avatar className={classes.avatar}>
         <MoneyIcon />
       </Avatar>
-      <Typography variant={"h5"}>Delegators cut</Typography>
+      <Typography variant={"h5"}>Guardian ID</Typography>
       <DelegatorsCutForm
         updateDelegatorsCut={updateDelegatorsCut}
         currentDelegatorsCut={delegatorsCut}
         isUsingDefaultValue={isUsingDefaultValue}
-        delegatorsCutDefaultValue={delegatorsCutDefaultValue}
-        delegatorsCutMaxValue={delegatorsCutMaxValue}
+        delegatorsCutMaxValue={0}
+        delegatorsCutDefaultValue={0}
       />
     </>
   );

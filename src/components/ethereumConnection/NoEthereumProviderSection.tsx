@@ -64,8 +64,6 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
 
   const isConnectPhase = walletConnectionPhase === "connect";
 
-  console.log({ tickerValue });
-
   // Display flags
   const {
     shouldDisplayLegalTicker,

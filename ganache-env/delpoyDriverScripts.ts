@@ -18,10 +18,25 @@ const deployDriverScripts = async () => {
 
     const orbsV2Account = driver.accounts[0];
     console.log("Assigning ORBS");
-    driver.erc20.assign(orbsV2Account, new BN("1000000000000000000000000000"));
+    await driver.erc20.assign(
+      orbsV2Account,
+      new BN("1000000000000000000000000000")
+    );
+
+    console.log("Setting default delegators cut value");
+    await driver.rewards.setDefaultDelegatorsStakingRewardsPercentMille(
+      70 * 1000,
+      { from: driver.functionalManager.address }
+    );
+
+    console.log("Setting default delegators cut value");
+    await driver.rewards.setMaxDelegatorsStakingRewardsPercentMille(82 * 1000, {
+      from: driver.functionalManager.address,
+    });
 
     const addresses = {
       guardiansRegistration: driver.guardiansRegistration.address,
+      rewards: driver.rewards.address,
     };
 
     console.log("Saving addresses to file");

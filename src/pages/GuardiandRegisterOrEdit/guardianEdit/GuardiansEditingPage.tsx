@@ -153,6 +153,14 @@ export const GuardianEditingPage = React.memo<IProps>((props) => {
               isUsingDefaultValue={
                 orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
               }
+              delegatorsCutDefaultValue={
+                orbsAccountStore.rewardsContractSettings
+                  .defaultDelegatorsStakingRewardsPercent
+              }
+              delegatorsCutMaxValue={
+                orbsAccountStore.rewardsContractSettings
+                  .maxDelegatorsStakingRewardsPercent
+              }
             />
 
             <Divider
