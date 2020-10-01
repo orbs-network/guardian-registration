@@ -410,11 +410,8 @@ export class OrbsAccountStore {
       accountAddress
     );
 
-    if (delegatorsCut === null) {
-      this.setDelegatorsCutPercentage(undefined);
-    } else {
-      this.setDelegatorsCutPercentage(delegatorsCut);
-    }
+    console.log("Setting delegtors cut", delegatorsCut);
+    this.setDelegatorsCutPercentage(delegatorsCut);
   }
 
   private async readAndSetRewardsContractSettings() {
@@ -524,7 +521,7 @@ export class OrbsAccountStore {
   }
 
   @action("setDelegatorsCutPercentage")
-  private setDelegatorsCutPercentage(delegatorsCutPercentage?: number) {
+  private setDelegatorsCutPercentage(delegatorsCutPercentage: number) {
     this.delegatorsCutPercentage = delegatorsCutPercentage;
   }
 

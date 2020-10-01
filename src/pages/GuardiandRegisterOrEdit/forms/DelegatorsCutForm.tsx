@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { useBoolean, useNumber } from "react-hanger";
 import { useForm } from "react-hook-form";
@@ -64,9 +64,13 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
     setDelegCut(Math.min(currentDelegatorsCut || 0, delegatorsCutMaxValue));
   }, [currentDelegatorsCut, delegatorsCutMaxValue, setDelegCut]);
 
-  const titleText = isUsingDefaultValue
-    ? `Current cut : Default value (${delegatorsCutDefaultValue}%)`
-    : `Current cut : ${delegatorsCut.value}%`;
+  console.log({ currentDelegatorsCut });
+
+  const titleText = useMemo(() => {
+    return isUsingDefaultValue
+      ? `Current cut : Default value (${delegatorsCutDefaultValue}%)`
+      : `Current cut : ${currentDelegatorsCut}%`;
+  }, [currentDelegatorsCut, delegatorsCutDefaultValue, isUsingDefaultValue]);
 
   return (
     <form
@@ -110,11 +114,11 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
                   <TextField
                     fullWidth
                     name={"delegatorsCut"}
-                    title={`Delegators cut % out of rewards`}
-                    label={"Delegators cut % out of rewards"}
+                    title={`Delegators cut % out of staking rewards`}
+                    label={"Delegators cut % out of staking rewards"}
                     value={delegatorsCut.value}
                     inputProps={{
-                      step: 0.001,
+                      step: 1,
                     }}
                     onChange={(e) => {
                       delegatorsCut.setValue(parseFloat(e.target.value) || 0);
@@ -128,7 +132,7 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
                     helperText={
                       errorDelegatorsCut
                         ? REWARDS_FREQUENCY_MESSAGE
-                        : `The percentage of rewards that will reach your delegators. between 0 and ${delegatorsCutMaxValue}`
+                        : `The percentage of the staking rewards that is distributed to your Delegators. between 0 and ${delegatorsCutMaxValue}`
                     }
                     className={classes.textField}
                   />
