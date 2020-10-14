@@ -6,22 +6,19 @@ import {
   reaction,
 } from "mobx";
 import { CryptoWalletConnectionStore } from "./CryptoWalletConnectionStore";
-import {
-  IGuardiansV2Service,
-  TGuardianInfoResponse,
-  TGuardianRegistrationPayload,
-  TGuardianUpdatePayload,
-} from "../services/guardiansV2Service/IGuardiansV2Service";
-import { EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE } from "../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { PromiEvent, TransactionReceipt } from "web3-core";
 import { ipvHexToV4 } from "../utils/utils";
 import { JSON_RPC_ERROR_CODES } from "../constants/ethereumErrorCodes";
-import { ICryptoWalletConnectionService } from "../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
 import {
-  IRewardsV2Service,
+  ICryptoWalletConnectionService,
+  IGuardiansService,
+  IStakingRewardsService,
   TGuardianRewardsSettings,
   TRewardsContractSettings,
-} from "../services/rewardsV2Service/IRewardsV2Service";
+  GUARDIANS_SERVICE_CONSTANTS,
+  TGuardianRegistrationPayload,
+  TGuardianUpdatePayload,
+} from "@orbs-network/contracts-js";
 
 export type TGuardianInfo = {
   ip: string;
@@ -72,7 +69,8 @@ export class OrbsAccountStore {
   @observable
   public guardianContractInteractionTimes: TGuardianContractInteractionTimes = emptyGuardianContractInteractionTimes;
   @observable
-  public rewardDistributionFrequencyInHours: number = EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE;
+  public rewardDistributionFrequencyInHours: number =
+    GUARDIANS_SERVICE_CONSTANTS.emptyRewardsFrequencyValue;
 
   @observable
   public rewardsContractSettings: TRewardsContractSettings = {
@@ -97,8 +95,8 @@ export class OrbsAccountStore {
 
   constructor(
     private cryptoWalletIntegrationStore: CryptoWalletConnectionStore,
-    private guardiansV2Service: IGuardiansV2Service,
-    private rewardsV2Service: IRewardsV2Service,
+    private guardiansService: IGuardiansService,
+    private stakingRewardsService: IStakingRewardsService,
     private cryptoWalletConnectionService: ICryptoWalletConnectionService
   ) {
     this.addressChangeReaction = reaction(
@@ -118,7 +116,7 @@ export class OrbsAccountStore {
   @computed public get isUsingDefaultRewardFrequency(): boolean {
     return (
       this.rewardDistributionFrequencyInHours ===
-      EMPTY_GUARDIAN_REWARDS_FREQUENCY_VALUE
+      GUARDIANS_SERVICE_CONSTANTS.emptyRewardsFrequencyValue
     );
   }
 
@@ -162,7 +160,7 @@ export class OrbsAccountStore {
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ) {
     try {
-      const promiEvent = this.guardiansV2Service.registerGuardian(
+      const promiEvent = this.guardiansService.registerGuardian(
         guardianRegistrationPayload
       );
 
@@ -182,7 +180,7 @@ export class OrbsAccountStore {
     guardianUpdatePayload: TGuardianUpdatePayload
   ) {
     try {
-      const promiEvent = this.guardiansV2Service.updateGuardianInfo(
+      const promiEvent = this.guardiansService.updateGuardianInfo(
         guardianUpdatePayload
       );
 
@@ -200,7 +198,7 @@ export class OrbsAccountStore {
 
   public async unregisterGuardian() {
     try {
-      const promiEvent = this.guardiansV2Service.unregisterGuardian();
+      const promiEvent = this.guardiansService.unregisterGuardian();
 
       const res = await this.handlePromievent(
         promiEvent,
@@ -220,7 +218,7 @@ export class OrbsAccountStore {
   public async setGuardianDistributionFrequency(frequencyInHours: number) {
     const frequencyInSeconds = frequencyInHours * ONE_HOUR_IN_SECONDS;
 
-    const promiEvent = this.guardiansV2Service.setGuardianDistributionFrequency(
+    const promiEvent = this.guardiansService.setGuardianDistributionFrequency(
       frequencyInSeconds
     );
 
@@ -241,7 +239,7 @@ export class OrbsAccountStore {
   ) {
     console.log(`Writing :`, delegatorsCutPercentage);
 
-    const promiEvent = this.rewardsV2Service.setDelegatorsCutPercentage(
+    const promiEvent = this.stakingRewardsService.setDelegatorsCutPercentage(
       delegatorsCutPercentage
     );
 
@@ -258,7 +256,7 @@ export class OrbsAccountStore {
   }
 
   public async writeGuardianId(guardianId: string) {
-    const promiEvent = this.guardiansV2Service.setGuardianId(guardianId);
+    const promiEvent = this.guardiansService.setGuardianId(guardianId);
 
     try {
       await this.handlePromievent(promiEvent, "Set Guardian ID");
@@ -295,8 +293,8 @@ export class OrbsAccountStore {
   }
 
   private setDefaultAccountAddress(accountAddress: string) {
-    this.guardiansV2Service.setFromAccount(accountAddress);
-    this.rewardsV2Service.setFromAccount(accountAddress);
+    this.guardiansService.setFromAccount(accountAddress);
+    this.stakingRewardsService.setFromAccount(accountAddress);
     // this.stakingService.setFromAccount(accountAddress);
     // this.orbsTokenService.setFromAccount(accountAddress);
   }
@@ -355,14 +353,14 @@ export class OrbsAccountStore {
   }
 
   private async readAndSetIsGuardian(accountAddress: string) {
-    const isGuardian = await this.guardiansV2Service.isRegisteredGuardian(
+    const isGuardian = await this.guardiansService.isRegisteredGuardian(
       accountAddress
     );
     this.setIsGuardian(isGuardian);
   }
 
   private async readAndSetGuardianInfo(accountAddress: string) {
-    this.guardiansV2Service
+    this.guardiansService
       .readGuardianInfo(accountAddress)
       .then((guardianInfoResponse) => {
         const {
@@ -396,7 +394,7 @@ export class OrbsAccountStore {
   }
 
   private async readAndSetRewardsDistributionFrequency(accountAddress: string) {
-    const frequencyInSeconds = await this.guardiansV2Service.readGuardianDistributionFrequencyInSeconds(
+    const frequencyInSeconds = await this.guardiansService.readGuardianDistributionFrequencyInSeconds(
       accountAddress
     );
 
@@ -406,7 +404,7 @@ export class OrbsAccountStore {
   }
 
   private async readAndSetDelegatorsCut(accountAddress: string) {
-    const delegatorsCut = await this.rewardsV2Service.readDelegatorsCutPercentage(
+    const delegatorsCut = await this.stakingRewardsService.readDelegatorsCutPercentage(
       accountAddress
     );
 
@@ -415,13 +413,13 @@ export class OrbsAccountStore {
   }
 
   private async readAndSetRewardsContractSettings() {
-    const rewardsContractSettings = await this.rewardsV2Service.readContractRewardsSettings();
+    const rewardsContractSettings = await this.stakingRewardsService.readContractRewardsSettings();
 
     this.setRewardsContractSettings(rewardsContractSettings);
   }
 
   private async readAndSetGuardianRewardsSettings(accountAddress: string) {
-    const guardianRewardsSettings = await this.rewardsV2Service.readGuardianRewardsSettings(
+    const guardianRewardsSettings = await this.stakingRewardsService.readGuardianRewardsSettings(
       accountAddress
     );
 

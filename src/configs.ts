@@ -1,5 +1,3 @@
-import { IOrbsPosContractsAddresses } from "orbs-pos-data";
-
 /**
  * Copyright 2019 the prism authors
  * This file is part of the prism library in the Orbs project.
@@ -21,7 +19,7 @@ interface IConfig {
   urlBase: string;
   v2contractsAddressesOverride: Partial<{
     guardiansRegistration: string;
-    rewards: string;
+    stakingRewards: string;
   }>;
   ETHEREUM_PROVIDER_WS: string;
 
@@ -45,7 +43,8 @@ if (process.env.NODE_ENV !== "production") {
 
     configs.v2contractsAddressesOverride.guardiansRegistration =
       addresses.guardiansRegistration;
-    configs.v2contractsAddressesOverride.rewards = addresses.rewards;
+    configs.v2contractsAddressesOverride.stakingRewards =
+      addresses.stakingRewards;
   }
 }
 

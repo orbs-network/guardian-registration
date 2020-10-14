@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect } from "react";
-import { Button, TextField, Typography } from "@material-ui/core";
-import { useBoolean, useNumber } from "react-hanger";
-import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
+import React, { useCallback } from "react";
+import { Button } from "@material-ui/core";
+import { useBoolean } from "react-hanger";
 import { useForm } from "react-hook-form";
-import { config, Transition } from "react-spring/renderprops-universal";
+import { Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
 
 interface IProps {

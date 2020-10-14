@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import { TGuardianRegistrationPayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { Avatar, Typography } from "@material-ui/core";
@@ -7,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
 import { ICryptoWalletConnectionService } from "../../../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
 import { GuardianFormDetailsList } from "../../GuardianFormDetailsList";
+import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 
 interface IProps {
   guardianAddress: string;

@@ -1,21 +1,16 @@
 import { configure } from "mobx";
 import { IStores } from "./stores";
-import {
-  IOrbsPOSDataService,
-  IStakingService,
-  IOrbsTokenService,
-  IGuardiansService,
-  IOrbsRewardsService,
-} from "orbs-pos-data";
 
 import { CryptoWalletConnectionStore } from "./CryptoWalletConnectionStore";
-import { ICryptoWalletConnectionService } from "../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
 import { OrbsAccountStore } from "./OrbsAccountStore";
-import { IGuardiansV2Service } from "../services/guardiansV2Service/IGuardiansV2Service";
 
 // This import ensures mobx batching
 import "mobx-react-lite/batchingForReactDom";
-import { IRewardsV2Service } from "../services/rewardsV2Service/IRewardsV2Service";
+import {
+  ICryptoWalletConnectionService,
+  IGuardiansService,
+  IStakingRewardsService,
+} from "@orbs-network/contracts-js";
 
 /**
  * Configures the mobx library. Should get called at App's initialization.
@@ -31,8 +26,8 @@ export function configureMobx() {
  */
 export function getStores(
   cryptoWalletConnectionService: ICryptoWalletConnectionService,
-  guardiansV2Service: IGuardiansV2Service,
-  rewardsV2Service: IRewardsV2Service
+  guardiansV2Service: IGuardiansService,
+  stakingRewardsV2Service: IStakingRewardsService
 ): IStores {
   // Create stores instances + Hydrate the stores
   const cryptoWalletIntegrationStore = new CryptoWalletConnectionStore(
@@ -41,7 +36,7 @@ export function getStores(
   const orbsAccountStore = new OrbsAccountStore(
     cryptoWalletIntegrationStore,
     guardiansV2Service,
-    rewardsV2Service,
+    stakingRewardsV2Service,
     cryptoWalletConnectionService
   );
 

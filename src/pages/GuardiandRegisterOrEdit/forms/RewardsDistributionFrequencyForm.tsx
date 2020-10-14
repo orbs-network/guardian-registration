@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from "react";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { useBoolean, useNumber } from "react-hanger";
-import { GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS } from "../../../services/guardiansV2Service/GuardiansV2ServiceConstants";
 import { useForm } from "react-hook-form";
 import { config, Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
+import { GUARDIANS_SERVICE_CONSTANTS } from "@orbs-network/contracts-js";
 
 interface IProps {
   currentFrequencyInHours: number;
@@ -44,10 +44,11 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
   const frequency = useNumber(
     Math.max(
       currentFrequencyInHours,
-      GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS
+      GUARDIANS_SERVICE_CONSTANTS.rewardsFrequencyMinimumValueInHours
     ),
     {
-      lowerLimit: GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
+      lowerLimit:
+        GUARDIANS_SERVICE_CONSTANTS.rewardsFrequencyMinimumValueInHours,
     }
   );
 
@@ -62,7 +63,7 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
     setFreq(
       Math.max(
         currentFrequencyInHours,
-        GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS
+        GUARDIANS_SERVICE_CONSTANTS.rewardsFrequencyMinimumValueInHours
       )
     );
   }, [currentFrequencyInHours, setFreq]);
@@ -156,7 +157,7 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
                   <TextField
                     fullWidth
                     name={"rewardsFrequencyInHours"}
-                    title={`Rewards Frequency in hours - Minimum ${GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS} hours`}
+                    title={`Rewards Frequency in hours - Minimum ${GUARDIANS_SERVICE_CONSTANTS.rewardsFrequencyMinimumValueInHours} hours`}
                     label={"Rewards Frequency in hours"}
                     value={frequency.value}
                     onChange={(e) =>
@@ -165,7 +166,8 @@ export const RewardsDistributionFrequencyForm = React.memo<IProps>((props) => {
                     required
                     type={"number"}
                     inputRef={register({
-                      min: GUARDIAN_REWARDS_FREQUENCY_MINIMUM_VALUE_IN_HOURS,
+                      min:
+                        GUARDIANS_SERVICE_CONSTANTS.rewardsFrequencyMinimumValueInHours,
                     })}
                     error={errorRewardsFrequency}
                     helperText={

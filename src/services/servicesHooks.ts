@@ -1,8 +1,10 @@
 import React from "react";
 import { IServices } from "./Services";
-import { ICryptoWalletConnectionService } from "./cryptoWalletConnectionService/ICryptoWalletConnectionService";
 import { MobXProviderContext } from "mobx-react";
-import { IGuardiansV2Service } from "./guardiansV2Service/IGuardiansV2Service";
+import {
+  ICryptoWalletConnectionService,
+  IGuardiansService,
+} from "@orbs-network/contracts-js";
 
 export function useServices(): IServices {
   const services = React.useContext(MobXProviderContext) as IServices;
@@ -18,6 +20,6 @@ export function useCryptoWalletConnectionService(): ICryptoWalletConnectionServi
   return useServices().cryptoWalletIntegrationService;
 }
 
-export function useGuardiansV2Service(): IGuardiansV2Service {
-  return useServices().guardiansV2Service;
+export function useGuardiansService(): IGuardiansService {
+  return useServices().guardiansService;
 }

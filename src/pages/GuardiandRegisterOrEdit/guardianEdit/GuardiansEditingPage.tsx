@@ -11,10 +11,10 @@ import {
 } from "../../../store/storeHooks";
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
-import { TGuardianUpdatePayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
 import { EditDelegatorsCutSection } from "./EditDelegatorsCutSection";
 import { observer } from "mobx-react";
 import { IReactComponent } from "mobx-react/dist/types/IReactComponent";
+import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
 
 interface IProps {}
 

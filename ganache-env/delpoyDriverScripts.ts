@@ -24,19 +24,22 @@ const deployDriverScripts = async () => {
     );
 
     console.log("Setting default delegators cut value");
-    await driver.rewards.setDefaultDelegatorsStakingRewardsPercentMille(
+    await driver.stakingRewards.setDefaultDelegatorsStakingRewardsPercentMille(
       70 * 1000,
       { from: driver.functionalManager.address }
     );
 
     console.log("Setting default delegators cut value");
-    await driver.rewards.setMaxDelegatorsStakingRewardsPercentMille(82 * 1000, {
-      from: driver.functionalManager.address,
-    });
+    await driver.stakingRewards.setMaxDelegatorsStakingRewardsPercentMille(
+      82 * 1000,
+      {
+        from: driver.functionalManager.address,
+      }
+    );
 
     const addresses = {
       guardiansRegistration: driver.guardiansRegistration.address,
-      rewards: driver.rewards.address,
+      stakingRewards: driver.stakingRewards.address,
     };
 
     console.log("Saving addresses to file");

@@ -6,7 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@orbs-network/orbs-ethereum-contracts-v2": "0.0.22",
+    "@orbs-network/contracts-js": "0.0.12",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^12.1.6",
@@ -20,7 +20,6 @@
     "mobx": "^5.15.7",
     "mobx-react": "^6.3.0",
     "notistack": "^1.0.0",
-    "orbs-pos-data": "^6.20.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hanger": "^2.2.1",
@@ -28,7 +27,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-spring": "^8.0.27",
-    "typechain": "^2.0.0",
     "typescript": "^4.0.3",
     "web3": "^1.3.0",
     "web3-utils": "^1.3.0"
@@ -41,8 +39,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "mkd": "mkdir -p ./src/local && mkdir -p ./ganache-env/_out",
-    "postinstall": "npm run generate_types && npm run mkd",
-    "generate_types": "typechain --target web3-v1 --outDir ./src/contracts './node_modules/@orbs-network/orbs-ethereum-contracts-v2/build/contracts/*.json'"
+    "postinstall": "npm run mkd"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -69,7 +66,6 @@
     ]
   },
   "devDependencies": {
-    "@typechain/web3-v1": "^1.0.0",
     "@types/color": "^3.0.1",
     "@types/react-router-dom": "^5.1.5",
     "eslint-plugin-react-hooks": "^4.1.2",

@@ -5,11 +5,11 @@ import {
   TGuardianContractInteractionTimes,
 } from "../../../store/OrbsAccountStore";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
-import { TGuardianUpdatePayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
 import { Typography, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import { Transition } from "react-spring/renderprops-universal";
+import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
 
 interface IProps {
   guardianAddress: string;

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from "react";
 import { useStateful } from "react-hanger";
-import { TGuardianRegistrationPayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
 import {
   Button,
   TextField,
@@ -12,10 +11,8 @@ import {
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/core/styles";
-import HelpIcon from "@material-ui/icons/Help";
 import { FormHelperListTexts } from "../../../components/forms/FormHelperListTexts";
-import { InstallPhaseExtraDetails } from "../../../components/ethereumConnection/InstallPhaseExtraDetails";
-import { DetailsList } from "../../../components/detailsList/Detailslist";
+import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 
 interface IProps {
   actionButtonTitle: string;
@@ -67,10 +64,10 @@ const PLACE_HOLDER_NODE_ADDRESS =
 function validURL(str: string) {
   const pattern = new RegExp(
     "^(https?:\\/\\/)?" + // protocol
-    "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-    "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-    "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-    "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
       "(\\#[-a-z\\d_]*)?$",
     "i"
   ); // fragment locator

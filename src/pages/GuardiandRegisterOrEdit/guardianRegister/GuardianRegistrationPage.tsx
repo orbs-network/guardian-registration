@@ -8,9 +8,9 @@ import {
   useCryptoWalletIntegrationStore,
   useOrbsAccountStore,
 } from "../../../store/storeHooks";
-import { TGuardianRegistrationPayload } from "../../../services/guardiansV2Service/IGuardiansV2Service";
 import { useSnackbar } from "notistack";
 import { useCryptoWalletConnectionService } from "../../../services/servicesHooks";
+import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 
 interface IProps {}
 
