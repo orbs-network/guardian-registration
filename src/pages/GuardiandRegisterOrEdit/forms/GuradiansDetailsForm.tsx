@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormHelperListTexts } from "../../../components/forms/FormHelperListTexts";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
+import { validURL } from "./inoputValidators";
 
 interface IProps {
   actionButtonTitle: string;
@@ -60,19 +61,6 @@ const PLACE_HOLDER_WEBSITE = "e.g: https://www.number1guardian.com";
 const PLACE_HOLDER_IP = "e.g: 123.17.46.251";
 const PLACE_HOLDER_NODE_ADDRESS =
   "e.g: 0x0cBb46287c93357be4CF60fe9601c2c7A2700dC2";
-
-function validURL(str: string) {
-  const pattern = new RegExp(
-    "^(https?:\\/\\/)?" + // protocol
-      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-      "(\\#[-a-z\\d_]*)?$",
-    "i"
-  ); // fragment locator
-  return !!pattern.test(str);
-}
 
 type TFormData = {
   // guardianAddress: string;

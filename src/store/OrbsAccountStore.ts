@@ -87,6 +87,8 @@ export class OrbsAccountStore {
   @observable
   public delegatorsCutPercentage?: number;
   @observable
+  public detailsPageUrl?: string;
+  @observable
   public guardianId?: string;
 
   @observable public ethBalance = 0;
@@ -122,6 +124,10 @@ export class OrbsAccountStore {
 
   @computed public get isUsingDefaultDelegatorsCutPercentage(): boolean {
     return this.guardianRewardsSettings.isUsingDefaultRewardsPercent;
+  }
+
+  @computed public get hasGuardianDetailsURL(): boolean {
+    return !!this.detailsPageUrl;
   }
 
   @computed public get hasGuardianId(): boolean {
@@ -255,6 +261,25 @@ export class OrbsAccountStore {
     }
   }
 
+  public async writeGuardianDetailsPageURL(guardianDetailsPageURl: string) {
+    console.log(`Writing :`, guardianDetailsPageURl);
+
+    const promiEvent = this.guardiansService.setGuardianDetailsPageUrl(
+      guardianDetailsPageURl
+    );
+
+    try {
+      await this.handlePromievent(promiEvent, "Set Details page URL");
+
+      // After updating, lets re-read the data
+      await this.manuallyReadAccountData();
+    } catch (e) {
+      // TODO : Handle the error
+      console.error(`Failed setting Details page URL ${e}`);
+      throw e;
+    }
+  }
+
   public async writeGuardianId(guardianId: string) {
     const promiEvent = this.guardiansService.setGuardianId(guardianId);
 
@@ -338,7 +363,11 @@ export class OrbsAccountStore {
       );
 
       this.readAndSetGuardianRewardsSettings(accountAddress).catch((e) =>
-        console.error(`Error read-n-set Guardian rewards settigns ${e}`)
+        console.error(`Error read-n-set Guardian rewards settings ${e}`)
+      );
+
+      this.readAndSetDetailsPageUrl(accountAddress).catch((e) =>
+        console.error(`Error read-n-set Details page URL ${e}`)
       );
     }
 
@@ -410,6 +439,14 @@ export class OrbsAccountStore {
 
     console.log("Setting delegtors cut", delegatorsCut);
     this.setDelegatorsCutPercentage(delegatorsCut);
+  }
+
+  private async readAndSetDetailsPageUrl(accountAddress: string) {
+    const detailsPageUrl = await this.guardiansService.readGuardianDetailsPageUrl(
+      accountAddress
+    );
+
+    this.setDetailsPageURL(detailsPageUrl || undefined);
   }
 
   private async readAndSetRewardsContractSettings() {
@@ -521,6 +558,11 @@ export class OrbsAccountStore {
   @action("setDelegatorsCutPercentage")
   private setDelegatorsCutPercentage(delegatorsCutPercentage: number) {
     this.delegatorsCutPercentage = delegatorsCutPercentage;
+  }
+
+  @action("setDetailsPageURL")
+  private setDetailsPageURL(detailsPageUrl?: string) {
+    this.detailsPageUrl = detailsPageUrl;
   }
 
   @action("setGuardianId")

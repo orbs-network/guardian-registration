@@ -38,14 +38,14 @@ const configs: IConfig = {
 
 // Webpack will remove this section on production build //
 if (process.env.NODE_ENV !== "production") {
-  if (ethereumNetwork === "local") {
+  // if (ethereumNetwork === "local") {
     const addresses = require("./local/addresses.json");
 
     configs.v2contractsAddressesOverride.guardiansRegistration =
       addresses.guardiansRegistration;
     configs.v2contractsAddressesOverride.stakingRewards =
       addresses.stakingRewards;
-  }
+  // }
 }
 
 export default configs;
