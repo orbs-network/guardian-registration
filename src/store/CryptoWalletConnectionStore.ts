@@ -1,6 +1,6 @@
 import { action, computed, observable, reaction } from "mobx";
-import { ICryptoWalletConnectionService } from "../services/cryptoWalletConnectionService/ICryptoWalletConnectionService";
 import { IReactionDisposer } from "mobx/lib/core/reaction";
+import { ICryptoWalletConnectionService } from "@orbs-network/contracts-js";
 
 export class CryptoWalletConnectionStore {
   @observable private walletConnectionRequestApproved: boolean = false;
