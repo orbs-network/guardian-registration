@@ -15,6 +15,7 @@ import { EditDelegatorsCutSection } from "./EditDelegatorsCutSection";
 import { observer } from "mobx-react";
 import { IReactComponent } from "mobx-react/dist/types/IReactComponent";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
+import { EditDelegatorsCertificateSection } from "./EditDelegatorsCertificateSection";
 
 interface IProps {}
 
@@ -54,27 +55,6 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       [enqueueSnackbar, orbsAccountStore]
     );
 
-    const updateRewardsFrequency = useCallback(
-      async (frequencyInHours: number) => {
-        try {
-          await orbsAccountStore.setGuardianDistributionFrequency(
-            frequencyInHours
-          );
-          enqueueSnackbar("Rewards frequency successfully updated", {
-            variant: "success",
-          });
-        } catch (e) {
-          enqueueSnackbar(
-            `Error in 'Rewards Frequency Update' TX ${e.message}`,
-            {
-              variant: "error",
-            }
-          );
-        }
-      },
-      [enqueueSnackbar, orbsAccountStore]
-    );
-
     const updateDelegatorsCut = useCallback(
       async (delegatorsCutPercentage: number) => {
         try {
@@ -87,6 +67,27 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
         } catch (e) {
           enqueueSnackbar(
             `Error in 'Delegators cut percentage Update' TX ${e.message}`,
+            {
+              variant: "error",
+            }
+          );
+        }
+      },
+      [enqueueSnackbar, orbsAccountStore]
+    );
+
+    const updateGuardianDetailsPage = useCallback(
+      async (guardianDetailsPageUrl: string) => {
+        try {
+          await orbsAccountStore.writeGuardianDetailsPageURL(
+            guardianDetailsPageUrl
+          );
+          enqueueSnackbar("Details page URL updated", {
+            variant: "success",
+          });
+        } catch (e) {
+          enqueueSnackbar(
+            `Error in 'Details page URL Update' TX ${e.message}`,
             {
               variant: "error",
             }
@@ -172,6 +173,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                   orbsAccountStore.rewardsContractSettings
                     .maxDelegatorsStakingRewardsPercent
                 }
+              />
+
+              <Divider
+                style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
+              />
+
+              <EditDelegatorsCertificateSection
+                updateGuardianDetailsUrl={(detailsPageUrl) =>
+                  updateGuardianDetailsPage(detailsPageUrl)
+                }
+                currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}
+                hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}
               />
 
               <Divider
