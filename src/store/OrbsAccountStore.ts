@@ -264,12 +264,12 @@ export class OrbsAccountStore {
   public async writeGuardianDetailsPageURL(guardianDetailsPageURl: string) {
     console.log(`Writing :`, guardianDetailsPageURl);
 
-    // const promiEvent = this.stakingRewardsService.setDetailsPageUrl(
-    //     guardianDetailsPageURl
-    // );
+    const promiEvent = this.guardiansService.setGuardianDetailsPageUrl(
+      guardianDetailsPageURl
+    );
 
     try {
-      // await this.handlePromievent(promiEvent, "Set Details page URL");
+      await this.handlePromievent(promiEvent, "Set Details page URL");
 
       // After updating, lets re-read the data
       await this.manuallyReadAccountData();
@@ -442,13 +442,11 @@ export class OrbsAccountStore {
   }
 
   private async readAndSetDetailsPageUrl(accountAddress: string) {
-    // const detailsPageUrl = await this.stakingRewardsService.readDetailsPageURL(
-    //     accountAddress
-    // );
+    const detailsPageUrl = await this.guardiansService.readGuardianDetailsPageUrl(
+      accountAddress
+    );
 
-    const detailsPageUrl = undefined;
-
-    this.setDetailsPageURL(detailsPageUrl);
+    this.setDetailsPageURL(detailsPageUrl || undefined);
   }
 
   private async readAndSetRewardsContractSettings() {

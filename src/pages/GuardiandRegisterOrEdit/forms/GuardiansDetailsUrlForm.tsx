@@ -69,14 +69,22 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
     setFormGuardianDetailsUrl(currentGuardianDetailsUrl || "");
   }, [setFormGuardianDetailsUrl, currentGuardianDetailsUrl]);
 
-  console.log({ currentGuardianDetailsUrl });
-
-  console.log({ hasGuardianDetailsUrl });
-
   const titleText = useMemo(() => {
-    return hasGuardianDetailsUrl
-      ? `Your details page : ${currentGuardianDetailsUrl}`
-      : `You have not set your details page URL`;
+    return hasGuardianDetailsUrl ? (
+      <Typography component={"span"}>
+        Your details page :{" "}
+        <InTextLink
+          href={
+            currentGuardianDetailsUrl?.startsWith("http")
+              ? currentGuardianDetailsUrl
+              : "http://" + currentGuardianDetailsUrl
+          }
+          text={currentGuardianDetailsUrl!}
+        />
+      </Typography>
+    ) : (
+      `You have not set your details page URL`
+    );
   }, [currentGuardianDetailsUrl, hasGuardianDetailsUrl]);
 
   return (
