@@ -76,12 +76,12 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
         </Typography>
       </div>
       <GuardiansDetailsForm
-        guardianAddress={guardianAddress}
         submitInfo={updateGuardianDetails}
         guardianInitialInfo={guardianInfo}
         actionButtonTitle={"Update"}
       />
       <br />
+
       {/*<Typography variant={"h6"}>*/}
       {/*  Guardian registered: {registrationDate.toLocaleString()}*/}
       {/*</Typography>*/}

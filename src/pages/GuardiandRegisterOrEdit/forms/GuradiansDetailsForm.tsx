@@ -17,7 +17,6 @@ import { validURL } from "./inoputValidators";
 
 interface IProps {
   actionButtonTitle: string;
-  guardianAddress: string;
   guardianInitialInfo: TGuardianInfo;
   submitInfo: (
     guardianRegistrationPayload: TGuardianRegistrationPayload
@@ -63,7 +62,6 @@ const PLACE_HOLDER_NODE_ADDRESS =
   "e.g: 0x0cBb46287c93357be4CF60fe9601c2c7A2700dC2";
 
 type TFormData = {
-  // guardianAddress: string;
   name: string;
   website: string;
   contactInfo: string;
@@ -89,7 +87,6 @@ const useStyles = makeStyles((theme) => ({
 export const GuardiansDetailsForm = React.memo<IProps>((props) => {
   const classes = useStyles();
   const {
-    guardianAddress,
     guardianInitialInfo,
     submitInfo,
     actionButtonTitle,
