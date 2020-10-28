@@ -21,7 +21,7 @@ export const ContentContainer = React.memo<ContainerProps>((props) => {
   return (
     <Container
       className={classes.centeredContainer}
-      component={"main"}
+      component={"div"}
       disableGutters={smallOrSmaller}
       {...props}
     />
