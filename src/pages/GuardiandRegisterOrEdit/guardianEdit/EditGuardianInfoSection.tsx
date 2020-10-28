@@ -61,6 +61,7 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
           flexDirection: "column",
           alignContent: "center",
           overflow: "hidden",
+          maxWidth: "100%",
         }}
       >
         <Typography variant={"h5"}>Guardian details update</Typography>

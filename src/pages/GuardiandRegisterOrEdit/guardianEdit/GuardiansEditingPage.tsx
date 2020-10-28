@@ -127,74 +127,74 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       <Page>
         <ContentFitting
           style={{
-            width: "60rem",
+            width: "35rem",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
           {/* Content  */}
-          {/*<div*/}
-          {/*  style={{*/}
-          {/*    display: "flex",*/}
-          {/*    flexDirection: "column",*/}
-          {/*    maxWidth: "100%",*/}
-          {/*    width: "min-content",*/}
-          {/*    alignItems: "center",*/}
-          {/*  }}*/}
-          {/*>*/}
-          <EditGuardianInfoSection
-            guardianInfo={orbsAccountStore.guardianInfo}
-            guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-            guardianContractInteractionTimes={
-              orbsAccountStore.guardianContractInteractionTimes
-            }
-            updateGuardianDetails={updateGuardianDetails}
-          />
-
-          <Divider
-            style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
-          />
-
-          <EditDelegatorsCutSection
-            updateDelegatorsCut={updateDelegatorsCut}
-            delegatorsCut={orbsAccountStore.delegatorsCutPercentage}
-            isUsingDefaultValue={
-              orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
-            }
-            delegatorsCutDefaultValue={
-              orbsAccountStore.rewardsContractSettings
-                .defaultDelegatorsStakingRewardsPercent
-            }
-            delegatorsCutMaxValue={
-              orbsAccountStore.rewardsContractSettings
-                .maxDelegatorsStakingRewardsPercent
-            }
-          />
-
-          <Divider
-            style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
-          />
-
-          <EditDelegatorsCertificateSection
-            updateGuardianDetailsUrl={(detailsPageUrl) =>
-              updateGuardianDetailsPage(detailsPageUrl)
-            }
-            currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}
-            hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}
-          />
-
-          <Divider
+          <div
             style={{
-              width: "100%",
-              height: "3px",
-              marginBottom: "1rem",
-              marginTop: "1rem",
+              display: "flex",
+              flexDirection: "column",
+              maxWidth: "100%",
+              width: "min-content",
+              alignItems: "center",
             }}
-          />
-          <UnregisterSection unregisterGuardian={unregisterGuardian} />
-          <br />
-          {/*</div>*/}
+          >
+            <EditGuardianInfoSection
+              guardianInfo={orbsAccountStore.guardianInfo}
+              guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+              guardianContractInteractionTimes={
+                orbsAccountStore.guardianContractInteractionTimes
+              }
+              updateGuardianDetails={updateGuardianDetails}
+            />
+
+            <Divider
+              style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
+            />
+
+            <EditDelegatorsCutSection
+              updateDelegatorsCut={updateDelegatorsCut}
+              delegatorsCut={orbsAccountStore.delegatorsCutPercentage}
+              isUsingDefaultValue={
+                orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
+              }
+              delegatorsCutDefaultValue={
+                orbsAccountStore.rewardsContractSettings
+                  .defaultDelegatorsStakingRewardsPercent
+              }
+              delegatorsCutMaxValue={
+                orbsAccountStore.rewardsContractSettings
+                  .maxDelegatorsStakingRewardsPercent
+              }
+            />
+
+            <Divider
+              style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
+            />
+
+            <EditDelegatorsCertificateSection
+              updateGuardianDetailsUrl={(detailsPageUrl) =>
+                updateGuardianDetailsPage(detailsPageUrl)
+              }
+              currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}
+              hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}
+            />
+
+            <Divider
+              style={{
+                width: "100%",
+                height: "3px",
+                marginBottom: "1rem",
+                marginTop: "1rem",
+              }}
+            />
+            <UnregisterSection unregisterGuardian={unregisterGuardian} />
+            <br />
+          </div>
 
           <Backdrop
             className={classes.backdrop}
