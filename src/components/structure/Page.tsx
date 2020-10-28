@@ -1,4 +1,4 @@
-import React from "react";
+import React, { DetailedHTMLProps } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Toolbar } from "@material-ui/core";
 import { Footer } from "./Footer";
@@ -23,12 +23,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Page = React.memo<IProps>((props) => {
-  const { children } = props;
+export const Page = React.memo<
+  IProps &
+    DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+>((props) => {
+  const { children, ...rest } = props;
   const classes = useStyles();
 
   return (
-    <div className={classes.page}>
+    <div className={classes.page} {...rest}>
       {/* DEV_NOTE : Adding 'toolbar' to keep with the tile */}
       <Toolbar />
       {children}
