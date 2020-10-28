@@ -10,6 +10,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import { Transition } from "react-spring/renderprops-universal";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
+import { GuardianDetails } from "./GuardianDetails";
+import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
+import { useBoolean } from "react-hanger";
 
 interface IProps {
   guardianAddress: string;
@@ -39,6 +42,9 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
     guardianContractInteractionTimes,
   } = props;
 
+  const isEditingData = useBoolean(false);
+
+  console.log({ isEditingData: isEditingData.value });
   const { lastUpdateTime, registrationTime } = guardianContractInteractionTimes;
 
   const registrationDate = useMemo(() => {
@@ -49,8 +55,17 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
     return fromUnixTime(lastUpdateTime);
   }, [lastUpdateTime]);
 
+  // @ts-ignore
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        maxWidth: "100%",
+        width: "min-content",
+        alignItems: "center",
+      }}
+    >
       <Avatar className={classes.avatar}>
         <EditIcon />
       </Avatar>
@@ -75,47 +90,71 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
           {guardianAddress}
         </Typography>
       </div>
-      <GuardiansDetailsForm
-        submitInfo={updateGuardianDetails}
-        guardianInitialInfo={guardianInfo}
-        actionButtonTitle={"Update"}
-      />
-      <br />
-
-      {/*<Typography variant={"h6"}>*/}
-      {/*  Guardian registered: {registrationDate.toLocaleString()}*/}
-      {/*</Typography>*/}
-      <Transition
-        items={lastUpdateDate}
-        // config={config.gentle}
-        // immediate={DISABLE_ANIMATIONS}
-
-        from={{
-          // position: "absolute",
-          opacity: 0,
-          // transform: "translateX(1%)",
-        }}
-        enter={{
-          opacity: 1,
-          // transform: "translateX(0%)",
-        }}
-        leave={{
-          opacity: 0,
-          // transform: "translateX(1%)",
-          // position: "absolute",
-          display: "none",
-        }}
-        update={{
-          opacity: 1,
+      <div
+        style={{
+          maxWidth: "100%",
+          width: "100%",
+          // minHeight: "20rem",
+          position: "relative",
         }}
       >
-        {(toggle) => (props) => (
-          <Typography variant={"h6"} style={props}>
-            Details Last updated: {lastUpdateDate.toLocaleString()}
-          </Typography>
-        )}
-      </Transition>
-      <br />
-    </>
+        <Transition
+          items={isEditingData.value}
+          // config={config.gentle}
+          // immediate={DISABLE_ANIMATIONS}
+
+          from={{
+            // position: "absolute",
+            // display: "inline-block",
+            top: 0,
+            opacity: 0,
+            width: "100%",
+            // transform: "translateX(1%)",
+          }}
+          enter={{
+            opacity: 1,
+          }}
+          leave={{
+            // TODO : O.L : this 'none' is because we could not figure out how to properly use 'absolute' and 'relative' here,
+            display: "none",
+            opacity: 0,
+          }}
+        >
+          {(toggle) =>
+            toggle
+              ? (props) => (
+                  //@ts-ignore
+                  <div style={{ ...props }}>
+                    <GuardiansDetailsForm
+                      submitInfo={updateGuardianDetails}
+                      guardianInitialInfo={guardianInfo}
+                      actionButtonTitle={"Update"}
+                    />
+                    <ActionButton onClick={isEditingData.setFalse}>
+                      Cancel
+                    </ActionButton>
+                    <br />
+                    <br />
+                    <Typography variant={"h6"}>
+                      Details Last updated: {lastUpdateDate.toLocaleString()}
+                    </Typography>
+                  </div>
+                )
+              : (props) => (
+                  //@ts-ignore
+                  <div style={{ ...props }}>
+                    <GuardianDetails
+                      guardianAddress={guardianAddress}
+                      guardianInfo={guardianInfo}
+                    />
+                    <ActionButton onClick={isEditingData.setTrue}>
+                      Edit
+                    </ActionButton>
+                  </div>
+                )
+          }
+        </Transition>
+      </div>
+    </div>
   );
 });

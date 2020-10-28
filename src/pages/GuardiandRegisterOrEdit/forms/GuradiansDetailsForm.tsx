@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { DetailedHTMLProps, useCallback, useEffect } from "react";
 import { useStateful } from "react-hanger";
 import {
   Button,
@@ -70,6 +70,11 @@ type TFormData = {
 };
 
 const useStyles = makeStyles((theme) => ({
+  form: {
+    maxWidth: "100%",
+    // maxWidth: "80ch",
+    width: "100%",
+  },
   textField: {
     "& label.Mui-focused": {
       color: "#f5f5f5",
@@ -84,7 +89,13 @@ const useStyles = makeStyles((theme) => ({
 /**
  * A single component to handle both "Guardian registration" and "Guardian Update"
  */
-export const GuardiansDetailsForm = React.memo<IProps>((props) => {
+export const GuardiansDetailsForm = React.memo<
+  IProps &
+    DetailedHTMLProps<
+      React.FormHTMLAttributes<HTMLFormElement>,
+      HTMLFormElement
+    >
+>((props) => {
   const classes = useStyles();
   const {
     guardianInitialInfo,
@@ -92,6 +103,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
     actionButtonTitle,
     disableSubmit,
     messageForSubmitButton,
+    ...rest
   } = props;
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
@@ -176,11 +188,8 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
   return (
     <form
       onSubmit={handleSubmit((formData) => submit(formData))}
-      style={{
-        maxWidth: "100%",
-        // maxWidth: "80ch",
-        width: "100%",
-      }}
+      className={classes.form}
+      {...rest}
     >
       {/*<InstallPhaseExtraDetails />*/}
 
