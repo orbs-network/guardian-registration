@@ -39,6 +39,8 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import { GuardianDetails } from "./GuardianDetails";
 import { UnregisterForm } from "../forms/UnregisterForm";
 import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
+import { DelegatorsCutForm } from "../forms/DelegatorsCutForm";
+import { FormWrapper } from "../../../components/forms/FormWrapper";
 
 interface IProps {}
 
@@ -111,21 +113,29 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
 
     const updateDelegatorsCut = useCallback(
       async (delegatorsCutPercentage: number) => {
-        try {
-          await orbsAccountStore.writeGuardianDelegatorsCutPercentage(
-            delegatorsCutPercentage
-          );
-          enqueueSnackbar("Delegators cut successfully updated", {
-            variant: "success",
-          });
-        } catch (e) {
-          enqueueSnackbar(
-            `Error in 'Delegators cut percentage Update' TX ${e.message}`,
-            {
-              variant: "error",
-            }
-          );
-        }
+        setDialogTexts({
+          title: `Change your Delegator's share to ${delegatorsCutPercentage.toLocaleString()}%`,
+          content: "Please press 'Accept' and approve the transaction",
+          onCancelMessage: "Action canceled",
+        });
+        setShowModal(true);
+        setOnDialogAccept(() => async () => {
+          try {
+            await orbsAccountStore.writeGuardianDelegatorsCutPercentage(
+              delegatorsCutPercentage
+            );
+            enqueueSnackbar("Delegators cut successfully updated", {
+              variant: "success",
+            });
+          } catch (e) {
+            enqueueSnackbar(
+              `Error in 'Delegators cut percentage Update' TX ${e.message}`,
+              {
+                variant: "error",
+              }
+            );
+          }
+        });
       },
       [enqueueSnackbar, orbsAccountStore]
     );
@@ -278,45 +288,41 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             {/*  index={value}*/}
             {/*  onChangeIndex={(newIndex) => setValue(newIndex)}*/}
             {/*>*/}
+            {/* Info */}
             <TabPanel value={value} index={0} dir={theme.direction}>
               {guardianDetails}
             </TabPanel>
+
+            {/* Edit Details */}
             <TabPanel value={value} index={1} dir={theme.direction}>
               {guardianDetails}
-              <EditDelegatorsCutSection
-                updateDelegatorsCut={updateDelegatorsCut}
-                delegatorsCut={orbsAccountStore.delegatorsCutPercentage}
-                isUsingDefaultValue={
-                  orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
-                }
-                delegatorsCutDefaultValue={
-                  orbsAccountStore.rewardsContractSettings
-                    .defaultDelegatorsStakingRewardsPercent
-                }
-                delegatorsCutMaxValue={
-                  orbsAccountStore.rewardsContractSettings
-                    .maxDelegatorsStakingRewardsPercent
-                }
-              />
             </TabPanel>
+            {/* Edit Delegator's share */}
             <TabPanel value={value} index={2} dir={theme.direction}>
               {guardianDetails}
-              <EditDelegatorsCutSection
-                updateDelegatorsCut={updateDelegatorsCut}
-                delegatorsCut={orbsAccountStore.delegatorsCutPercentage}
-                isUsingDefaultValue={
-                  orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
-                }
-                delegatorsCutDefaultValue={
-                  orbsAccountStore.rewardsContractSettings
-                    .defaultDelegatorsStakingRewardsPercent
-                }
-                delegatorsCutMaxValue={
-                  orbsAccountStore.rewardsContractSettings
-                    .maxDelegatorsStakingRewardsPercent
-                }
-              />
+              <br />
+              <br />
+              <FormWrapper>
+                <DelegatorsCutForm
+                  updateDelegatorsCut={updateDelegatorsCut}
+                  currentDelegatorsCut={
+                    orbsAccountStore.delegatorsCutPercentage
+                  }
+                  isUsingDefaultValue={
+                    orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
+                  }
+                  delegatorsCutDefaultValue={
+                    orbsAccountStore.rewardsContractSettings
+                      .defaultDelegatorsStakingRewardsPercent
+                  }
+                  delegatorsCutMaxValue={
+                    orbsAccountStore.rewardsContractSettings
+                      .maxDelegatorsStakingRewardsPercent
+                  }
+                />
+              </FormWrapper>
             </TabPanel>
+            {/* Edit Guardian Certification  */}
             <TabPanel value={value} index={3} dir={theme.direction}>
               {guardianDetails}
               <EditDelegatorsCertificateSection
@@ -327,6 +333,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}
               />
             </TabPanel>
+            {/* Unregister */}
             <TabPanel value={value} index={4} dir={theme.direction}>
               <UnregisterForm unregisterGuardian={unregisterGuardian} />
             </TabPanel>

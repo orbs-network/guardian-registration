@@ -1,8 +1,9 @@
 import React, { DetailedHTMLProps } from "react";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
-import { Typography } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
+import { PaperProps } from "@material-ui/core/Paper/Paper";
 
 export interface IDefaultableValue<T> {
   isUsingDefaultValue: boolean;
@@ -23,10 +24,7 @@ const useStyles = makeStyles((theme) => ({
   value: {},
 }));
 
-export const GuardianDetails = React.memo<
-  IProps &
-    DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
->((props) => {
+export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
   const classes = useStyles();
   const { guardianAddress, guardianInfo, delegatorsShare, ...rest } = props;
 
@@ -35,7 +33,11 @@ export const GuardianDetails = React.memo<
     : null;
 
   return (
-    <div {...rest}>
+    <Paper
+      elevation={3}
+      {...rest}
+      style={{ padding: "1.5rem", maxWidth: "100%", width: "30rem" }}
+    >
       <Typography className={classes.title}>Name : </Typography>
       <Typography>{guardianInfo.name}</Typography>
       <Typography className={classes.title}>website : </Typography>
@@ -54,6 +56,6 @@ export const GuardianDetails = React.memo<
           : delegatorsShare.value}{" "}
         %
       </Typography>
-    </div>
+    </Paper>
   );
 });
