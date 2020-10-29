@@ -9,6 +9,10 @@ const useStyles = makeStyles((theme) => ({
     padding: "1.5rem",
     maxWidth: "100%",
     width: "30rem",
+    border: "2px dashed rgba(0,0,0,0)",
+    "&:focus-within, &:hover": {
+      border: `2px dashed ${theme.palette.secondary.main}`,
+    },
   },
 }));
 

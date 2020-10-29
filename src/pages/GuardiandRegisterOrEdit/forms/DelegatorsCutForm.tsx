@@ -105,6 +105,7 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
             : `The percentage of the staking rewards that is distributed to your Delegators. between 0 and ${delegatorsCutMaxValue}`
         }
         className={classes.textField}
+        autoFocus
       />
       <br />
       <br />

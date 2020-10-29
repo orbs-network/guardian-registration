@@ -68,6 +68,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const TABS_IDS = {
+  info: "info",
+  editInfo: "editInfo",
+  delegatorsShare: "delegatorsShare",
+  certificate: "certificate",
+  unregister: "unregister",
+};
+
 export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
   (props) => {
     const classes = useStyles();
@@ -196,7 +204,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       });
     }, [enqueueSnackbar, orbsAccountStore]);
 
-    const [value, setValue] = React.useState(0);
+    const [tabValue, setTabValue] = React.useState(TABS_IDS.info);
 
     const guardianDetails = (
       <GuardianDetails
@@ -213,6 +221,13 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               .maxDelegatorsStakingRewardsPercent,
           value: orbsAccountStore.delegatorsCutPercentage,
         }}
+        guardianCertificationUrl={{
+          currentGuardianDetailsUrl: orbsAccountStore.detailsPageUrl || "",
+          hasGuardianDetailsUrl: orbsAccountStore.hasGuardianDetailsURL,
+        }}
+        highlightInfo={tabValue === TABS_IDS.editInfo}
+        highlightDelegatorsShare={tabValue === TABS_IDS.delegatorsShare}
+        highlightCertificateUrl={tabValue === TABS_IDS.certificate}
       />
     );
 
@@ -239,8 +254,8 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             {/*  Tabs  */}
             <div>
               <Tabs
-                value={value}
-                onChange={(event, value) => setValue(value)}
+                value={tabValue}
+                onChange={(event, value) => setTabValue(value)}
                 variant="fullWidth"
                 indicatorColor="secondary"
                 textColor="primary"
@@ -255,29 +270,34 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                   label="Info"
                   aria-label="phone"
                   className={classes.tab}
+                  value={TABS_IDS.info}
                 />
                 <Tab
                   className={classes.tab}
                   // icon={<EditIcon />}
                   label={"Edit Info"}
+                  value={TABS_IDS.editInfo}
                   aria-label="phone"
                 />
                 <Tab
                   className={classes.tab}
                   // icon={<MoneyIcon />}
                   label={"Delegator's share"}
+                  value={TABS_IDS.delegatorsShare}
                   aria-label="favorite"
                 />
                 <Tab
                   className={classes.tab}
                   // icon={<VerifiedUserIcon />}
                   label={"Certificate"}
+                  value={TABS_IDS.certificate}
                   aria-label="favorite"
                 />
                 <Tab
                   className={classes.tab}
                   // icon={<HighlightOffIcon />}
                   label={"Unregister"}
+                  value={TABS_IDS.unregister}
                   aria-label="person"
                 />
               </Tabs>
@@ -289,16 +309,28 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             {/*  onChangeIndex={(newIndex) => setValue(newIndex)}*/}
             {/*>*/}
             {/* Info */}
-            <TabPanel value={value} index={0} dir={theme.direction}>
+            <TabPanel
+              value={tabValue}
+              index={TABS_IDS.info}
+              dir={theme.direction}
+            >
               {guardianDetails}
             </TabPanel>
 
             {/* Edit Details */}
-            <TabPanel value={value} index={1} dir={theme.direction}>
+            <TabPanel
+              value={tabValue}
+              index={TABS_IDS.editInfo}
+              dir={theme.direction}
+            >
               {guardianDetails}
             </TabPanel>
             {/* Edit Delegator's share */}
-            <TabPanel value={value} index={2} dir={theme.direction}>
+            <TabPanel
+              value={tabValue}
+              index={TABS_IDS.delegatorsShare}
+              dir={theme.direction}
+            >
               {guardianDetails}
               <br />
               <br />
@@ -323,7 +355,11 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               </FormWrapper>
             </TabPanel>
             {/* Edit Guardian Certification  */}
-            <TabPanel value={value} index={3} dir={theme.direction}>
+            <TabPanel
+              value={tabValue}
+              index={TABS_IDS.certificate}
+              dir={theme.direction}
+            >
               {guardianDetails}
               <EditDelegatorsCertificateSection
                 updateGuardianDetailsUrl={(detailsPageUrl) =>
@@ -334,7 +370,11 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               />
             </TabPanel>
             {/* Unregister */}
-            <TabPanel value={value} index={4} dir={theme.direction}>
+            <TabPanel
+              value={tabValue}
+              index={TABS_IDS.unregister}
+              dir={theme.direction}
+            >
               <UnregisterForm unregisterGuardian={unregisterGuardian} />
             </TabPanel>
             {/*</SwipeableViews>*/}
