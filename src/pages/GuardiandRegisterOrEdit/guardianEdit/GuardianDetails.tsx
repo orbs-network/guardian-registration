@@ -27,15 +27,23 @@ interface IProps {
 
 const useStyles = makeStyles((theme) => ({
   title: {
+    transition: "0.5s",
     fontWeight: "bold",
   },
   titleHighlight: {
-    fontWeight: "bold",
     color: theme.palette.secondary.light,
   },
-  value: {},
+  titleFade: {
+    color: theme.palette.text.disabled,
+  },
+  value: {
+    transition: "0.5s",
+  },
   valueHighlight: {
     color: theme.palette.secondary.main,
+  },
+  valueFade: {
+    color: theme.palette.text.disabled,
   },
 }));
 
@@ -53,6 +61,9 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
 
     ...rest
   } = props;
+
+  const shouldFadeOthers =
+    highlightInfo || highlightDelegatorsShare || highlightCertificateUrl;
 
   const delegatorsShareUsingDefaultMessage = delegatorsShare.isUsingDefaultValue
     ? " (using default value)"
@@ -91,18 +102,21 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
         title={"Name : "}
         value={guardianInfo.name}
         shouldHighlight={highlightInfo}
+        shouldfade={!highlightInfo && shouldFadeOthers}
       />
       <br />
       <TitleValuePair
         title={"website : "}
         value={guardianInfo.website}
         shouldHighlight={highlightInfo}
+        shouldfade={!highlightInfo && shouldFadeOthers}
       />
       <br />
       <TitleValuePair
         title={"IP : "}
         value={guardianInfo.ip}
         shouldHighlight={highlightInfo}
+        shouldfade={!highlightInfo && shouldFadeOthers}
       />
 
       <br />
@@ -110,6 +124,7 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
         title={"Orbs Node Address : "}
         value={guardianInfo.orbsAddr}
         shouldHighlight={highlightInfo}
+        shouldfade={!highlightInfo && shouldFadeOthers}
       />
       <br />
       <TitleValuePair
@@ -120,6 +135,7 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
             : delegatorsShare.value
         } %`}
         shouldHighlight={highlightDelegatorsShare}
+        shouldfade={!highlightDelegatorsShare && shouldFadeOthers}
       />
       <br />
 
@@ -127,6 +143,7 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
         title={"Guardian's details page URL:"}
         value={guardianCertificateUrlDataText}
         shouldHighlight={highlightCertificateUrl}
+        shouldfade={!highlightCertificateUrl && shouldFadeOthers}
       />
     </Paper>
   );
@@ -136,20 +153,30 @@ interface ITitleValuePairProps {
   title: string;
   value: string | JSX.Element;
   shouldHighlight?: boolean;
+  shouldfade?: boolean;
 }
 
 const TitleValuePair = React.memo<ITitleValuePairProps>((props) => {
-  const { title, value, shouldHighlight } = props;
+  const { title, value, shouldHighlight, shouldfade } = props;
   const classes = useStyles();
+
   return (
     <>
       <Typography
-        className={shouldHighlight ? classes.titleHighlight : classes.title}
+        className={clsx(
+          classes.title,
+          shouldHighlight ? classes.titleHighlight : null,
+          shouldfade ? classes.titleFade : null
+        )}
       >
         {title}
       </Typography>
       <Typography
-        className={shouldHighlight ? classes.valueHighlight : classes.value}
+        className={clsx(
+          classes.value,
+          shouldHighlight ? classes.valueHighlight : null,
+          shouldfade ? classes.valueFade : null
+        )}
       >
         {value}
       </Typography>

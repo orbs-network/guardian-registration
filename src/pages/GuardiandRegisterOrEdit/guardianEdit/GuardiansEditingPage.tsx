@@ -6,6 +6,7 @@ import {
   Backdrop,
   Box,
   CircularProgress,
+  Collapse,
   Divider,
   Tab,
   Tabs,
@@ -41,6 +42,7 @@ import { UnregisterForm } from "../forms/UnregisterForm";
 import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
 import { DelegatorsCutForm } from "../forms/DelegatorsCutForm";
 import { FormWrapper } from "../../../components/forms/FormWrapper";
+import Fade from "@material-ui/core/Fade";
 
 interface IProps {}
 
@@ -231,6 +233,8 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       />
     );
 
+    const showDetails = tabValue !== TABS_IDS.unregister;
+    console.log({ showDetails });
     return (
       <Page>
         <ContentFitting
@@ -302,36 +306,27 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 />
               </Tabs>
             </div>
+            {showDetails && guardianDetails}
 
-            {/*<SwipeableViews*/}
-            {/*  axis={theme.direction === "rtl" ? "x-reverse" : "x"}*/}
-            {/*  index={value}*/}
-            {/*  onChangeIndex={(newIndex) => setValue(newIndex)}*/}
-            {/*>*/}
             {/* Info */}
             <TabPanel
               value={tabValue}
               index={TABS_IDS.info}
               dir={theme.direction}
-            >
-              {guardianDetails}
-            </TabPanel>
+            ></TabPanel>
 
             {/* Edit Details */}
             <TabPanel
               value={tabValue}
               index={TABS_IDS.editInfo}
               dir={theme.direction}
-            >
-              {guardianDetails}
-            </TabPanel>
+            ></TabPanel>
             {/* Edit Delegator's share */}
             <TabPanel
               value={tabValue}
               index={TABS_IDS.delegatorsShare}
               dir={theme.direction}
             >
-              {guardianDetails}
               <br />
               <br />
               <FormWrapper>
@@ -360,7 +355,6 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               index={TABS_IDS.certificate}
               dir={theme.direction}
             >
-              {guardianDetails}
               <EditDelegatorsCertificateSection
                 updateGuardianDetailsUrl={(detailsPageUrl) =>
                   updateGuardianDetailsPage(detailsPageUrl)
@@ -377,7 +371,6 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             >
               <UnregisterForm unregisterGuardian={unregisterGuardian} />
             </TabPanel>
-            {/*</SwipeableViews>*/}
 
             {/* Modal */}
             <ActionConfirmationModal
@@ -400,74 +393,6 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               title={dialogTexts.title}
               contentText={dialogTexts.content}
             />
-
-            {/*<br />*/}
-            {/*<br />*/}
-            {/*<br />*/}
-            {/*<br />*/}
-            {/*<br />*/}
-            {/*<br />*/}
-            {/*<br />*/}
-            {/*<br />*/}
-
-            {/*<EditGuardianInfoSection*/}
-            {/*  guardianInfo={orbsAccountStore.guardianInfo}*/}
-            {/*  guardianAddress={cryptoWalletIntegrationStore.mainAddress}*/}
-            {/*  guardianContractInteractionTimes={*/}
-            {/*    orbsAccountStore.guardianContractInteractionTimes*/}
-            {/*  }*/}
-            {/*  updateGuardianDetails={updateGuardianDetails}*/}
-            {/*/>*/}
-
-            {/*<Divider*/}
-            {/*  style={{ width: "100%", height: "3px", marginBottom: "1rem" }}*/}
-            {/*/>*/}
-            {/*<CompactInput*/}
-            {/*  title={"Delegators Cut"}*/}
-            {/*  value={"Default Value (70%)"}*/}
-            {/*/>*/}
-            {/*<br />*/}
-            {/*<br />*/}
-            {/*<br />*/}
-
-            {/*<EditDelegatorsCutSection*/}
-            {/*  updateDelegatorsCut={updateDelegatorsCut}*/}
-            {/*  delegatorsCut={orbsAccountStore.delegatorsCutPercentage}*/}
-            {/*  isUsingDefaultValue={*/}
-            {/*    orbsAccountStore.isUsingDefaultDelegatorsCutPercentage*/}
-            {/*  }*/}
-            {/*  delegatorsCutDefaultValue={*/}
-            {/*    orbsAccountStore.rewardsContractSettings*/}
-            {/*      .defaultDelegatorsStakingRewardsPercent*/}
-            {/*  }*/}
-            {/*  delegatorsCutMaxValue={*/}
-            {/*    orbsAccountStore.rewardsContractSettings*/}
-            {/*      .maxDelegatorsStakingRewardsPercent*/}
-            {/*  }*/}
-            {/*/>*/}
-
-            {/*<Divider*/}
-            {/*  style={{ width: "100%", height: "3px", marginBottom: "1rem" }}*/}
-            {/*/>*/}
-
-            {/*<EditDelegatorsCertificateSection*/}
-            {/*  updateGuardianDetailsUrl={(detailsPageUrl) =>*/}
-            {/*    updateGuardianDetailsPage(detailsPageUrl)*/}
-            {/*  }*/}
-            {/*  currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}*/}
-            {/*  hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}*/}
-            {/*/>*/}
-
-            {/*<Divider*/}
-            {/*  style={{*/}
-            {/*    width: "100%",*/}
-            {/*    height: "3px",*/}
-            {/*    marginBottom: "1rem",*/}
-            {/*    marginTop: "1rem",*/}
-            {/*  }}*/}
-            {/*/>*/}
-            {/*<UnregisterSection unregisterGuardian={unregisterGuardian} />*/}
-            {/*<br />*/}
           </div>
 
           <Backdrop

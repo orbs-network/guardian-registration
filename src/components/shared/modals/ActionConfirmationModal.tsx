@@ -55,8 +55,6 @@ export const ActionConfirmationModal = React.memo<IProps>((props) => {
   // const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const fullScreen = false;
 
-  console.log({ acceptText });
-
   return (
     <Dialog
       className={classes.dialogPaper}
