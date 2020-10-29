@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import { UnregisterForm } from "../forms/UnregisterForm";
+import { UnregisterForm } from "../../forms/UnregisterForm";
 
 interface IProps {
   unregisterGuardian: () => void;

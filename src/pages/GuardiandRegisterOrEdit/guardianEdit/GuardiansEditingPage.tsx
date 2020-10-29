@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import { EditGuardianInfoSection } from "./sections/EditGuardianInfoSection";
 import { EditRewardsDistributionSection } from "./sections/EditRewardsDistributionSection";
-import { UnregisterSection } from "./UnregisterSection";
+import { UnregisterSection } from "./sections/UnregisterSection";
 import {
   useCryptoWalletIntegrationStore,
   useOrbsAccountStore,
