@@ -4,10 +4,12 @@ import { ContentFitting } from "../../../components/structure/ContentFitting";
 import {
   Avatar,
   Backdrop,
+  Box,
   CircularProgress,
   Divider,
   Tab,
   Tabs,
+  Typography,
 } from "@material-ui/core";
 import { EditGuardianInfoSection } from "./EditGuardianInfoSection";
 import { EditRewardsDistributionSection } from "./EditRewardsDistributionSection";
@@ -32,6 +34,9 @@ import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import EditIcon from "@material-ui/icons/Edit";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import SwipeableViews from "react-swipeable-views";
+import useTheme from "@material-ui/core/styles/useTheme";
+import { GuardianDetails } from "./GuardianDetails";
 
 interface IProps {}
 
@@ -52,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
     "&.MuiTab-textColorPrimary.Mui-selected": {
       // backgroundColor: "rgba(255,255,255, 0.1)",
 
+      fontWeight: "bold",
       color: theme.palette.secondary.main,
       opacity: 1,
     },
@@ -61,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
 export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
   (props) => {
     const classes = useStyles();
+    const theme = useTheme();
 
     const { enqueueSnackbar } = useSnackbar();
     const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
@@ -224,6 +231,85 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               </Tabs>
             </div>
 
+            {/*<SwipeableViews*/}
+            {/*  axis={theme.direction === "rtl" ? "x-reverse" : "x"}*/}
+            {/*  index={value}*/}
+            {/*  onChangeIndex={(newIndex) => setValue(newIndex)}*/}
+            {/*>*/}
+            <TabPanel value={value} index={0} dir={theme.direction}>
+              <GuardianDetails
+                guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+                guardianInfo={orbsAccountStore.guardianInfo}
+              />
+              <EditGuardianInfoSection
+                guardianInfo={orbsAccountStore.guardianInfo}
+                guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+                guardianContractInteractionTimes={
+                  orbsAccountStore.guardianContractInteractionTimes
+                }
+                updateGuardianDetails={updateGuardianDetails}
+              />
+            </TabPanel>
+            <TabPanel value={value} index={1} dir={theme.direction}>
+              <GuardianDetails
+                guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+                guardianInfo={orbsAccountStore.guardianInfo}
+              />
+              <EditDelegatorsCutSection
+                updateDelegatorsCut={updateDelegatorsCut}
+                delegatorsCut={orbsAccountStore.delegatorsCutPercentage}
+                isUsingDefaultValue={
+                  orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
+                }
+                delegatorsCutDefaultValue={
+                  orbsAccountStore.rewardsContractSettings
+                    .defaultDelegatorsStakingRewardsPercent
+                }
+                delegatorsCutMaxValue={
+                  orbsAccountStore.rewardsContractSettings
+                    .maxDelegatorsStakingRewardsPercent
+                }
+              />
+            </TabPanel>
+            <TabPanel value={value} index={2} dir={theme.direction}>
+              <GuardianDetails
+                guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+                guardianInfo={orbsAccountStore.guardianInfo}
+              />
+              <EditDelegatorsCutSection
+                updateDelegatorsCut={updateDelegatorsCut}
+                delegatorsCut={orbsAccountStore.delegatorsCutPercentage}
+                isUsingDefaultValue={
+                  orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
+                }
+                delegatorsCutDefaultValue={
+                  orbsAccountStore.rewardsContractSettings
+                    .defaultDelegatorsStakingRewardsPercent
+                }
+                delegatorsCutMaxValue={
+                  orbsAccountStore.rewardsContractSettings
+                    .maxDelegatorsStakingRewardsPercent
+                }
+              />
+            </TabPanel>
+            <TabPanel value={value} index={3} dir={theme.direction}>
+              <GuardianDetails
+                guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+                guardianInfo={orbsAccountStore.guardianInfo}
+              />
+              <EditDelegatorsCertificateSection
+                updateGuardianDetailsUrl={(detailsPageUrl) =>
+                  updateGuardianDetailsPage(detailsPageUrl)
+                }
+                currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}
+                hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}
+              />
+            </TabPanel>
+            <TabPanel value={value} index={4} dir={theme.direction}>
+              <UnregisterSection unregisterGuardian={unregisterGuardian} />
+            </TabPanel>
+            {/*</SwipeableViews>*/}
+
             <br />
             <br />
             <br />
@@ -304,3 +390,26 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     );
   }
 );
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  dir?: string;
+  index: any;
+  value: any;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={3}>{children}</Box>}
+    </div>
+  );
+}
