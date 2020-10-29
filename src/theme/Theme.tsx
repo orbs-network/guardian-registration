@@ -34,6 +34,7 @@ export const baseTheme = responsiveFontSizes(
         // DEV_NOTE : This sets the app background color
         default: "#16317d",
         // paper: "rgba(0, 31, 107, 0.6)",
+        paper: "#09142c",
       },
       action: {
         active: PRIMARY_TEXT,

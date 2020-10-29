@@ -61,66 +61,14 @@ export const UnregisterForm = React.memo<IProps>((props) => {
       }}
       onSubmit={handleSubmit(submitUnregister)}
     >
-      <Transition
-        items={userWantsToUnregister.value}
-        // config={config.gentle}
-        initial={null}
-        // immediate={DISABLE_ANIMATIONS}
-
-        from={{
-          // position: "absolute",
-          opacity: 0,
-          // transform: "translateX(1%)",
-        }}
-        enter={{
-          opacity: 1,
-          // transform: "translateX(0%)",
-        }}
-        leave={{
-          opacity: 0,
-          // transform: "translateX(1%)",
-          // position: "absolute",
-          display: "none",
-        }}
+      <Button
+        className={classes.unregisterButton}
+        variant={"outlined"}
+        type={"submit"}
+        fullWidth
       >
-        {(toggle) =>
-          toggle
-            ? (props) => (
-                <div style={{ ...props, maxWidth: "100%", width: "100%" }}>
-                  <Button
-                    className={classes.unregisterButton}
-                    variant={"outlined"}
-                    type={"submit"}
-                    fullWidth
-                  >
-                    Unregister
-                  </Button>
-                  <br />
-                  <br />
-                  <Button
-                    className={classes.closeUnregisterMenuButton}
-                    onClick={userWantsToUnregister.setFalse}
-                    variant={"outlined"}
-                    fullWidth
-                    style={props}
-                  >
-                    Close unregister section
-                  </Button>
-                </div>
-              )
-            : (props) => (
-                <Button
-                  className={classes.openUnregisterMenuButton}
-                  onClick={userWantsToUnregister.setTrue}
-                  variant={"outlined"}
-                  fullWidth
-                  style={props}
-                >
-                  Open unregister section
-                </Button>
-              )
-        }
-      </Transition>
+        Unregister
+      </Button>
     </form>
   );
 });

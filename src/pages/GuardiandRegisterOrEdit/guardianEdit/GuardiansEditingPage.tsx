@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
 import {
@@ -37,6 +37,8 @@ import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import SwipeableViews from "react-swipeable-views";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { GuardianDetails } from "./GuardianDetails";
+import { UnregisterForm } from "../forms/UnregisterForm";
+import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
 
 interface IProps {}
 
@@ -72,6 +74,19 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const { enqueueSnackbar } = useSnackbar();
     const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
     const orbsAccountStore = useOrbsAccountStore();
+
+    // TODO : ORL : The whole modal logic is duplicated from 'Subscription UI' - Unite them properly
+    const [showModal, setShowModal] = useState(false);
+    const [onDialogAccept, setOnDialogAccept] = useState(() => () =>
+      console.log("Accepted")
+    );
+    const [dialogTexts, setDialogTexts] = useState<{
+      title: string;
+      content: string;
+      acceptText?: string;
+      cancelText?: string;
+      onCancelMessage?: string;
+    }>({ title: "", content: "" });
 
     const updateGuardianDetails = useCallback(
       async (guardianRegistrationPayload: TGuardianUpdatePayload) => {
@@ -153,13 +168,22 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     );
 
     const unregisterGuardian = useCallback(async () => {
-      try {
-        await orbsAccountStore.unregisterGuardian();
-      } catch (e) {
-        enqueueSnackbar(`Error in 'Unregister guardian' TX ${e.message}`, {
-          variant: "error",
-        });
-      }
+      setDialogTexts({
+        title: `You are about to unregister`,
+        content: "Are you sure ?",
+        acceptText: "yes",
+        onCancelMessage: "Action canceled",
+      });
+      setShowModal(true);
+      setOnDialogAccept(() => async () => {
+        try {
+          await orbsAccountStore.unregisterGuardian();
+        } catch (e) {
+          enqueueSnackbar(`Error in 'Unregister guardian' TX ${e.message}`, {
+            variant: "error",
+          });
+        }
+      });
     }, [enqueueSnackbar, orbsAccountStore]);
 
     const [value, setValue] = React.useState(0);
@@ -304,9 +328,31 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               />
             </TabPanel>
             <TabPanel value={value} index={4} dir={theme.direction}>
-              <UnregisterSection unregisterGuardian={unregisterGuardian} />
+              <UnregisterForm unregisterGuardian={unregisterGuardian} />
             </TabPanel>
             {/*</SwipeableViews>*/}
+
+            {/* Modal */}
+            <ActionConfirmationModal
+              open={showModal}
+              acceptText={dialogTexts.acceptText}
+              cancelText={dialogTexts.cancelText}
+              onAccept={() => {
+                setShowModal(false);
+                onDialogAccept();
+              }}
+              onCancel={() => {
+                setShowModal(false);
+                if (dialogTexts.onCancelMessage) {
+                  enqueueSnackbar(dialogTexts.onCancelMessage, {
+                    variant: "info",
+                    preventDuplicate: true,
+                  });
+                }
+              }}
+              title={dialogTexts.title}
+              contentText={dialogTexts.content}
+            />
 
             {/*<br />*/}
             {/*<br />*/}
