@@ -314,7 +314,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 <Tab
                   className={classes.tab}
                   // icon={<VerifiedUserIcon />}
-                  label={"Certificate"}
+                  label={"Certificate URL"}
                   value={TABS_IDS.certificate}
                   aria-label="favorite"
                 />
