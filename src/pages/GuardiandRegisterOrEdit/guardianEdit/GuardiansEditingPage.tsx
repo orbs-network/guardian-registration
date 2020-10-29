@@ -164,6 +164,24 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
 
     const [value, setValue] = React.useState(0);
 
+    const guardianDetails = (
+      <GuardianDetails
+        guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+        guardianInfo={orbsAccountStore.guardianInfo}
+        delegatorsShare={{
+          defaultValue:
+            orbsAccountStore.rewardsContractSettings
+              .defaultDelegatorsStakingRewardsPercent,
+          isUsingDefaultValue:
+            orbsAccountStore.isUsingDefaultDelegatorsCutPercentage,
+          maxValue:
+            orbsAccountStore.rewardsContractSettings
+              .maxDelegatorsStakingRewardsPercent,
+          value: orbsAccountStore.delegatorsCutPercentage,
+        }}
+      />
+    );
+
     return (
       <Page>
         <ContentFitting
@@ -237,24 +255,10 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             {/*  onChangeIndex={(newIndex) => setValue(newIndex)}*/}
             {/*>*/}
             <TabPanel value={value} index={0} dir={theme.direction}>
-              <GuardianDetails
-                guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-                guardianInfo={orbsAccountStore.guardianInfo}
-              />
-              <EditGuardianInfoSection
-                guardianInfo={orbsAccountStore.guardianInfo}
-                guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-                guardianContractInteractionTimes={
-                  orbsAccountStore.guardianContractInteractionTimes
-                }
-                updateGuardianDetails={updateGuardianDetails}
-              />
+              {guardianDetails}
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
-              <GuardianDetails
-                guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-                guardianInfo={orbsAccountStore.guardianInfo}
-              />
+              {guardianDetails}
               <EditDelegatorsCutSection
                 updateDelegatorsCut={updateDelegatorsCut}
                 delegatorsCut={orbsAccountStore.delegatorsCutPercentage}
@@ -272,10 +276,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               />
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>
-              <GuardianDetails
-                guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-                guardianInfo={orbsAccountStore.guardianInfo}
-              />
+              {guardianDetails}
               <EditDelegatorsCutSection
                 updateDelegatorsCut={updateDelegatorsCut}
                 delegatorsCut={orbsAccountStore.delegatorsCutPercentage}
@@ -293,10 +294,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               />
             </TabPanel>
             <TabPanel value={value} index={3} dir={theme.direction}>
-              <GuardianDetails
-                guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-                guardianInfo={orbsAccountStore.guardianInfo}
-              />
+              {guardianDetails}
               <EditDelegatorsCertificateSection
                 updateGuardianDetailsUrl={(detailsPageUrl) =>
                   updateGuardianDetailsPage(detailsPageUrl)
@@ -310,73 +308,73 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             </TabPanel>
             {/*</SwipeableViews>*/}
 
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
+            {/*<br />*/}
+            {/*<br />*/}
+            {/*<br />*/}
+            {/*<br />*/}
+            {/*<br />*/}
+            {/*<br />*/}
+            {/*<br />*/}
+            {/*<br />*/}
 
-            <EditGuardianInfoSection
-              guardianInfo={orbsAccountStore.guardianInfo}
-              guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-              guardianContractInteractionTimes={
-                orbsAccountStore.guardianContractInteractionTimes
-              }
-              updateGuardianDetails={updateGuardianDetails}
-            />
+            {/*<EditGuardianInfoSection*/}
+            {/*  guardianInfo={orbsAccountStore.guardianInfo}*/}
+            {/*  guardianAddress={cryptoWalletIntegrationStore.mainAddress}*/}
+            {/*  guardianContractInteractionTimes={*/}
+            {/*    orbsAccountStore.guardianContractInteractionTimes*/}
+            {/*  }*/}
+            {/*  updateGuardianDetails={updateGuardianDetails}*/}
+            {/*/>*/}
 
-            <Divider
-              style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
-            />
-            <CompactInput
-              title={"Delegators Cut"}
-              value={"Default Value (70%)"}
-            />
-            <br />
-            <br />
-            <br />
+            {/*<Divider*/}
+            {/*  style={{ width: "100%", height: "3px", marginBottom: "1rem" }}*/}
+            {/*/>*/}
+            {/*<CompactInput*/}
+            {/*  title={"Delegators Cut"}*/}
+            {/*  value={"Default Value (70%)"}*/}
+            {/*/>*/}
+            {/*<br />*/}
+            {/*<br />*/}
+            {/*<br />*/}
 
-            <EditDelegatorsCutSection
-              updateDelegatorsCut={updateDelegatorsCut}
-              delegatorsCut={orbsAccountStore.delegatorsCutPercentage}
-              isUsingDefaultValue={
-                orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
-              }
-              delegatorsCutDefaultValue={
-                orbsAccountStore.rewardsContractSettings
-                  .defaultDelegatorsStakingRewardsPercent
-              }
-              delegatorsCutMaxValue={
-                orbsAccountStore.rewardsContractSettings
-                  .maxDelegatorsStakingRewardsPercent
-              }
-            />
+            {/*<EditDelegatorsCutSection*/}
+            {/*  updateDelegatorsCut={updateDelegatorsCut}*/}
+            {/*  delegatorsCut={orbsAccountStore.delegatorsCutPercentage}*/}
+            {/*  isUsingDefaultValue={*/}
+            {/*    orbsAccountStore.isUsingDefaultDelegatorsCutPercentage*/}
+            {/*  }*/}
+            {/*  delegatorsCutDefaultValue={*/}
+            {/*    orbsAccountStore.rewardsContractSettings*/}
+            {/*      .defaultDelegatorsStakingRewardsPercent*/}
+            {/*  }*/}
+            {/*  delegatorsCutMaxValue={*/}
+            {/*    orbsAccountStore.rewardsContractSettings*/}
+            {/*      .maxDelegatorsStakingRewardsPercent*/}
+            {/*  }*/}
+            {/*/>*/}
 
-            <Divider
-              style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
-            />
+            {/*<Divider*/}
+            {/*  style={{ width: "100%", height: "3px", marginBottom: "1rem" }}*/}
+            {/*/>*/}
 
-            <EditDelegatorsCertificateSection
-              updateGuardianDetailsUrl={(detailsPageUrl) =>
-                updateGuardianDetailsPage(detailsPageUrl)
-              }
-              currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}
-              hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}
-            />
+            {/*<EditDelegatorsCertificateSection*/}
+            {/*  updateGuardianDetailsUrl={(detailsPageUrl) =>*/}
+            {/*    updateGuardianDetailsPage(detailsPageUrl)*/}
+            {/*  }*/}
+            {/*  currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}*/}
+            {/*  hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}*/}
+            {/*/>*/}
 
-            <Divider
-              style={{
-                width: "100%",
-                height: "3px",
-                marginBottom: "1rem",
-                marginTop: "1rem",
-              }}
-            />
-            <UnregisterSection unregisterGuardian={unregisterGuardian} />
-            <br />
+            {/*<Divider*/}
+            {/*  style={{*/}
+            {/*    width: "100%",*/}
+            {/*    height: "3px",*/}
+            {/*    marginBottom: "1rem",*/}
+            {/*    marginTop: "1rem",*/}
+            {/*  }}*/}
+            {/*/>*/}
+            {/*<UnregisterSection unregisterGuardian={unregisterGuardian} />*/}
+            {/*<br />*/}
           </div>
 
           <Backdrop

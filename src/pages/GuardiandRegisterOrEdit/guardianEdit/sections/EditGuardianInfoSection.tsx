@@ -143,10 +143,10 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
               : (props) => (
                   //@ts-ignore
                   <div style={{ ...props }}>
-                    <GuardianDetails
-                      guardianAddress={guardianAddress}
-                      guardianInfo={guardianInfo}
-                    />
+                    {/*<GuardianDetails*/}
+                    {/*  guardianAddress={guardianAddress}*/}
+                    {/*  guardianInfo={guardianInfo}*/}
+                    {/*/>*/}
                     <ActionButton onClick={isEditingData.setTrue}>
                       Edit
                     </ActionButton>
