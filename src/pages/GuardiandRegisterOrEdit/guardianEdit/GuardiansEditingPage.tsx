@@ -11,8 +11,8 @@ import {
   Tabs,
   Typography,
 } from "@material-ui/core";
-import { EditGuardianInfoSection } from "./EditGuardianInfoSection";
-import { EditRewardsDistributionSection } from "./EditRewardsDistributionSection";
+import { EditGuardianInfoSection } from "./sections/EditGuardianInfoSection";
+import { EditRewardsDistributionSection } from "./sections/EditRewardsDistributionSection";
 import { UnregisterSection } from "./UnregisterSection";
 import {
   useCryptoWalletIntegrationStore,
@@ -20,11 +20,11 @@ import {
 } from "../../../store/storeHooks";
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
-import { EditDelegatorsCutSection } from "./EditDelegatorsCutSection";
+import { EditDelegatorsCutSection } from "./sections/EditDelegatorsCutSection";
 import { observer } from "mobx-react";
 import { IReactComponent } from "mobx-react/dist/types/IReactComponent";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
-import { EditDelegatorsCertificateSection } from "./EditDelegatorsCertificateSection";
+import { EditDelegatorsCertificateSection } from "./sections/EditDelegatorsCertificateSection";
 import { CompactInput } from "../../../components/CompactInput/CompactInput";
 import PhoneIcon from "@material-ui/icons/Phone";
 import FavoriteIcon from "@material-ui/icons/Favorite";

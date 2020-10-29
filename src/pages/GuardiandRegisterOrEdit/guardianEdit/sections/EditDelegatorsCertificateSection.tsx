@@ -2,8 +2,8 @@ import React from "react";
 import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
-import { InTextLink } from "../../../components/InTextLink";
-import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
+import { InTextLink } from "../../../../components/InTextLink";
+import { GuardiansDetailsUrlForm } from "../../forms/GuardiansDetailsUrlForm";
 
 interface IProps {
   currentGuardianDetailsUrl?: string;

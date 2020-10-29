@@ -3,15 +3,15 @@ import { fromUnixTime } from "date-fns";
 import {
   TGuardianInfo,
   TGuardianContractInteractionTimes,
-} from "../../../store/OrbsAccountStore";
-import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
+} from "../../../../store/OrbsAccountStore";
+import { GuardiansDetailsForm } from "../../forms/GuradiansDetailsForm";
 import { Typography, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import { Transition } from "react-spring/renderprops-universal";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
-import { GuardianDetails } from "./GuardianDetails";
-import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
+import { GuardianDetails } from "../GuardianDetails";
+import { ActionButton } from "../../../../components/shared/ActionButton/ActionButton";
 import { useBoolean } from "react-hanger";
 
 interface IProps {
