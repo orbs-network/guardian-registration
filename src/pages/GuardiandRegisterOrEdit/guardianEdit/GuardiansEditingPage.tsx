@@ -1,7 +1,14 @@
 import React, { useCallback } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
-import { Backdrop, CircularProgress, Divider } from "@material-ui/core";
+import {
+  Avatar,
+  Backdrop,
+  CircularProgress,
+  Divider,
+  Tab,
+  Tabs,
+} from "@material-ui/core";
 import { EditGuardianInfoSection } from "./EditGuardianInfoSection";
 import { EditRewardsDistributionSection } from "./EditRewardsDistributionSection";
 import { UnregisterSection } from "./UnregisterSection";
@@ -16,6 +23,15 @@ import { observer } from "mobx-react";
 import { IReactComponent } from "mobx-react/dist/types/IReactComponent";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
 import { EditDelegatorsCertificateSection } from "./EditDelegatorsCertificateSection";
+import { CompactInput } from "../../../components/CompactInput/CompactInput";
+import PhoneIcon from "@material-ui/icons/Phone";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import PersonPinIcon from "@material-ui/icons/PersonPin";
+import MoneyIcon from "@material-ui/icons/Money";
+import PermIdentityIcon from "@material-ui/icons/PermIdentity";
+import EditIcon from "@material-ui/icons/Edit";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 
 interface IProps {}
 
@@ -23,6 +39,22 @@ const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
+  },
+  tab: {
+    transition: "0.5s",
+    color: theme.palette.secondary.dark,
+    opacity: 0.5,
+
+    "&:hover": {
+      // backgroundColor: "rgba(255,255,255, 0.1)",
+    },
+
+    "&.MuiTab-textColorPrimary.Mui-selected": {
+      // backgroundColor: "rgba(255,255,255, 0.1)",
+
+      color: theme.palette.secondary.main,
+      opacity: 1,
+    },
   },
 }));
 
@@ -123,6 +155,8 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       }
     }, [enqueueSnackbar, orbsAccountStore]);
 
+    const [value, setValue] = React.useState(0);
+
     return (
       <Page>
         <ContentFitting
@@ -143,6 +177,62 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               alignItems: "center",
             }}
           >
+            {/*  Tabs  */}
+            <div>
+              <Tabs
+                value={value}
+                onChange={(event, value) => setValue(value)}
+                variant="fullWidth"
+                indicatorColor="secondary"
+                textColor="primary"
+                aria-label="icon tabs example"
+                TabIndicatorProps={{
+                  color: "secondary",
+                }}
+              >
+                <Tab
+                  // textColor={"secondary"}
+                  // icon={<PermIdentityIcon />}
+                  label="Info"
+                  aria-label="phone"
+                  className={classes.tab}
+                />
+                <Tab
+                  className={classes.tab}
+                  // icon={<EditIcon />}
+                  label={"Edit Info"}
+                  aria-label="phone"
+                />
+                <Tab
+                  className={classes.tab}
+                  // icon={<MoneyIcon />}
+                  label={"Delegator's share"}
+                  aria-label="favorite"
+                />
+                <Tab
+                  className={classes.tab}
+                  // icon={<VerifiedUserIcon />}
+                  label={"Certificate"}
+                  aria-label="favorite"
+                />
+                <Tab
+                  className={classes.tab}
+                  // icon={<HighlightOffIcon />}
+                  label={"Unregister"}
+                  aria-label="person"
+                />
+              </Tabs>
+            </div>
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+
             <EditGuardianInfoSection
               guardianInfo={orbsAccountStore.guardianInfo}
               guardianAddress={cryptoWalletIntegrationStore.mainAddress}
@@ -155,6 +245,13 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             <Divider
               style={{ width: "100%", height: "3px", marginBottom: "1rem" }}
             />
+            <CompactInput
+              title={"Delegators Cut"}
+              value={"Default Value (70%)"}
+            />
+            <br />
+            <br />
+            <br />
 
             <EditDelegatorsCutSection
               updateDelegatorsCut={updateDelegatorsCut}
