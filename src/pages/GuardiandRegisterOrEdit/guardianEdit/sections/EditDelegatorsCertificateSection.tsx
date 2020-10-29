@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DETAILS_REQUIREMENTS_LINK =
+export const DETAILS_REQUIREMENTS_LINK =
   "https://github.com/orbs-network/validator-instructions/blob/master/public/certified_committee.md";
 
 export const EditDelegatorsCertificateSection = React.memo<IProps>((props) => {

@@ -25,7 +25,10 @@ import { EditDelegatorsCutSection } from "./sections/EditDelegatorsCutSection";
 import { observer } from "mobx-react";
 import { IReactComponent } from "mobx-react/dist/types/IReactComponent";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
-import { EditDelegatorsCertificateSection } from "./sections/EditDelegatorsCertificateSection";
+import {
+  DETAILS_REQUIREMENTS_LINK,
+  EditDelegatorsCertificateSection,
+} from "./sections/EditDelegatorsCertificateSection";
 import { CompactInput } from "../../../components/CompactInput/CompactInput";
 import PhoneIcon from "@material-ui/icons/Phone";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -43,6 +46,7 @@ import { ActionConfirmationModal } from "../../../components/shared/modals/Actio
 import { DelegatorsCutForm } from "../forms/DelegatorsCutForm";
 import { FormWrapper } from "../../../components/forms/FormWrapper";
 import Fade from "@material-ui/core/Fade";
+import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
 
 interface IProps {}
 
@@ -152,21 +156,29 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
 
     const updateGuardianDetailsPage = useCallback(
       async (guardianDetailsPageUrl: string) => {
-        try {
-          await orbsAccountStore.writeGuardianDetailsPageURL(
-            guardianDetailsPageUrl
-          );
-          enqueueSnackbar("Details page URL updated", {
-            variant: "success",
-          });
-        } catch (e) {
-          enqueueSnackbar(
-            `Error in 'Details page URL Update' TX ${e.message}`,
-            {
-              variant: "error",
-            }
-          );
-        }
+        setDialogTexts({
+          title: `Update to ${guardianDetailsPageUrl}`,
+          content: "Please press 'Accept' and approve the transaction",
+          onCancelMessage: "Action canceled",
+        });
+        setShowModal(true);
+        setOnDialogAccept(() => async () => {
+          try {
+            await orbsAccountStore.writeGuardianDetailsPageURL(
+              guardianDetailsPageUrl
+            );
+            enqueueSnackbar("Details page URL updated", {
+              variant: "success",
+            });
+          } catch (e) {
+            enqueueSnackbar(
+              `Error in 'Details page URL Update' TX ${e.message}`,
+              {
+                variant: "error",
+              }
+            );
+          }
+        });
       },
       [enqueueSnackbar, orbsAccountStore]
     );
@@ -327,8 +339,6 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               index={TABS_IDS.delegatorsShare}
               dir={theme.direction}
             >
-              <br />
-              <br />
               <FormWrapper>
                 <DelegatorsCutForm
                   updateDelegatorsCut={updateDelegatorsCut}
@@ -355,13 +365,14 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               index={TABS_IDS.certificate}
               dir={theme.direction}
             >
-              <EditDelegatorsCertificateSection
-                updateGuardianDetailsUrl={(detailsPageUrl) =>
-                  updateGuardianDetailsPage(detailsPageUrl)
-                }
-                currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}
-                hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}
-              />
+              <FormWrapper>
+                <GuardiansDetailsUrlForm
+                  currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}
+                  hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}
+                  updateGuardianDetailsUrl={updateGuardianDetailsPage}
+                  detailsRequirementsLink={DETAILS_REQUIREMENTS_LINK}
+                />
+              </FormWrapper>
             </TabPanel>
             {/* Unregister */}
             <TabPanel

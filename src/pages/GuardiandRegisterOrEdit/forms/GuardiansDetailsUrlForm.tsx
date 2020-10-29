@@ -96,93 +96,36 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
       }}
       onSubmit={handleSubmit(submitUpdate)}
     >
-      <Typography variant={"body1"}>{titleText}</Typography>
-      <br />
-      {/*<br />*/}
-
-      <Transition
-        items={showEditOptions.value}
-        // config={config.gentle}
-        initial={null}
-        // immediate={DISABLE_ANIMATIONS}
-
-        from={{
-          // position: "absolute",
-          opacity: 0,
-          // transform: "translateX(1%)",
+      <TextField
+        fullWidth
+        name={"guardianDetailsUrl"}
+        title={`Details page URL`}
+        label={"Details page URL"}
+        value={formGuardianDetailsUrl.value}
+        onChange={(e) => {
+          formGuardianDetailsUrl.setValue(e.target.value || "");
         }}
-        enter={{
-          opacity: 1,
-          // transform: "translateX(0%)",
-        }}
-        leave={{
-          opacity: 0,
-          // transform: "translateX(1%)",
-          // position: "absolute",
-          display: "none",
-        }}
-      >
-        {(toggle) =>
-          toggle
-            ? (props) => (
-                <div style={{ ...props, maxWidth: "100%", width: "100%" }}>
-                  <TextField
-                    fullWidth
-                    name={"guardianDetailsUrl"}
-                    title={`Details page URL`}
-                    label={"Details page URL"}
-                    value={formGuardianDetailsUrl.value}
-                    onChange={(e) => {
-                      formGuardianDetailsUrl.setValue(e.target.value || "");
-                    }}
-                    required
-                    inputRef={register({ validate: validURL })}
-                    error={errorGuardianDetailsUrl}
-                    helperText={
-                      errorGuardianDetailsUrl
-                        ? REWARDS_FREQUENCY_ERROR_MESSAGE
-                        : REWARDS_FREQUENCY_DATA_MESSAGE
-                    }
-                    className={classes.textField}
-                  />
-                  <br />
-                  <br />
-                  <Button
-                    className={classes.actionButton}
-                    variant={"outlined"}
-                    type={"submit"}
-                    fullWidth
-                  >
-                    Update your details page URL
-                  </Button>
-                  <br />
-                  <br />
-
-                  <Button
-                    className={classes.actionButton}
-                    variant={"outlined"}
-                    fullWidth
-                    onClick={() => {
-                      showEditOptions.setFalse();
-                    }}
-                  >
-                    Close Section
-                  </Button>
-                </div>
-              )
-            : (props) => (
-                <Button
-                  className={classes.actionButton}
-                  onClick={showEditOptions.setTrue}
-                  variant={"outlined"}
-                  fullWidth
-                  style={props}
-                >
-                  Edit your details page URL
-                </Button>
-              )
+        required
+        inputRef={register({ validate: validURL })}
+        error={errorGuardianDetailsUrl}
+        helperText={
+          errorGuardianDetailsUrl
+            ? REWARDS_FREQUENCY_ERROR_MESSAGE
+            : REWARDS_FREQUENCY_DATA_MESSAGE
         }
-      </Transition>
+        className={classes.textField}
+        autoFocus
+      />
+      <br />
+      <br />
+      <Button
+        className={classes.actionButton}
+        variant={"outlined"}
+        type={"submit"}
+        fullWidth
+      >
+        Update your details page URL
+      </Button>
     </form>
   );
 });
