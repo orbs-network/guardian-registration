@@ -210,6 +210,7 @@ export const GuardiansDetailsForm = React.memo<
         inputRef={register}
         fullWidth
         className={classes.textField}
+        autoFocus
       />
       <br />
       <TextField

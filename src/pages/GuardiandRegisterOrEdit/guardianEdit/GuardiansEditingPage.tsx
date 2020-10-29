@@ -47,6 +47,7 @@ import { DelegatorsCutForm } from "../forms/DelegatorsCutForm";
 import { FormWrapper } from "../../../components/forms/FormWrapper";
 import Fade from "@material-ui/core/Fade";
 import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
+import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 
 interface IProps {}
 
@@ -106,21 +107,29 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
 
     const updateGuardianDetails = useCallback(
       async (guardianRegistrationPayload: TGuardianUpdatePayload) => {
-        try {
-          await orbsAccountStore.updateGuardianInfo(
-            guardianRegistrationPayload
-          );
-          enqueueSnackbar("Guardian details successfully updated", {
-            variant: "success",
-          });
-        } catch (e) {
-          enqueueSnackbar(
-            `Error in 'Guardian Details Update' TX ${e.message}`,
-            {
-              variant: "error",
-            }
-          );
-        }
+        setDialogTexts({
+          title: `Update your Details`,
+          content: "Please press 'Accept' and confirm the transaction",
+          onCancelMessage: "Action canceled",
+        });
+        setShowModal(true);
+        setOnDialogAccept(() => async () => {
+          try {
+            await orbsAccountStore.updateGuardianInfo(
+              guardianRegistrationPayload
+            );
+            enqueueSnackbar("Guardian details successfully updated", {
+              variant: "success",
+            });
+          } catch (e) {
+            enqueueSnackbar(
+              `Error in 'Guardian Details Update' TX ${e.message}`,
+              {
+                variant: "error",
+              }
+            );
+          }
+        });
       },
       [enqueueSnackbar, orbsAccountStore]
     );
@@ -129,7 +138,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       async (delegatorsCutPercentage: number) => {
         setDialogTexts({
           title: `Change your Delegator's share to ${delegatorsCutPercentage.toLocaleString()}%`,
-          content: "Please press 'Accept' and approve the transaction",
+          content: "Please press 'Accept' and confirm the transaction",
           onCancelMessage: "Action canceled",
         });
         setShowModal(true);
@@ -158,7 +167,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       async (guardianDetailsPageUrl: string) => {
         setDialogTexts({
           title: `Update to ${guardianDetailsPageUrl}`,
-          content: "Please press 'Accept' and approve the transaction",
+          content: "Please press 'Accept' and confirm the transaction",
           onCancelMessage: "Action canceled",
         });
         setShowModal(true);
@@ -332,7 +341,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               value={tabValue}
               index={TABS_IDS.editInfo}
               dir={theme.direction}
-            ></TabPanel>
+            >
+              <FormWrapper>
+                <GuardiansDetailsForm
+                  submitInfo={updateGuardianDetails}
+                  guardianInitialInfo={orbsAccountStore.guardianInfo}
+                  actionButtonTitle={"Update"}
+                />
+                {/*<Typography variant={"h6"}>*/}
+                {/*    Details Last updated: {lastUpdateDate.toLocaleString()}*/}
+                {/*</Typography>*/}
+              </FormWrapper>
+            </TabPanel>
             {/* Edit Delegator's share */}
             <TabPanel
               value={tabValue}
