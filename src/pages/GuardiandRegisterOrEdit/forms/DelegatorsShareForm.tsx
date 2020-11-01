@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const DelegatorsCutForm = React.memo<IProps>((props) => {
+export const DelegatorsShareForm = React.memo<IProps>((props) => {
   const classes = useStyles();
   const {
     currentDelegatorsCut,
@@ -68,8 +68,8 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
 
   const titleText = useMemo(() => {
     return isUsingDefaultValue
-      ? `Current cut : Default value (${delegatorsCutDefaultValue}%)`
-      : `Current cut : ${currentDelegatorsCut}%`;
+      ? `Current share : Default value (${delegatorsCutDefaultValue}%)`
+      : `Current share : ${currentDelegatorsCut}%`;
   }, [currentDelegatorsCut, delegatorsCutDefaultValue, isUsingDefaultValue]);
 
   return (
@@ -84,8 +84,8 @@ export const DelegatorsCutForm = React.memo<IProps>((props) => {
       <TextField
         fullWidth
         name={"delegatorsCut"}
-        title={`Delegators cut % out of staking rewards`}
-        label={"Delegators cut % out of staking rewards"}
+        title={`Delegators share % out of staking rewards`}
+        label={"Delegators share % out of staking rewards"}
         value={delegatorsCut.value}
         inputProps={{
           step: 1,

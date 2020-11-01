@@ -21,7 +21,7 @@ import {
 } from "../../../store/storeHooks";
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
-import { EditDelegatorsCutSection } from "./sections/EditDelegatorsCutSection";
+import { EditDelegatorsShareSection } from "./sections/EditDelegatorsShareSection";
 import { observer } from "mobx-react";
 import { IReactComponent } from "mobx-react/dist/types/IReactComponent";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
@@ -43,7 +43,7 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import { GuardianDetails } from "./GuardianDetails";
 import { UnregisterForm } from "../forms/UnregisterForm";
 import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
-import { DelegatorsCutForm } from "../forms/DelegatorsCutForm";
+import { DelegatorsShareForm } from "../forms/DelegatorsShareForm";
 import { FormWrapper } from "../../../components/forms/FormWrapper";
 import Fade from "@material-ui/core/Fade";
 import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
@@ -370,7 +370,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               dir={theme.direction}
             >
               <FormWrapper>
-                <DelegatorsCutForm
+                <DelegatorsShareForm
                   updateDelegatorsCut={updateDelegatorsCut}
                   currentDelegatorsCut={
                     orbsAccountStore.delegatorsCutPercentage

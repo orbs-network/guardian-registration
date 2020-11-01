@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MoneyIcon from "@material-ui/icons/Money";
-import { DelegatorsCutForm } from "../../forms/DelegatorsCutForm";
+import { DelegatorsShareForm } from "../../forms/DelegatorsShareForm";
 
 interface IProps {
   delegatorsCut?: number;
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const EditDelegatorsCutSection = React.memo<IProps>((props) => {
+export const EditDelegatorsShareSection = React.memo<IProps>((props) => {
   const classes = useStyles();
   const {
     delegatorsCut,
@@ -38,7 +38,7 @@ export const EditDelegatorsCutSection = React.memo<IProps>((props) => {
         <MoneyIcon />
       </Avatar>
       <Typography variant={"h5"}>Delegators cut</Typography>
-      <DelegatorsCutForm
+      <DelegatorsShareForm
         updateDelegatorsCut={updateDelegatorsCut}
         currentDelegatorsCut={delegatorsCut}
         isUsingDefaultValue={isUsingDefaultValue}
