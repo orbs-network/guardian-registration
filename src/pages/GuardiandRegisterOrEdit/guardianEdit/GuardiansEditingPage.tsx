@@ -48,6 +48,7 @@ import { FormWrapper } from "../../../components/forms/FormWrapper";
 import Fade from "@material-ui/core/Fade";
 import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
+import { BoxProps } from "@material-ui/core/Box/Box";
 
 interface IProps {}
 
@@ -72,6 +73,10 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.secondary.main,
       opacity: 1,
     },
+  },
+  tabPanel: {
+    maxWidth: "100%",
+    overflow: "hidden",
   },
 }));
 
@@ -276,9 +281,11 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               alignItems: "center",
             }}
           >
+            {/*  TODO : ORL : Make the 'Tabs' scrollable on mobile */}
             {/*  Tabs  */}
-            <div>
+            <div style={{}}>
               <Tabs
+                scrollButtons={"auto"}
                 value={tabValue}
                 onChange={(event, value) => setTabValue(value)}
                 variant="fullWidth"
@@ -331,6 +338,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
 
             {/* Info */}
             <TabPanel
+              className={classes.tabPanel}
               value={tabValue}
               index={TABS_IDS.info}
               dir={theme.direction}
@@ -338,6 +346,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
 
             {/* Edit Details */}
             <TabPanel
+              className={classes.tabPanel}
               value={tabValue}
               index={TABS_IDS.editInfo}
               dir={theme.direction}
@@ -355,6 +364,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             </TabPanel>
             {/* Edit Delegator's share */}
             <TabPanel
+              className={classes.tabPanel}
               value={tabValue}
               index={TABS_IDS.delegatorsShare}
               dir={theme.direction}
@@ -381,6 +391,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             </TabPanel>
             {/* Edit Guardian Certification  */}
             <TabPanel
+              className={classes.tabPanel}
               value={tabValue}
               index={TABS_IDS.certificate}
               dir={theme.direction}
@@ -396,6 +407,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             </TabPanel>
             {/* Unregister */}
             <TabPanel
+              className={classes.tabPanel}
               value={tabValue}
               index={TABS_IDS.unregister}
               dir={theme.direction}
@@ -445,18 +457,24 @@ interface TabPanelProps {
   value: any;
 }
 
-function TabPanel(props: TabPanelProps) {
+function TabPanel(props: TabPanelProps & BoxProps) {
   const { children, value, index, ...other } = props;
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </div>
-  );
+  return value === index ? (
+    <Box p={3} {...other}>
+      {children}
+    </Box>
+  ) : null;
+
+  // return (
+  //   <div
+  //     role="tabpanel"
+  //     hidden={value !== index}
+  //     id={`full-width-tabpanel-${index}`}
+  //     aria-labelledby={`full-width-tab-${index}`}
+  //     {...other}
+  //   >
+  //     {value === index && <Box p={3}>{children}</Box>}
+  //   </div>
+  // );
 }

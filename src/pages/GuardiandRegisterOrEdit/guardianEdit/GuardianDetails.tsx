@@ -96,7 +96,12 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
     <Paper
       elevation={3}
       {...rest}
-      style={{ padding: "1.5rem", maxWidth: "100%", width: "30rem" }}
+      style={{
+        padding: "1.5rem",
+        maxWidth: "100%",
+        width: "30rem",
+        overflow: "hidden",
+      }}
     >
       <TitleValuePair
         title={"Name : "}

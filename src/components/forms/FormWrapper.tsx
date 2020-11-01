@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
   formWrapper: {
     padding: "1.5rem",
     maxWidth: "100%",
+    overflow: "hidden",
     width: "30rem",
     transition: "0.7s",
     border: "2px dashed rgba(0,0,0,0)",
