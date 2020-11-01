@@ -73,7 +73,6 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
   const guardianCertificateUrlDataText = useMemo(() => {
     return guardianCertificationUrl.hasGuardianDetailsUrl ? (
       <Typography component={"span"}>
-        Your details page :{" "}
         <InTextLink
           href={
             guardianCertificationUrl.currentGuardianDetailsUrl?.startsWith(
@@ -119,7 +118,13 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
       <br />
       <TitleValuePair
         title={"Guardian website : "}
-        value={guardianInfo.website}
+        value={
+          <InTextLink
+            text={guardianInfo.website}
+            href={guardianInfo.website}
+            shouldfade={!highlightInfo && shouldFadeOthers}
+          />
+        }
         shouldHighlight={highlightInfo}
         shouldfade={!highlightInfo && shouldFadeOthers}
       />
