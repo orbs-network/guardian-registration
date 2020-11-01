@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
@@ -20,7 +21,8 @@ interface IProps {
 
   // Content
   title: string;
-  contentText: string;
+  contentText?: string;
+  instructionText?: string;
   acceptText?: string;
   cancelText?: string;
 }
@@ -48,6 +50,7 @@ export const ActionConfirmationModal = React.memo<IProps>((props) => {
     // handleClose,
     title,
     contentText,
+    instructionText,
     acceptText,
     cancelText,
   } = props;
@@ -66,8 +69,17 @@ export const ActionConfirmationModal = React.memo<IProps>((props) => {
       style={{}}
     >
       <DialogTitle id="action-confirmation-dialog-title">{title}</DialogTitle>
+      {contentText && (
+        <DialogContent>
+          <DialogContentText>
+            <Typography>{contentText}</Typography>
+          </DialogContentText>
+        </DialogContent>
+      )}
       <DialogContent>
-        <DialogContentText>{contentText}</DialogContentText>
+        <DialogContentText>
+          <Typography variant={"body2"}>{instructionText}</Typography>
+        </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button

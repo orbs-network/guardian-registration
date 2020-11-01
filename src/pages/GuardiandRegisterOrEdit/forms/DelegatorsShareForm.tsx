@@ -115,7 +115,7 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
         type={"submit"}
         fullWidth
       >
-        Update Delegators cut
+        Update Delegators share
       </Button>
     </form>
   );

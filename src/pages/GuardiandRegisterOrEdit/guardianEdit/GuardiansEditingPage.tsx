@@ -104,17 +104,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     );
     const [dialogTexts, setDialogTexts] = useState<{
       title: string;
-      content: string;
+      content?: string;
+      instruction?: string;
       acceptText?: string;
       cancelText?: string;
       onCancelMessage?: string;
-    }>({ title: "", content: "" });
+    }>({ title: "", content: "", instruction: "" });
 
     const updateGuardianDetails = useCallback(
       async (guardianRegistrationPayload: TGuardianUpdatePayload) => {
         setDialogTexts({
           title: `Update your Details`,
-          content: "Please press 'Accept' and confirm the transaction",
+          instruction: "Please press 'Accept' and confirm the transaction",
           onCancelMessage: "Action canceled",
         });
         setShowModal(true);
@@ -142,8 +143,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const updateDelegatorsCut = useCallback(
       async (delegatorsCutPercentage: number) => {
         setDialogTexts({
-          title: `Change your Delegator's share to ${delegatorsCutPercentage.toLocaleString()}%`,
-          content: "Please press 'Accept' and confirm the transaction",
+          title: `Update Delegators share`,
+          content: `Your Delegator's share will change to to ${delegatorsCutPercentage.toLocaleString()}%`,
+          instruction: "Please press 'Accept' and confirm the transaction",
           onCancelMessage: "Action canceled",
         });
         setShowModal(true);
@@ -171,8 +173,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const updateGuardianDetailsPage = useCallback(
       async (guardianDetailsPageUrl: string) => {
         setDialogTexts({
-          title: `Update to ${guardianDetailsPageUrl}`,
-          content: "Please press 'Accept' and confirm the transaction",
+          title: `Update details page URL`,
+          content: `Your details page URL will change to ${guardianDetailsPageUrl}`,
+          instruction: "Please press 'Accept' and confirm the transaction",
           onCancelMessage: "Action canceled",
         });
         setShowModal(true);
@@ -215,8 +218,10 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
 
     const unregisterGuardian = useCallback(async () => {
       setDialogTexts({
-        title: `You are about to unregister`,
-        content: "Are you sure ?",
+        title: `You are about to unregister from the Orbs Guardian role`,
+        content:
+          "You and your Delegators will no longer be eligible for rewards",
+        instruction: "Are you sure ?",
         acceptText: "yes",
         onCancelMessage: "Action canceled",
       });
@@ -414,29 +419,30 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             >
               <UnregisterForm unregisterGuardian={unregisterGuardian} />
             </TabPanel>
-
-            {/* Modal */}
-            <ActionConfirmationModal
-              open={showModal}
-              acceptText={dialogTexts.acceptText}
-              cancelText={dialogTexts.cancelText}
-              onAccept={() => {
-                setShowModal(false);
-                onDialogAccept();
-              }}
-              onCancel={() => {
-                setShowModal(false);
-                if (dialogTexts.onCancelMessage) {
-                  enqueueSnackbar(dialogTexts.onCancelMessage, {
-                    variant: "info",
-                    preventDuplicate: true,
-                  });
-                }
-              }}
-              title={dialogTexts.title}
-              contentText={dialogTexts.content}
-            />
           </div>
+
+          {/* Modal */}
+          <ActionConfirmationModal
+            title={dialogTexts.title}
+            contentText={dialogTexts.content}
+            instructionText={dialogTexts.instruction}
+            open={showModal}
+            acceptText={dialogTexts.acceptText}
+            cancelText={dialogTexts.cancelText}
+            onAccept={() => {
+              setShowModal(false);
+              onDialogAccept();
+            }}
+            onCancel={() => {
+              setShowModal(false);
+              if (dialogTexts.onCancelMessage) {
+                enqueueSnackbar(dialogTexts.onCancelMessage, {
+                  variant: "info",
+                  preventDuplicate: true,
+                });
+              }
+            }}
+          />
 
           <Backdrop
             className={classes.backdrop}
