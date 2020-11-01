@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { FormHelperListTexts } from "../../../components/forms/FormHelperListTexts";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 import { validURL } from "./inoputValidators";
+import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
 
 interface IProps {
   actionButtonTitle: string;
@@ -79,10 +80,6 @@ const useStyles = makeStyles((theme) => ({
     "& label.Mui-focused": {
       color: "#f5f5f5",
     },
-  },
-  actionButton: {
-    color: theme.palette.secondary.main,
-    borderColor: theme.palette.secondary.main,
   },
 }));
 
@@ -286,15 +283,9 @@ export const GuardiansDetailsForm = React.memo<
       />
       <br />
       <br />
-      <Button
-        className={classes.actionButton}
-        variant={"outlined"}
-        fullWidth
-        type={"submit"}
-        disabled={disableSubmit}
-      >
+      <ActionButton type={"submit"} disabled={disableSubmit}>
         {actionButtonTitle}
-      </Button>
+      </ActionButton>
       <br />
       <br />
       {messageForSubmitButton && (

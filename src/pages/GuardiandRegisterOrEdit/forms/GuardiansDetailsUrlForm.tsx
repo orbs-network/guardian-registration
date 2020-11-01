@@ -6,6 +6,7 @@ import { config, Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
 import { InTextLink } from "../../../components/InTextLink";
 import { validURL } from "./inoputValidators";
+import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
 
 interface IProps {
   currentGuardianDetailsUrl?: string;
@@ -25,10 +26,6 @@ const useStyles = makeStyles((theme) => ({
     "& label.Mui-focused": {
       color: "#f5f5f5",
     },
-  },
-  actionButton: {
-    color: theme.palette.secondary.main,
-    borderColor: theme.palette.secondary.main,
   },
 }));
 
@@ -117,14 +114,9 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
       />
       <br />
       <br />
-      <Button
-        className={classes.actionButton}
-        variant={"outlined"}
-        type={"submit"}
-        fullWidth
-      >
+      <ActionButton type={"submit"}>
         Update your Certified Committee URL
-      </Button>
+      </ActionButton>
     </form>
   );
 });
