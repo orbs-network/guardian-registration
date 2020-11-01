@@ -44,9 +44,8 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
   const REWARDS_FREQUENCY_ERROR_MESSAGE = `Please use a valid URL`;
   const REWARDS_FREQUENCY_DATA_MESSAGE = (
     <Typography component={"span"} variant={"caption"}>
-      Setting a URL to your{" "}
-      <InTextLink text={"details"} href={detailsRequirementsLink} /> page will
-      allow you to run 'certified-only' VCs
+      Setting a URL to your details page is a prerequisite for joining the{" "}
+      <InTextLink text={"certified committee"} href={detailsRequirementsLink} />
     </Typography>
   );
 
@@ -99,8 +98,8 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
       <TextField
         fullWidth
         name={"guardianDetailsUrl"}
-        title={`Details page URL`}
-        label={"Details page URL"}
+        title={`Certified Committee URL`}
+        label={"Certified Committee URL"}
         value={formGuardianDetailsUrl.value}
         onChange={(e) => {
           formGuardianDetailsUrl.setValue(e.target.value || "");
@@ -124,7 +123,7 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
         type={"submit"}
         fullWidth
       >
-        Update your details page URL
+        Update your Certified Committee URL
       </Button>
     </form>
   );

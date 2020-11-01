@@ -82,6 +82,7 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
               : "http://" + guardianCertificationUrl.currentGuardianDetailsUrl
           }
           text={guardianCertificationUrl.currentGuardianDetailsUrl!}
+          shouldfade={!highlightCertificateUrl && shouldFadeOthers}
         />
       </Typography>
     ) : (
@@ -90,6 +91,8 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
   }, [
     guardianCertificationUrl.currentGuardianDetailsUrl,
     guardianCertificationUrl.hasGuardianDetailsUrl,
+    highlightCertificateUrl,
+    shouldFadeOthers,
   ]);
 
   return (
