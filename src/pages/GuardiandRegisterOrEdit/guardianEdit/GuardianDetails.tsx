@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { PaperProps } from "@material-ui/core/Paper/Paper";
 import { InTextLink } from "../../../components/InTextLink";
+import { DETAILS_REQUIREMENTS_LINK } from "./sections/EditDelegatorsCertificateSection";
 
 export interface IDefaultableValue<T> {
   isUsingDefaultValue: boolean;
@@ -104,21 +105,27 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
       }}
     >
       <TitleValuePair
-        title={"Name : "}
+        title={"Guardian address : "}
+        value={guardianAddress}
+        shouldfade={shouldFadeOthers}
+      />
+      <br />
+      <TitleValuePair
+        title={"Guardian name : "}
         value={guardianInfo.name}
         shouldHighlight={highlightInfo}
         shouldfade={!highlightInfo && shouldFadeOthers}
       />
       <br />
       <TitleValuePair
-        title={"website : "}
+        title={"Guardian website : "}
         value={guardianInfo.website}
         shouldHighlight={highlightInfo}
         shouldfade={!highlightInfo && shouldFadeOthers}
       />
       <br />
       <TitleValuePair
-        title={"IP : "}
+        title={"Node IP : "}
         value={guardianInfo.ip}
         shouldHighlight={highlightInfo}
         shouldfade={!highlightInfo && shouldFadeOthers}
@@ -126,7 +133,7 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
 
       <br />
       <TitleValuePair
-        title={"Orbs Node Address : "}
+        title={"Node Address : "}
         value={guardianInfo.orbsAddr}
         shouldHighlight={highlightInfo}
         shouldfade={!highlightInfo && shouldFadeOthers}
@@ -145,7 +152,17 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
       <br />
 
       <TitleValuePair
-        title={"Guardian's details page URL:"}
+        title={
+          <>
+            Guardian's details URL{" "}
+            <InTextLink
+              text={"(Certified Committee)"}
+              href={DETAILS_REQUIREMENTS_LINK}
+              shouldfade={!highlightCertificateUrl && shouldFadeOthers}
+            />
+            :
+          </>
+        }
         value={guardianCertificateUrlDataText}
         shouldHighlight={highlightCertificateUrl}
         shouldfade={!highlightCertificateUrl && shouldFadeOthers}
@@ -155,7 +172,7 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
 });
 
 interface ITitleValuePairProps {
-  title: string;
+  title: string | JSX.Element;
   value: string | JSX.Element;
   shouldHighlight?: boolean;
   shouldfade?: boolean;
