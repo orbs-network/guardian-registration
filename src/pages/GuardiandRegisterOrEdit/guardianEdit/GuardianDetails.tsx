@@ -141,7 +141,7 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
 
       <br />
       <TitleValuePair
-        title={"Node Address : "}
+        title={"Node address : "}
         value={guardianInfo.orbsAddr}
         shouldHighlight={highlightInfo}
         shouldfade={!highlightInfo && shouldFadeOthers}
@@ -162,13 +162,13 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
       <TitleValuePair
         title={
           <>
-            Guardian's details URL{" "}
+            Guardian details URL (
             <InTextLink
-              text={"(Certified Committee)"}
+              text={"Certified Committee"}
               href={DETAILS_REQUIREMENTS_LINK}
               shouldfade={!highlightCertificateUrl && shouldFadeOthers}
             />
-            :
+            ) :
           </>
         }
         value={guardianCertificateUrlDataText}

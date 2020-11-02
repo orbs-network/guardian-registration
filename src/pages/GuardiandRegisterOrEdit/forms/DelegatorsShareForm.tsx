@@ -81,8 +81,8 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
       <TextField
         fullWidth
         name={"delegatorsCut"}
-        title={`Delegators share % out of staking rewards`}
-        label={"Delegators share % out of staking rewards"}
+        title={`Delegators share (% out of staking rewards)`}
+        label={"Delegators share (% out of staking rewards)"}
         value={delegatorsCut.value}
         inputProps={{
           step: 1,
@@ -99,8 +99,11 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
         helperText={
           errorDelegatorsCut
             ? REWARDS_FREQUENCY_MESSAGE
-            : `The percentage of the staking rewards that is distributed to your Delegators. between 0 and ${delegatorsCutMaxValue}`
+            : `The percentage of the staking rewards that is distributed to your Delegators, between 0% and ${delegatorsCutMaxValue}%`
         }
+        InputProps={{
+          startAdornment: "%",
+        }}
         className={classes.textField}
         autoFocus
       />

@@ -319,14 +319,15 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 <Tab
                   className={classes.tab}
                   // icon={<MoneyIcon />}
-                  label={"Delegator's share"}
+                  label={"Delegators share"}
                   value={TABS_IDS.delegatorsShare}
                   aria-label="favorite"
                 />
                 <Tab
                   className={classes.tab}
                   // icon={<VerifiedUserIcon />}
-                  label={"Certificate URL"}
+                  // label={"Certificate URL"}
+                  label={"Guardian details URL"}
                   value={TABS_IDS.certificate}
                   aria-label="favorite"
                 />
