@@ -138,7 +138,7 @@ export class OrbsAccountStore {
   private async handlePromievent(
     promievent: PromiEvent<TransactionReceipt>,
     name = "A promivent"
-  ): Promise<void> {
+  ): Promise<TransactionReceipt | undefined> {
     this.resetTxIndicators();
 
     // Indicate tx is pending
@@ -148,7 +148,7 @@ export class OrbsAccountStore {
     try {
       const res = await promievent;
       console.log(`Got Results for promievent of ${name}`);
-      return;
+      return res;
     } catch (e) {
       if (
         (e as any).code === JSON_RPC_ERROR_CODES.provider.userRejectedRequest
@@ -170,10 +170,15 @@ export class OrbsAccountStore {
         guardianRegistrationPayload
       );
 
-      await this.handlePromievent(promiEvent, "Register guardian");
+      const txRes = await this.handlePromievent(
+        promiEvent,
+        "Register guardian"
+      );
 
       // After registering, lets re-read the data
       await this.manuallyReadAccountData();
+
+      return txRes;
     } catch (e) {
       this.setTxHadError(true);
       // TODO : Handle the error
@@ -190,10 +195,12 @@ export class OrbsAccountStore {
         guardianUpdatePayload
       );
 
-      const res = await this.handlePromievent(promiEvent, "Update guardian");
+      const txRes = await this.handlePromievent(promiEvent, "Update guardian");
 
       // After registering, lets re-read the data
       await this.manuallyReadAccountData();
+
+      return txRes;
     } catch (e) {
       this.setTxHadError(true);
       // TODO : Handle the error
@@ -206,13 +213,15 @@ export class OrbsAccountStore {
     try {
       const promiEvent = this.guardiansService.unregisterGuardian();
 
-      const res = await this.handlePromievent(
+      const txRes = await this.handlePromievent(
         promiEvent,
         "Unregister guardian"
       );
 
       // After registering, lets re-read the data
       await this.manuallyReadAccountData();
+
+      return txRes;
     } catch (e) {
       this.setTxHadError(true);
       // TODO : Handle the error
@@ -229,10 +238,15 @@ export class OrbsAccountStore {
     );
 
     try {
-      await this.handlePromievent(promiEvent, "Set distribution frequency");
+      const txRes = await this.handlePromievent(
+        promiEvent,
+        "Set distribution frequency"
+      );
 
       // After updating, lets re-read the data
       await this.manuallyReadAccountData();
+
+      return txRes;
     } catch (e) {
       // TODO : Handle the error
       console.error(`Failed setting distribution frequency ${e}`);
@@ -250,10 +264,15 @@ export class OrbsAccountStore {
     );
 
     try {
-      await this.handlePromievent(promiEvent, "Set delegators cut percentage");
+      const txRes = await this.handlePromievent(
+        promiEvent,
+        "Set delegators cut percentage"
+      );
 
       // After updating, lets re-read the data
       await this.manuallyReadAccountData();
+
+      return txRes;
     } catch (e) {
       // TODO : Handle the error
       console.error(`Failed setting delegators cut percentage ${e}`);
@@ -269,28 +288,18 @@ export class OrbsAccountStore {
     );
 
     try {
-      await this.handlePromievent(promiEvent, "Set Details page URL");
+      const txRes = await this.handlePromievent(
+        promiEvent,
+        "Set Details page URL"
+      );
 
       // After updating, lets re-read the data
       await this.manuallyReadAccountData();
+
+      return txRes;
     } catch (e) {
       // TODO : Handle the error
       console.error(`Failed setting Details page URL ${e}`);
-      throw e;
-    }
-  }
-
-  public async writeGuardianId(guardianId: string) {
-    const promiEvent = this.guardiansService.setGuardianId(guardianId);
-
-    try {
-      await this.handlePromievent(promiEvent, "Set Guardian ID");
-
-      // After updating, lets re-read the data
-      await this.manuallyReadAccountData();
-    } catch (e) {
-      // TODO : Handle the error
-      console.error(`Failed setting Guardian ID ${e}`);
       throw e;
     }
   }

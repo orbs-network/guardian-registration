@@ -121,12 +121,15 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
         setShowModal(true);
         setOnDialogAccept(() => async () => {
           try {
-            await orbsAccountStore.updateGuardianInfo(
+            const txRes = await orbsAccountStore.updateGuardianInfo(
               guardianRegistrationPayload
             );
-            enqueueSnackbar("Guardian details successfully updated", {
-              variant: "success",
-            });
+
+            if (txRes) {
+              enqueueSnackbar("Guardian details successfully updated", {
+                variant: "success",
+              });
+            }
           } catch (e) {
             enqueueSnackbar(
               `Error in 'Guardian Details Update' TX ${e.message}`,
@@ -140,23 +143,26 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       [enqueueSnackbar, orbsAccountStore]
     );
 
-    const updateDelegatorsCut = useCallback(
-      async (delegatorsCutPercentage: number) => {
+    const updateDelegatorsShare = useCallback(
+      async (delegatorsSharePercentage: number) => {
         setDialogTexts({
           title: `Update Delegators share`,
-          content: `Your Delegator's share will change to to ${delegatorsCutPercentage.toLocaleString()}%`,
+          content: `Your Delegator's share will change to to ${delegatorsSharePercentage.toLocaleString()}%`,
           instruction: "Please press 'Accept' and confirm the transaction",
           onCancelMessage: "Action canceled",
         });
         setShowModal(true);
         setOnDialogAccept(() => async () => {
           try {
-            await orbsAccountStore.writeGuardianDelegatorsCutPercentage(
-              delegatorsCutPercentage
+            const txRes = await orbsAccountStore.writeGuardianDelegatorsCutPercentage(
+              delegatorsSharePercentage
             );
-            enqueueSnackbar("Delegators share successfully updated", {
-              variant: "success",
-            });
+
+            if (txRes) {
+              enqueueSnackbar("Delegators share successfully updated", {
+                variant: "success",
+              });
+            }
           } catch (e) {
             enqueueSnackbar(
               `Error in 'Delegators share percentage Update' TX ${e.message}`,
@@ -181,12 +187,15 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
         setShowModal(true);
         setOnDialogAccept(() => async () => {
           try {
-            await orbsAccountStore.writeGuardianDetailsPageURL(
+            const txRes = await orbsAccountStore.writeGuardianDetailsPageURL(
               guardianDetailsPageUrl
             );
-            enqueueSnackbar("Guardian details page URL updated", {
-              variant: "success",
-            });
+
+            if (txRes) {
+              enqueueSnackbar("Guardian details page URL updated", {
+                variant: "success",
+              });
+            }
           } catch (e) {
             enqueueSnackbar(
               `Error in 'Guardian details page URL Update' TX ${e.message}`,
@@ -249,7 +258,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     );
 
     const showDetails = tabValue !== TABS_IDS.unregister;
-    console.log({ showDetails });
+
     return (
       <Page>
         <ContentFitting
@@ -361,7 +370,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             >
               <FormWrapper>
                 <DelegatorsShareForm
-                  updateDelegatorsCut={updateDelegatorsCut}
+                  updateDelegatorsCut={updateDelegatorsShare}
                   currentDelegatorsCut={
                     orbsAccountStore.delegatorsCutPercentage
                   }
