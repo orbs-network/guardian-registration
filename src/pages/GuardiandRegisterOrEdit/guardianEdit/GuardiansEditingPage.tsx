@@ -154,12 +154,12 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             await orbsAccountStore.writeGuardianDelegatorsCutPercentage(
               delegatorsCutPercentage
             );
-            enqueueSnackbar("Delegators cut successfully updated", {
+            enqueueSnackbar("Delegators share successfully updated", {
               variant: "success",
             });
           } catch (e) {
             enqueueSnackbar(
-              `Error in 'Delegators cut percentage Update' TX ${e.message}`,
+              `Error in 'Delegators share percentage Update' TX ${e.message}`,
               {
                 variant: "error",
               }
@@ -184,34 +184,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             await orbsAccountStore.writeGuardianDetailsPageURL(
               guardianDetailsPageUrl
             );
-            enqueueSnackbar("Details page URL updated", {
+            enqueueSnackbar("Guardian details page URL updated", {
               variant: "success",
             });
           } catch (e) {
             enqueueSnackbar(
-              `Error in 'Details page URL Update' TX ${e.message}`,
+              `Error in 'Guardian details page URL Update' TX ${e.message}`,
               {
                 variant: "error",
               }
             );
           }
         });
-      },
-      [enqueueSnackbar, orbsAccountStore]
-    );
-
-    const updateGuardianId = useCallback(
-      async (guardianId: string) => {
-        try {
-          await orbsAccountStore.writeGuardianId(guardianId);
-          enqueueSnackbar("Guardian ID successfully updated", {
-            variant: "success",
-          });
-        } catch (e) {
-          enqueueSnackbar(`Error in 'Guardian ID Update' TX ${e.message}`, {
-            variant: "error",
-          });
-        }
       },
       [enqueueSnackbar, orbsAccountStore]
     );
