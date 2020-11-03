@@ -18,6 +18,7 @@ import {
   GUARDIANS_SERVICE_CONSTANTS,
   TGuardianRegistrationPayload,
   TGuardianUpdatePayload,
+  IDelegationsService,
 } from "@orbs-network/contracts-js";
 
 export type TGuardianInfo = {
@@ -99,6 +100,7 @@ export class OrbsAccountStore {
     private cryptoWalletIntegrationStore: CryptoWalletConnectionStore,
     private guardiansService: IGuardiansService,
     private stakingRewardsService: IStakingRewardsService,
+    private delegationsService: IDelegationsService,
     private cryptoWalletConnectionService: ICryptoWalletConnectionService
   ) {
     this.addressChangeReaction = reaction(

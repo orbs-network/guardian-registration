@@ -74,7 +74,10 @@ const App = observer(() => {
   const txHadError = orbsAccountStore.txHadError;
   useEffect(() => {
     if (txHadError) {
-      enqueueSnackbar("Error in Transaction", { variant: "error" });
+      enqueueSnackbar("Error in Transaction", {
+        variant: "error",
+        autoHideDuration: 7000,
+      });
     }
   }, [enqueueSnackbar, txHadError]);
 

@@ -8,12 +8,15 @@ import {
   GuardiansService,
   IStakingRewardsService,
   StakingRewardsService,
+  IDelegationsService,
+  DelegationsService,
 } from "@orbs-network/contracts-js";
 
 export interface IServices {
   cryptoWalletIntegrationService: ICryptoWalletConnectionService;
   guardiansService: IGuardiansService;
   stakingRewardsService: IStakingRewardsService;
+  delegationsService: IDelegationsService;
 }
 
 // DEV_NOTE : For simplicity of early stage dev, we assume that we have ethereum provider, if not, we will not initialize the services.
@@ -39,6 +42,10 @@ export function buildServices(ethereumProvider: IEthereumProvider): IServices {
     stakingRewardsService: new StakingRewardsService(
       web3,
       configs?.v2contractsAddressesOverride?.stakingRewards
+    ),
+    delegationsService: new DelegationsService(
+      web3,
+      configs?.v2contractsAddressesOverride?.delegations
     ),
   };
 }
