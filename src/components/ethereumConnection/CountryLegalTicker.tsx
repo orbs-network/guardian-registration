@@ -20,7 +20,7 @@ export const CountryLegalTicker = React.memo<IProps>((props) => {
   const innerHtmlForLegalAgreement = renderToString(
     <ThemeProvider theme={baseTheme}>
       <Typography>
-        I confirm that I am not a citizen, resident of or otherwise located in
+        I confirm that I am not a citizen, resident of, or otherwise located in
         any of the following:
       </Typography>
     </ThemeProvider>
