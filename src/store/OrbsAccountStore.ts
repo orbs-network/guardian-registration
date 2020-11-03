@@ -85,6 +85,8 @@ export class OrbsAccountStore {
     delegatorsStakingRewardsPercent: 0,
   };
 
+  @observable private _selectedGuardianAddress?: string;
+
   @observable
   public delegatorsCutPercentage?: number;
   @observable
@@ -130,6 +132,17 @@ export class OrbsAccountStore {
 
   @computed public get hasGuardianDetailsURL(): boolean {
     return !!this.detailsPageUrl;
+  }
+
+  /**
+   * Checks if the account is delegating to another account
+   */
+  @computed public get isDelegatingToOtherAccount(): boolean {
+    return (
+      this._selectedGuardianAddress !== undefined &&
+      this._selectedGuardianAddress !==
+        this.cryptoWalletIntegrationStore.mainAddress
+    );
   }
 
   @computed public get hasGuardianId(): boolean {
@@ -382,6 +395,10 @@ export class OrbsAccountStore {
       );
     }
 
+    this.readAndSetSelectedGuardianAddress(accountAddress).catch((e) =>
+      console.error(`Error read-n-set Selected Guardian address ${e}`)
+    );
+
     // DEV_NOTE : O.L : This piece of info is not directly related to the account
     this.readAndSetRewardsContractSettings().catch((e) =>
       console.error(`Error read-n-set Ethereum balance ${e}`)
@@ -480,6 +497,14 @@ export class OrbsAccountStore {
     );
 
     this.setEthereumBalance(ethBalance);
+  }
+
+  private async readAndSetSelectedGuardianAddress(accountAddress: string) {
+    const selectedGuardianAddress = await this.delegationsService.readDelegation(
+      accountAddress
+    );
+
+    this.setSelectedGuardianAddress(selectedGuardianAddress);
   }
 
   // ****  Subscriptions ****
@@ -584,5 +609,10 @@ export class OrbsAccountStore {
   @action("setEthereumBalance")
   private setEthereumBalance(ethereumBalance: number) {
     this.ethBalance = ethereumBalance;
+  }
+
+  @action("setSelectedGuardianAddress")
+  private setSelectedGuardianAddress(selectedGuardianAddress: string) {
+    this._selectedGuardianAddress = selectedGuardianAddress;
   }
 }
