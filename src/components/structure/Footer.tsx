@@ -87,7 +87,7 @@ export const Footer = React.memo<IProps>((props) => {
             }}
           >
             <InTextLink
-              text={"Term of use"}
+              text={"Terms of use"}
               href={configs.termsOfUseUrl}
               style={{ paddingInlineEnd: "1em", justifySelf: "center" }}
             />
