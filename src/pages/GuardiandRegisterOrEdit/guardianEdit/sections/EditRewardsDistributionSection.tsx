@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar, Typography } from "@material-ui/core";
-import { RewardsDistributionFrequencyForm } from "../forms/RewardsDistributionFrequencyForm";
+import { RewardsDistributionFrequencyForm } from "../../forms/RewardsDistributionFrequencyForm";
 import { makeStyles } from "@material-ui/core/styles";
 import TimelapseIcon from "@material-ui/icons/Timelapse";
 

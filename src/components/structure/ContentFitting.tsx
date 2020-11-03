@@ -1,4 +1,4 @@
-import React from "react";
+import React, { DetailedHTMLProps } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 interface IProps {}
@@ -10,8 +10,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ContentFitting = React.memo<IProps>((props) => {
+export const ContentFitting = React.memo<
+  IProps &
+    DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+>((props) => {
   const classes = useStyles();
-  const { children } = props;
-  return <div className={classes.contentFitter}>{children}</div>;
+  const { children, ...rest } = props;
+  return (
+    <div className={classes.contentFitter} {...rest}>
+      {children}
+    </div>
+  );
 });

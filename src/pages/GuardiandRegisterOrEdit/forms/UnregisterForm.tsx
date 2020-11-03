@@ -4,6 +4,7 @@ import { useBoolean } from "react-hanger";
 import { useForm } from "react-hook-form";
 import { Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
+import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
 
 interface IProps {
   unregisterGuardian: () => void;
@@ -61,66 +62,9 @@ export const UnregisterForm = React.memo<IProps>((props) => {
       }}
       onSubmit={handleSubmit(submitUnregister)}
     >
-      <Transition
-        items={userWantsToUnregister.value}
-        // config={config.gentle}
-        initial={null}
-        // immediate={DISABLE_ANIMATIONS}
-
-        from={{
-          // position: "absolute",
-          opacity: 0,
-          // transform: "translateX(1%)",
-        }}
-        enter={{
-          opacity: 1,
-          // transform: "translateX(0%)",
-        }}
-        leave={{
-          opacity: 0,
-          // transform: "translateX(1%)",
-          // position: "absolute",
-          display: "none",
-        }}
-      >
-        {(toggle) =>
-          toggle
-            ? (props) => (
-                <div style={{ ...props, maxWidth: "100%", width: "100%" }}>
-                  <Button
-                    className={classes.unregisterButton}
-                    variant={"outlined"}
-                    type={"submit"}
-                    fullWidth
-                  >
-                    Unregister
-                  </Button>
-                  <br />
-                  <br />
-                  <Button
-                    className={classes.closeUnregisterMenuButton}
-                    onClick={userWantsToUnregister.setFalse}
-                    variant={"outlined"}
-                    fullWidth
-                    style={props}
-                  >
-                    Close unregister section
-                  </Button>
-                </div>
-              )
-            : (props) => (
-                <Button
-                  className={classes.openUnregisterMenuButton}
-                  onClick={userWantsToUnregister.setTrue}
-                  variant={"outlined"}
-                  fullWidth
-                  style={props}
-                >
-                  Open unregister section
-                </Button>
-              )
-        }
-      </Transition>
+      <ActionButton type={"submit"} errorVariant>
+        Unregister
+      </ActionButton>
     </form>
   );
 });

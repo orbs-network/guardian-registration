@@ -2,8 +2,8 @@ import React from "react";
 import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
-import { InTextLink } from "../../../components/InTextLink";
-import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
+import { InTextLink } from "../../../../components/InTextLink";
+import { GuardiansDetailsUrlForm } from "../../forms/GuardiansDetailsUrlForm";
 
 interface IProps {
   currentGuardianDetailsUrl?: string;
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DETAILS_REQUIREMENTS_LINK =
+export const DETAILS_REQUIREMENTS_LINK =
   "https://github.com/orbs-network/validator-instructions/blob/master/public/certified_committee.md";
 
 export const EditDelegatorsCertificateSection = React.memo<IProps>((props) => {

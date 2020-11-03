@@ -23,6 +23,8 @@ import { InstallPhaseExtraDetails } from "./InstallPhaseExtraDetails";
 import { DetailsList } from "../detailsList/Detailslist";
 import { GUARDIAN_ADDRESS_DETAILS_TEXTS } from "../../constants/explainingTexts";
 import { BoldText } from "../texts/boldText";
+import { CountryLegalTicker } from "./CountryLegalTicker";
+import { ActionButton } from "../shared/ActionButton/ActionButton";
 
 type TWalletConnectionPhase = "install" | "connect";
 
@@ -60,9 +62,12 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
     isMetaMaskProvider,
   } = props;
 
-  const [tickerValue, setTickerValue] = useState(false);
+  const [legalTickerValue, setLegalTickerValue] = useState(false);
+  const [countryTickerValue, setCountryTickerValue] = useState(false);
 
   const isConnectPhase = walletConnectionPhase === "connect";
+
+  const allTickersChecked = legalTickerValue && countryTickerValue;
 
   // Display flags
   const {
@@ -76,10 +81,10 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
     return {
       shouldDisplayLegalTicker,
       hasExtraDetailsSection: isConnectPhase,
-      buttonIsEnabled: !shouldDisplayLegalTicker || tickerValue,
+      buttonIsEnabled: !shouldDisplayLegalTicker || allTickersChecked,
       isInstall: walletConnectionPhase === "install",
     };
-  }, [isConnectPhase, tickerValue, walletConnectionPhase]);
+  }, [isConnectPhase, allTickersChecked, walletConnectionPhase]);
 
   // Display texts
   const { titleText, buttonText, subTitleText } = useMemo(() => {
@@ -101,7 +106,6 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
     };
   }, [isInstall, isMetaMaskProvider, walletConnectionPhase]);
 
-  // TODO : O.L : Fix the button's border color, maybe make a unified button.
   return (
     <div className={classes.noEthereumProviderSection}>
       <Typography style={{ marginBottom: "0.5rem" }} variant={"h4"}>
@@ -117,18 +121,37 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
         />
       )}
 
-      <Button
-        variant={"outlined"}
+      <ActionButton
+        fullWidth={false}
         onClick={actionFunction}
         disabled={!buttonIsEnabled}
       >
         {buttonText}
-      </Button>
+      </ActionButton>
 
-      {/* Legal Ticker */}
-      {shouldDisplayLegalTicker && (
-        <LegalTicker value={tickerValue} onValueChange={setTickerValue} />
-      )}
+      {/* Legal Tickers */}
+      <div
+        style={{
+          width: "min(30rem, 100%)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+      >
+        {shouldDisplayLegalTicker && (
+          <LegalTicker
+            value={legalTickerValue}
+            onValueChange={setLegalTickerValue}
+          />
+        )}
+
+        {shouldDisplayLegalTicker && (
+          <CountryLegalTicker
+            value={countryTickerValue}
+            onValueChange={setCountryTickerValue}
+          />
+        )}
+      </div>
     </div>
   );
 });

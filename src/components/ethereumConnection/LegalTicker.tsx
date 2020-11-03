@@ -17,7 +17,7 @@ export const LegalTicker = React.memo<IProps>((props) => {
   // DEV_NOTE : IMPORTANT: O.L : While 'rendering to string' we will lose the them if not applying it directly inside the rendered component.
   const innerHtmlForLegalAgreement = renderToString(
     <ThemeProvider theme={baseTheme}>
-      <Typography>
+      <Typography style={{ textAlign: "start" }}>
         I agree to the{" "}
         <InTextLink href={configs.termsOfUseUrl} text={"Terms of Use"} /> and{" "}
         <InTextLink href={configs.privacyPolicyUrl} text={"Privacy Policy"} />

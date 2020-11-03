@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { DetailedHTMLProps, useCallback, useEffect } from "react";
 import { useStateful } from "react-hanger";
 import {
   Button,
@@ -14,10 +14,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { FormHelperListTexts } from "../../../components/forms/FormHelperListTexts";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 import { validURL } from "./inoputValidators";
+import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
 
 interface IProps {
   actionButtonTitle: string;
-  guardianAddress: string;
   guardianInitialInfo: TGuardianInfo;
   submitInfo: (
     guardianRegistrationPayload: TGuardianRegistrationPayload
@@ -63,7 +63,6 @@ const PLACE_HOLDER_NODE_ADDRESS =
   "e.g: 0x0cBb46287c93357be4CF60fe9601c2c7A2700dC2";
 
 type TFormData = {
-  // guardianAddress: string;
   name: string;
   website: string;
   contactInfo: string;
@@ -72,29 +71,36 @@ type TFormData = {
 };
 
 const useStyles = makeStyles((theme) => ({
+  form: {
+    maxWidth: "100%",
+    // maxWidth: "80ch",
+    width: "100%",
+  },
   textField: {
     "& label.Mui-focused": {
       color: "#f5f5f5",
     },
-  },
-  actionButton: {
-    color: theme.palette.secondary.main,
-    borderColor: theme.palette.secondary.main,
   },
 }));
 
 /**
  * A single component to handle both "Guardian registration" and "Guardian Update"
  */
-export const GuardiansDetailsForm = React.memo<IProps>((props) => {
+export const GuardiansDetailsForm = React.memo<
+  IProps &
+    DetailedHTMLProps<
+      React.FormHTMLAttributes<HTMLFormElement>,
+      HTMLFormElement
+    >
+>((props) => {
   const classes = useStyles();
   const {
-    guardianAddress,
     guardianInitialInfo,
     submitInfo,
     actionButtonTitle,
     disableSubmit,
     messageForSubmitButton,
+    ...rest
   } = props;
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
@@ -179,11 +185,8 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
   return (
     <form
       onSubmit={handleSubmit((formData) => submit(formData))}
-      style={{
-        maxWidth: "100%",
-        // maxWidth: "80ch",
-        width: "100%",
-      }}
+      className={classes.form}
+      {...rest}
     >
       {/*<InstallPhaseExtraDetails />*/}
 
@@ -204,6 +207,7 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
         inputRef={register}
         fullWidth
         className={classes.textField}
+        autoFocus
       />
       <br />
       <TextField
@@ -279,15 +283,9 @@ export const GuardiansDetailsForm = React.memo<IProps>((props) => {
       />
       <br />
       <br />
-      <Button
-        className={classes.actionButton}
-        variant={"outlined"}
-        fullWidth
-        type={"submit"}
-        disabled={disableSubmit}
-      >
+      <ActionButton type={"submit"} disabled={disableSubmit}>
         {actionButtonTitle}
-      </Button>
+      </ActionButton>
       <br />
       <br />
       {messageForSubmitButton && (
