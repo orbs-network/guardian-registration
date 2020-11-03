@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
-import { Avatar, Typography } from "@material-ui/core";
+import { Avatar, Box, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
 import { GuardianFormDetailsList } from "../../GuardianFormDetailsList";
@@ -9,6 +9,8 @@ import {
   ICryptoWalletConnectionService,
   TGuardianRegistrationPayload,
 } from "@orbs-network/contracts-js";
+import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
+import useTheme from "@material-ui/core/styles/useTheme";
 
 interface IProps {
   guardianAddress: string;
@@ -55,6 +57,8 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
     registerGuardian,
     cryptoWalletConnectionService,
   } = props;
+
+  const theme = useTheme();
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
@@ -114,6 +118,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+
         //  DEV_NOTE : 'min-content' will allow us to limit width to the width of the address text (it has max-content width)
         //            removing it will allow us to display elements wider than the address.
         // If removed, add 'maxWidth'

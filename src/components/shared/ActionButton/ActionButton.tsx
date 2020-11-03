@@ -5,6 +5,7 @@ import clsx from "clsx";
 
 interface IProps {
   errorVariant?: boolean;
+  warningVariant?: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -28,16 +29,31 @@ const useStyles = makeStyles((theme) => ({
       borderColor: theme.palette.getContrastText(theme.palette.error.light),
     },
   },
+
+  actionButtonWarning: {
+    color: theme.palette.warning.light,
+    borderColor: theme.palette.warning.main,
+    transition: "background-color 0.4s linear, color 0.2s linear",
+    "&:hover": {
+      backgroundColor: theme.palette.warning.light,
+      color: theme.palette.getContrastText(theme.palette.warning.light),
+      borderColor: theme.palette.getContrastText(theme.palette.warning.light),
+    },
+  },
 }));
 
 export const ActionButton = React.memo<IProps & ButtonProps>((props) => {
-  const { children, fullWidth, errorVariant, ...rest } = props;
+  const { children, fullWidth, errorVariant, warningVariant, ...rest } = props;
   const classes = useStyles();
 
   return (
     <Button
       className={
-        errorVariant ? classes.actionButtonError : classes.actionButton
+        errorVariant
+          ? classes.actionButtonError
+          : warningVariant
+          ? classes.actionButtonWarning
+          : classes.actionButton
       }
       variant={"outlined"}
       fullWidth={fullWidth === undefined ? true : fullWidth}
