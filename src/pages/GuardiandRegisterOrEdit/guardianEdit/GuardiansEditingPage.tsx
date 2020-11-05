@@ -1,51 +1,22 @@
 import React, { useCallback, useState } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
-import {
-  Avatar,
-  Backdrop,
-  Box,
-  CircularProgress,
-  Collapse,
-  Divider,
-  Tab,
-  Tabs,
-  Typography,
-} from "@material-ui/core";
-import { EditGuardianInfoSection } from "./sections/EditGuardianInfoSection";
-import { EditRewardsDistributionSection } from "./sections/EditRewardsDistributionSection";
-import { UnregisterSection } from "./sections/UnregisterSection";
+import { Backdrop, Box, CircularProgress, Tab, Tabs } from "@material-ui/core";
 import {
   useCryptoWalletIntegrationStore,
   useOrbsAccountStore,
 } from "../../../store/storeHooks";
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
-import { EditDelegatorsShareSection } from "./sections/EditDelegatorsShareSection";
 import { observer } from "mobx-react";
-import { IReactComponent } from "mobx-react/dist/types/IReactComponent";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
-import {
-  DETAILS_REQUIREMENTS_LINK,
-  EditDelegatorsCertificateSection,
-} from "./sections/EditDelegatorsCertificateSection";
-import { CompactInput } from "../../../components/CompactInput/CompactInput";
-import PhoneIcon from "@material-ui/icons/Phone";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import PersonPinIcon from "@material-ui/icons/PersonPin";
-import MoneyIcon from "@material-ui/icons/Money";
-import PermIdentityIcon from "@material-ui/icons/PermIdentity";
-import EditIcon from "@material-ui/icons/Edit";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
-import SwipeableViews from "react-swipeable-views";
+import { DETAILS_REQUIREMENTS_LINK } from "./sections/EditDelegatorsCertificateSection";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { GuardianDetails } from "./GuardianDetails";
 import { UnregisterForm } from "../forms/UnregisterForm";
 import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
 import { DelegatorsShareForm } from "../forms/DelegatorsShareForm";
 import { FormWrapper } from "../../../components/forms/FormWrapper";
-import Fade from "@material-ui/core/Fade";
 import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 import { BoxProps } from "@material-ui/core/Box/Box";

@@ -61,11 +61,6 @@ export const GuardianRegistrationPage = React.memo<IProps>((props) => {
     }
   }, [enqueueSnackbar, orbsAccountStore]);
 
-  console.log(
-    "Delegating to someone else: ",
-    orbsAccountStore.isDelegatingToOtherAccount
-  );
-
   return (
     <Page>
       <ContentFitting>
