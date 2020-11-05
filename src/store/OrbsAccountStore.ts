@@ -55,10 +55,6 @@ const emptyGuardianContractInteractionTimes: TGuardianContractInteractionTimes =
 
 const ONE_HOUR_IN_SECONDS = 60 * 60;
 
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 export class OrbsAccountStore {
   @observable public doneLoading = false;
   @observable public errorLoading = false;
@@ -85,7 +81,7 @@ export class OrbsAccountStore {
     delegatorsStakingRewardsPercent: 0,
   };
 
-  @observable private _selectedGuardianAddress?: string;
+  @observable public selectedGuardianAddress?: string;
 
   @observable
   public delegatorsCutPercentage?: number;
@@ -139,8 +135,8 @@ export class OrbsAccountStore {
    */
   @computed public get isDelegatingToOtherAccount(): boolean {
     return (
-      this._selectedGuardianAddress !== undefined &&
-      this._selectedGuardianAddress !==
+      this.selectedGuardianAddress !== undefined &&
+      this.selectedGuardianAddress !==
         this.cryptoWalletIntegrationStore.mainAddress
     );
   }
@@ -245,6 +241,26 @@ export class OrbsAccountStore {
     }
   }
 
+  public async unDelegateCurrentDelegation() {
+    try {
+      const promiEvent = this.delegationsService.unDelegate(
+        this.cryptoWalletIntegrationStore.mainAddress
+      );
+
+      const txRes = await this.handlePromievent(promiEvent, "UnDelegate");
+
+      // After registering, lets re-read the data
+      await this.manuallyReadAccountData();
+
+      return txRes;
+    } catch (e) {
+      this.setTxHadError(true);
+      // TODO : Handle the error
+      console.error(`Failed unDelegating ${e}`);
+      throw e;
+    }
+  }
+
   public async setGuardianDistributionFrequency(frequencyInHours: number) {
     const frequencyInSeconds = frequencyInHours * ONE_HOUR_IN_SECONDS;
 
@@ -344,8 +360,7 @@ export class OrbsAccountStore {
   private setDefaultAccountAddress(accountAddress: string) {
     this.guardiansService.setFromAccount(accountAddress);
     this.stakingRewardsService.setFromAccount(accountAddress);
-    // this.stakingService.setFromAccount(accountAddress);
-    // this.orbsTokenService.setFromAccount(accountAddress);
+    this.delegationsService.setFromAccount(accountAddress);
   }
 
   // **** Data reading and setting ****
@@ -613,6 +628,6 @@ export class OrbsAccountStore {
 
   @action("setSelectedGuardianAddress")
   private setSelectedGuardianAddress(selectedGuardianAddress: string) {
-    this._selectedGuardianAddress = selectedGuardianAddress;
+    this.selectedGuardianAddress = selectedGuardianAddress;
   }
 }

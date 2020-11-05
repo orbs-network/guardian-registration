@@ -50,6 +50,17 @@ export const GuardianRegistrationPage = React.memo<IProps>((props) => {
     },
     [enqueueSnackbar, orbsAccountStore]
   );
+
+  const unDelegate = useCallback(async () => {
+    try {
+      await orbsAccountStore.unDelegateCurrentDelegation();
+    } catch (e) {
+      enqueueSnackbar(`Error in 'un-delegating' TX ${e.message}`, {
+        variant: "error",
+      });
+    }
+  }, [enqueueSnackbar, orbsAccountStore]);
+
   console.log(
     "Delegating to someone else: ",
     orbsAccountStore.isDelegatingToOtherAccount
@@ -75,8 +86,10 @@ export const GuardianRegistrationPage = React.memo<IProps>((props) => {
               p={2}
               m={2}
               style={{
+                maxWidth: "100%",
                 textAlign: "center",
-                border: `1px dashed ${theme.palette.warning.main}`,
+                border: `1px dashed ${theme.palette.secondary.main}`,
+                overflowX: "hidden",
               }}
             >
               <Typography
@@ -89,19 +102,35 @@ export const GuardianRegistrationPage = React.memo<IProps>((props) => {
                 Please note
               </Typography>
               <br />
-              <Typography style={{ color: theme.palette.warning.main }}>
-                It seems you are currently delegating to another address.
+              <Typography style={{ fontWeight: "bold" }}>
+                Connected with address{" "}
               </Typography>
-              <br />
               <Typography
-                variant={"body2"}
-                style={{ color: theme.palette.warning.main }}
+                color={"secondary"}
+                noWrap
+                style={{ textOverflow: "ellipsis" }}
               >
-                Before registering as a Guardian you have to cancel that
-                delegation
+                {cryptoWalletIntegrationStore.mainAddress}
               </Typography>
               <br />
-              <ActionButton warningVariant> Undelegate </ActionButton>
+              <Typography style={{ fontWeight: "bold" }}>
+                This address is currently delegating to
+              </Typography>
+
+              <Typography
+                color={"secondary"}
+                noWrap
+                style={{ textOverflow: "ellipsis" }}
+              >
+                {orbsAccountStore.selectedGuardianAddress}
+              </Typography>
+              <br />
+              <Typography variant={"body2"}>
+                Prior to registering as a Guardian this delegation needs to be
+                cancelled.
+              </Typography>
+              <br />
+              <ActionButton onClick={unDelegate}> Undelegate </ActionButton>
             </Box>
           )}
 
