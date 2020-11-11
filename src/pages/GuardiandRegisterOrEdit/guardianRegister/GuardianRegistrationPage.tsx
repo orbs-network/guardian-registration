@@ -18,7 +18,7 @@ import { useSnackbar } from "notistack";
 import { useCryptoWalletConnectionService } from "../../../services/servicesHooks";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 import useTheme from "@material-ui/core/styles/useTheme";
-import ActionButton from "@bit/orbs-network.commons.action-button/ActionButton";
+import ActionButton from "@bit/orbs-network.commons.action-button";
 
 interface IProps {}
 
