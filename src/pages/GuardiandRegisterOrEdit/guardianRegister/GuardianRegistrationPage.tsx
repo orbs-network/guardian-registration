@@ -17,8 +17,8 @@ import {
 import { useSnackbar } from "notistack";
 import { useCryptoWalletConnectionService } from "../../../services/servicesHooks";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
-import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
 import useTheme from "@material-ui/core/styles/useTheme";
+import ActionButton from "@bit/orbs-network.commons.action-button/ActionButton";
 
 interface IProps {}
 
@@ -125,7 +125,10 @@ export const GuardianRegistrationPage = React.memo<IProps>((props) => {
                 cancelled.
               </Typography>
               <br />
-              <ActionButton onClick={unDelegate}> Undelegate </ActionButton>
+              <ActionButton className={"d"} onClick={unDelegate}>
+                {" "}
+                Undelegate{" "}
+              </ActionButton>
             </Box>
           )}
 
