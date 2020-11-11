@@ -24,8 +24,7 @@ import { DetailsList } from "../detailsList/Detailslist";
 import { GUARDIAN_ADDRESS_DETAILS_TEXTS } from "../../constants/explainingTexts";
 import { BoldText } from "../texts/boldText";
 import { CountryLegalTicker } from "./CountryLegalTicker";
-import { ActionButton } from "../shared/ActionButton/ActionButton";
-
+import ActionButton from "@bit/orbs-network.commons.action-button";
 type TWalletConnectionPhase = "install" | "connect";
 
 interface IProps {

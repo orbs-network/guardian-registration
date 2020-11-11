@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { FormHelperListTexts } from "../../../components/forms/FormHelperListTexts";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 import { validURL } from "./inoputValidators";
-import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
+import ActionButton from "@bit/orbs-network.commons.action-button";
 
 interface IProps {
   actionButtonTitle: string;

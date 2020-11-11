@@ -9,7 +9,6 @@ import {
   ICryptoWalletConnectionService,
   TGuardianRegistrationPayload,
 } from "@orbs-network/contracts-js";
-import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
 import useTheme from "@material-ui/core/styles/useTheme";
 
 interface IProps {

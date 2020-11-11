@@ -11,7 +11,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import { Transition } from "react-spring/renderprops-universal";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
 import { GuardianDetails } from "../GuardianDetails";
-import { ActionButton } from "../../../../components/shared/ActionButton/ActionButton";
+import ActionButton from "@bit/orbs-network.commons.action-button";
 import { useBoolean } from "react-hanger";
 
 interface IProps {

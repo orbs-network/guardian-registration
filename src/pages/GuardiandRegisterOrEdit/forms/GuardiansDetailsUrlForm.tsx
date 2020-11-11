@@ -6,7 +6,7 @@ import { config, Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
 import { InTextLink } from "../../../components/InTextLink";
 import { validURL } from "./inoputValidators";
-import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
+import ActionButton from "@bit/orbs-network.commons.action-button";
 
 interface IProps {
   currentGuardianDetailsUrl?: string;

@@ -4,7 +4,7 @@ import { useBoolean } from "react-hanger";
 import { useForm } from "react-hook-form";
 import { Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
-import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
+import ActionButton from "@bit/orbs-network.commons.action-button";
 
 interface IProps {
   unregisterGuardian: () => void;
@@ -62,7 +62,7 @@ export const UnregisterForm = React.memo<IProps>((props) => {
       }}
       onSubmit={handleSubmit(submitUnregister)}
     >
-      <ActionButton type={"submit"} errorVariant>
+      <ActionButton warningVariant type={"submit"} errorVariant>
         Unregister
       </ActionButton>
     </form>
