@@ -1,0 +1,7 @@
+{
+  "loading": "Loading...",
+  "loadingFailed": "Loading failed",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfUse": "Terms of Use",
+  "version": "Version {{versionNumber}}"
+}
