@@ -105,6 +105,8 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         return;
       }
 
+      // All tests passes, remove old error message if exists
+      setErrorMessage("");
       registerGuardian(guardianRegistrationPayload);
     },
     [cryptoWalletConnectionService, guardianAddress, registerGuardian]
