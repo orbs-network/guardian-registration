@@ -10,6 +10,7 @@
 
 # Local
 /src/local
+src/translations/syncTranslations.zsh
 
 # Generated contracts types
 /src/contracts

@@ -44,7 +44,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "mkd": "mkdir -p ./src/local && mkdir -p ./ganache-env/_out",
-    "postinstall": "npm run mkd"
+    "postinstall": "npm run mkd",
+    "sync-translations": "./src/translations/syncTranslations.zsh"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -75,6 +76,7 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/react-swipeable-views": "^0.13.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "locize-cli": "^7.6.7",
     "prettier": "^2.1.2"
   }
 }
