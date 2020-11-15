@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import {
   IAccountConnectionSectionTranslations,
   IAppTranslations,
+  IHeaderTranslations,
 } from "./translationsTypes";
 
 function useSpecificTypeSafeTFunction<T>(prefix: keyof IAppTranslations) {
@@ -23,4 +24,8 @@ export function useAccountConnectionSectionTranslations() {
   return useSpecificTypeSafeTFunction<IAccountConnectionSectionTranslations>(
     "accountConnectionSection"
   );
+}
+
+export function useHeaderTranslations() {
+  return useSpecificTypeSafeTFunction<IHeaderTranslations>("header");
 }

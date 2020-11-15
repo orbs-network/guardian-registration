@@ -2,6 +2,7 @@ import React from "react";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { HEADER_HEIGHT_REM } from "../../theme/Theme";
+import { useHeaderTranslations } from "../../translations/translationsHooks";
 
 interface IProps {}
 
@@ -22,11 +23,15 @@ const useStyles = makeStyles((theme) => ({
 
 export const Header = React.memo<IProps>((props) => {
   const classes = useStyles();
+  const headerTranslations = useHeaderTranslations();
+
   return (
     <AppBar className={classes.appBar} position={"fixed"}>
       <Toolbar>
         <div className={classes.title}>
-          <Typography variant="h5">ORBS Guardians Portal</Typography>
+          <Typography variant="h5">
+            {headerTranslations("title_appName")}
+          </Typography>
         </div>
       </Toolbar>
     </AppBar>
