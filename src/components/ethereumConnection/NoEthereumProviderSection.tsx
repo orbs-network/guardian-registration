@@ -25,7 +25,10 @@ import { GUARDIAN_ADDRESS_DETAILS_TEXTS } from "../../constants/explainingTexts"
 import { BoldText } from "../texts/boldText";
 import { CountryLegalTicker } from "./CountryLegalTicker";
 import ActionButton from "@bit/orbs-network.commons.action-button";
+import { useAccountConnectionSectionTranslations } from "../../translations/translationsHooks";
 type TWalletConnectionPhase = "install" | "connect";
+const INSTALL_PHASE: TWalletConnectionPhase = "install";
+const CONNECT_PHASE: TWalletConnectionPhase = "connect";
 
 interface IProps {
   walletConnectionPhase: TWalletConnectionPhase;
@@ -60,6 +63,7 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
     pressedOnInstall,
     isMetaMaskProvider,
   } = props;
+  const accountConnectionSectionTranslations = useAccountConnectionSectionTranslations();
 
   const [legalTickerValue, setLegalTickerValue] = useState(false);
   const [countryTickerValue, setCountryTickerValue] = useState(false);
@@ -81,18 +85,18 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
       shouldDisplayLegalTicker,
       hasExtraDetailsSection: isConnectPhase,
       buttonIsEnabled: !shouldDisplayLegalTicker || allTickersChecked,
-      isInstall: walletConnectionPhase === "install",
+      isInstall: walletConnectionPhase === INSTALL_PHASE,
     };
   }, [isConnectPhase, allTickersChecked, walletConnectionPhase]);
 
   // Display texts
   const { titleText, buttonText, subTitleText } = useMemo(() => {
-    const ethereumProviderName = isMetaMaskProvider ? "MetaMask" : "Account";
+    // const ethereumProviderName = isMetaMaskProvider ? "MetaMask" : "Account";
 
     return {
       titleText: isInstall
         ? "No Ethereum provider detected"
-        : `${ethereumProviderName} connection required`,
+        : `Account connection required`,
       subTitleText: isInstall ? (
         "you should install MetaMask and refresh the page"
       ) : (
@@ -101,9 +105,10 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
           <BoldText>Guardian address.</BoldText>
         </>
       ),
-      buttonText: walletConnectionPhase === "install" ? "Install" : "Connect",
+      buttonText:
+        walletConnectionPhase === INSTALL_PHASE ? "Install" : "Connect",
     };
-  }, [isInstall, isMetaMaskProvider, walletConnectionPhase]);
+  }, [isInstall, walletConnectionPhase]);
 
   return (
     <div className={classes.noEthereumProviderSection}>

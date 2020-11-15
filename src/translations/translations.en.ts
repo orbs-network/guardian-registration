@@ -1,3 +1,5 @@
 import { IAppTranslations } from "./translationsTypes";
 
-export const ENGLISH_TEXTS: IAppTranslations = {};
+export const ENGLISH_TEXTS: IAppTranslations = {
+  accountConnectionSection: {},
+};

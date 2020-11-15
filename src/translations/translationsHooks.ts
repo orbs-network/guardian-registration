@@ -1,7 +1,10 @@
 import { useCallback } from "react";
 import { TOptions } from "i18next";
 import { useTranslation } from "react-i18next";
-import { IAppTranslations } from "./translationsTypes";
+import {
+  IAccountConnectionSectionTranslations,
+  IAppTranslations,
+} from "./translationsTypes";
 
 function useSpecificTypeSafeTFunction<T>(prefix: keyof IAppTranslations) {
   const { t } = useTranslation();
@@ -14,4 +17,10 @@ function useSpecificTypeSafeTFunction<T>(prefix: keyof IAppTranslations) {
   );
 
   return tFunction;
+}
+
+export function useAccountConnectionSectionTranslations() {
+  return useSpecificTypeSafeTFunction<IAccountConnectionSectionTranslations>(
+    "accountConnectionSection"
+  );
 }
