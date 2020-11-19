@@ -18,7 +18,7 @@ import { useSnackbar } from "notistack";
 import { useCryptoWalletConnectionService } from "../../../services/servicesHooks";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 import useTheme from "@material-ui/core/styles/useTheme";
-import ActionButton from "@bit/orbs-network.commons.action-button";
+import { DelegatingToOtherAccountSection } from "./DelegatingToOtherAccountSection";
 
 interface IProps {}
 
@@ -68,68 +68,17 @@ export const GuardianRegistrationPage = React.memo<IProps>((props) => {
         <div
           style={{
             display: "flex",
-            // flexDirection: "column",
             maxWidth: "100%",
-            // textAlign: "center",
-            // alignItems: "center",
-            // alignContent: "center",
           }}
         >
           {orbsAccountStore.isDelegatingToOtherAccount && (
-            <Box
-              component={Paper}
-              p={2}
-              m={2}
-              style={{
-                maxWidth: "100%",
-                textAlign: "center",
-                border: `1px dashed ${theme.palette.secondary.main}`,
-                overflowX: "hidden",
-              }}
-            >
-              <Typography
-                style={{
-                  fontWeight: "bold",
-                  color: theme.palette.warning.dark,
-                  textDecoration: "underline",
-                }}
-              >
-                Please note
-              </Typography>
-              <br />
-              <Typography style={{ fontWeight: "bold" }}>
-                Connected with address{" "}
-              </Typography>
-              <Typography
-                color={"secondary"}
-                noWrap
-                style={{ textOverflow: "ellipsis" }}
-              >
-                {cryptoWalletIntegrationStore.mainAddress}
-              </Typography>
-              <br />
-              <Typography style={{ fontWeight: "bold" }}>
-                This address is currently delegating to
-              </Typography>
-
-              <Typography
-                color={"secondary"}
-                noWrap
-                style={{ textOverflow: "ellipsis" }}
-              >
-                {orbsAccountStore.selectedGuardianAddress}
-              </Typography>
-              <br />
-              <Typography variant={"body2"}>
-                Prior to registering as a Guardian this delegation needs to be
-                cancelled.
-              </Typography>
-              <br />
-              <ActionButton className={"d"} onClick={unDelegate}>
-                {" "}
-                Undelegate{" "}
-              </ActionButton>
-            </Box>
+            <DelegatingToOtherAccountSection
+              userAddress={cryptoWalletIntegrationStore.mainAddress}
+              currentSelectedGuardianAddress={
+                orbsAccountStore.selectedGuardianAddress || ""
+              }
+              unDelegate={unDelegate}
+            />
           )}
 
           {!orbsAccountStore.isDelegatingToOtherAccount && (
