@@ -124,7 +124,7 @@ export class OrbsAccountStore {
   @computed public get isDelegatingToOtherAccount(): boolean {
     return (
       this.selectedGuardianAddress !== undefined &&
-      this.selectedGuardianAddress.toLowerCase() !==
+      this.selectedGuardianAddress?.toLowerCase() !==
         this.cryptoWalletIntegrationStore.mainAddress.toLowerCase()
     );
   }
