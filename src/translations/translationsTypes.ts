@@ -44,6 +44,7 @@ export interface IRegisterGuardianSection {
   title_guardianRegistration: string;
   title_yourGuardianAddressIs: string;
   text_pleaseNote: string;
+  action_register: string;
 }
 
 export interface IDelegatingToAnotherAccountSection {
