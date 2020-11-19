@@ -1,8 +1,8 @@
 {
+  "concept_guardianName": "Guardian address",
   "loading": "Loading...",
   "loadingFailed": "Loading failed",
   "privacyPolicy": "Privacy Policy",
   "termsOfUse": "Terms of Use",
-  "version": "Version {{versionNumber}}",
-  "concept_guardianName": "Guardian address"
+  "version": "Version {{versionNumber}}"
 }

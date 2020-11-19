@@ -1,6 +1,6 @@
 {
-  "error_nodeAddressCannotBeTheSameAsGuardianAddress" : "Your Orbs node address cannot be the same as your Guardian address {{guardianAddress}}",
-  "error_minimalBalanceAtNodeAddressIsRequired" :"A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian.",
+  "error_minimalBalanceAtNodeAddressIsRequired": "A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian.",
+  "error_nodeAddressCannotBeTheSameAsGuardianAddress": "Your Orbs node address cannot be the same as your Guardian address {{guardianAddress}}",
   "text_pleaseNote": "Please Notice",
   "title_guardianRegistration": "Guardian Registration",
   "title_yourGuardianAddressIs": "Your {{conceptGuardianName}} is"
