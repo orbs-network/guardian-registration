@@ -42,7 +42,7 @@ export const DetailsList = React.memo<
   return (
     <div className={classes.container} {...others}>
       <Typography>
-        Your <BoldText>{conceptName}:</BoldText>
+        <BoldText>{conceptName}:</BoldText>
       </Typography>
       <ul className={classes.textsList}>
         {details.map((detail) => (

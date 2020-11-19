@@ -8,6 +8,7 @@ import {
   IDelegatingToAnotherAccountSection,
   IExplanationTexts,
   IHeaderTranslations,
+  IRegisterGuardianSection,
 } from "./translationsTypes";
 
 function useSpecificTypeSafeTFunction<T>(prefix: keyof IAppTranslations) {
@@ -39,6 +40,12 @@ export function useCommonsTranslations() {
 
 export function useExplanationTextsTranslations() {
   return useSpecificTypeSafeTFunction<IExplanationTexts>("explanationsTexts");
+}
+
+export function useRegisterGuardianSectionTranslations() {
+  return useSpecificTypeSafeTFunction<IRegisterGuardianSection>(
+    "registerGuardianSection"
+  );
 }
 
 export function useDelegatingToAnotherSectionTranslations() {

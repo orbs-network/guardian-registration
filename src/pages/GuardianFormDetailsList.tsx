@@ -5,7 +5,10 @@ import {
   TInnerHtmlFunction,
 } from "../components/detailsList/Detailslist";
 import { BoldText } from "../components/texts/boldText";
-import { useExplanationTextsTranslations } from "../translations/translationsHooks";
+import {
+  useExplanationTextsTranslations,
+  useRegisterGuardianSectionTranslations,
+} from "../translations/translationsHooks";
 import { renderToString } from "react-dom/server";
 import useTheme from "@material-ui/core/styles/useTheme";
 
@@ -14,10 +17,13 @@ interface IProps {}
 export const GuardianFormDetailsList = React.memo<IProps>((props) => {
   const guardianAddressExplainingTexts = useGuardiansAddressDetailsTexts();
   const nodeAddressExplainingTexts = useNodeAddressDetailsTexts();
+  const registerGuardianSectionTranslations = useRegisterGuardianSectionTranslations();
 
   return (
     <DetailsListContainer>
-      <BoldText>Please Notice:</BoldText>
+      <BoldText>
+        {registerGuardianSectionTranslations("text_pleaseNote")}:
+      </BoldText>
       <DetailsList
         conceptName={guardianAddressExplainingTexts.conceptName}
         details={guardianAddressExplainingTexts.texts}

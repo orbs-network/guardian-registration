@@ -10,6 +10,11 @@ import {
   TGuardianRegistrationPayload,
 } from "@orbs-network/contracts-js";
 import useTheme from "@material-ui/core/styles/useTheme";
+import {
+  useCommonsTranslations,
+  useRegisterGuardianSectionTranslations,
+} from "../../../translations/translationsHooks";
+import { renderToString } from "react-dom/server";
 
 interface IProps {
   guardianAddress: string;
@@ -58,6 +63,8 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
   } = props;
 
   const theme = useTheme();
+  const commonsTranslations = useCommonsTranslations();
+  const registerGuardianSectionTranslations = useRegisterGuardianSectionTranslations();
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
@@ -89,7 +96,10 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         guardianAddress.toLowerCase()
       ) {
         setErrorMessage(
-          `Your Orbs node address cannot be the same as your Guardian address ${guardianAddress}`
+          registerGuardianSectionTranslations(
+            "error_nodeAddressCannotBeTheSameAsGuardianAddress",
+            { guardianAddress }
+          )
         );
         return;
       }
@@ -100,7 +110,9 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
 
       if (orbsNodeBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
         setErrorMessage(
-          `A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian.`
+          registerGuardianSectionTranslations(
+            "error_minimalBalanceAtNodeAddressIsRequired"
+          )
         );
         return;
       }
@@ -109,7 +121,23 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       setErrorMessage("");
       registerGuardian(guardianRegistrationPayload);
     },
-    [cryptoWalletConnectionService, guardianAddress, registerGuardian]
+    [
+      cryptoWalletConnectionService,
+      guardianAddress,
+      registerGuardian,
+      registerGuardianSectionTranslations,
+    ]
+  );
+
+  const yourGuardianAddressTextInnerHtml = registerGuardianSectionTranslations(
+    "title_yourGuardianAddressIs",
+    {
+      conceptGuardianName: renderToString(
+        <span className={classes.boldText}>
+          {commonsTranslations("concept_guardianName")}
+        </span>
+      ),
+    }
   );
 
   return (
@@ -136,11 +164,13 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
           textAlign: "center",
         }}
       >
-        <Typography variant={"h5"}>Guardian Registration</Typography>
-        <Typography variant={"h6"}>
-          Your <div className={classes.boldText}>Guardian address </div>
-          is:
+        <Typography variant={"h5"}>
+          {registerGuardianSectionTranslations("title_guardianRegistration")}
         </Typography>
+        <Typography
+          variant={"h6"}
+          dangerouslySetInnerHTML={{ __html: yourGuardianAddressTextInnerHtml }}
+        />
         <Typography
           style={{
             textOverflow: "ellipsis",

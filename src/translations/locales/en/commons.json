@@ -3,5 +3,6 @@
   "loadingFailed": "Loading failed",
   "privacyPolicy": "Privacy Policy",
   "termsOfUse": "Terms of Use",
-  "version": "Version {{versionNumber}}"
+  "version": "Version {{versionNumber}}",
+  "concept_guardianName": "Guardian address"
 }

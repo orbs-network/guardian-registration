@@ -3,6 +3,7 @@ export interface IAppTranslations {
   header: IHeaderTranslations;
   explanationsTexts: IExplanationTexts;
   accountConnectionSection: IAccountConnectionSectionTranslations;
+  registerGuardianSection: IRegisterGuardianSection;
   delegatingToAnotherAccountSection: IDelegatingToAnotherAccountSection;
 }
 
@@ -14,6 +15,7 @@ export interface ICommonsTranslations {
   privacyPolicy: string;
 
   version: string;
+  concept_guardianName: string;
 }
 
 export interface IAccountConnectionSectionTranslations {}
@@ -34,6 +36,14 @@ export interface IExplanationTexts {
   text_nodeAddress_holdsEthForAutomatedTransactionsGas: string;
   text_nodeAddress_minimalBalanceRequired: string;
   text_nodeAddress_doesNotHoldYourTokens: string;
+}
+
+export interface IRegisterGuardianSection {
+  error_nodeAddressCannotBeTheSameAsGuardianAddress: string;
+  error_minimalBalanceAtNodeAddressIsRequired: string;
+  title_guardianRegistration: string;
+  title_yourGuardianAddressIs: string;
+  text_pleaseNote: string;
 }
 
 export interface IDelegatingToAnotherAccountSection {
