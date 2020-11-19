@@ -3,10 +3,6 @@ import { Checkbox, FormControlLabel, Typography } from "@material-ui/core";
 import { renderToString } from "react-dom/server";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { baseTheme } from "../../theme/Theme";
-import { InTextLink } from "../InTextLink";
-import configs from "../../configs";
-import { DetailsList } from "../detailsList/Detailslist";
-import { GUARDIAN_ADDRESS_DETAILS_TEXTS } from "../../constants/explainingTexts";
 
 interface IProps {
   value: boolean;

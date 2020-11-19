@@ -1,6 +1,9 @@
 import React, { useMemo } from "react";
 import { DetailsListContainer } from "../components/detailsList/DetailsListContainer";
-import { DetailsList } from "../components/detailsList/Detailslist";
+import {
+  DetailsList,
+  TInnerHtmlFunction,
+} from "../components/detailsList/Detailslist";
 import { BoldText } from "../components/texts/boldText";
 import { useExplanationTextsTranslations } from "../translations/translationsHooks";
 import { renderToString } from "react-dom/server";
@@ -55,22 +58,30 @@ export const useNodeAddressDetailsTexts = () => {
   const theme = useTheme();
   const explanationTextsTranslations = useExplanationTextsTranslations();
 
-  const explainingTextOfShouldBeDifferentInnerHtml = useMemo(() => {
-    const text = explanationTextsTranslations(
-      "text_nodeAddress_shouldBeDifferentFromGuardianAddress",
-      {
-        conceptNameGuardianAddress: renderToString(
-          <span style={{ color: theme.palette.secondary.main }}>
-            {explanationTextsTranslations("conceptName_guardianAddress")}
-          </span>
-        ),
-      }
-    );
-
-    return text;
+  const explainingTextOfShouldBeDifferentInnerHtml = useMemo<
+    TInnerHtmlFunction
+  >(() => {
+    return () =>
+      explanationTextsTranslations(
+        "text_nodeAddress_shouldBeDifferentFromGuardianAddress",
+        {
+          conceptNameGuardianAddress: renderToString(
+            <span
+              style={{
+                color: theme.palette.secondary.main,
+                fontWeight: "bold",
+              }}
+            >
+              {explanationTextsTranslations("conceptName_guardianAddress")}
+            </span>
+          ),
+        }
+      );
   }, [explanationTextsTranslations, theme.palette.secondary.main]);
 
-  const nodeAddressExplainingTexts = useMemo(() => {
+  const nodeAddressExplainingTexts = useMemo<
+    Array<string | TInnerHtmlFunction>
+  >(() => {
     const texts = [
       explainingTextOfShouldBeDifferentInnerHtml,
       explanationTextsTranslations("text_nodeAddress_usedToSignBlocks"),
