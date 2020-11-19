@@ -1,31 +1,13 @@
 import React, { useMemo, useState } from "react";
-import {
-  Button,
-  FormControl,
-  FormControlLabel,
-  Typography,
-  useTheme,
-  Checkbox,
-  MuiThemeProvider,
-} from "@material-ui/core";
-import {
-  makeStyles,
-  StylesProvider,
-  ThemeProvider,
-} from "@material-ui/core/styles";
-import { useBoolean } from "react-hanger";
-import { renderToString } from "react-dom/server";
-import { InTextLink } from "../InTextLink";
-import configs from "../../configs";
-import { baseTheme } from "../../theme/Theme";
+import { Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { LegalTicker } from "./LegalTicker";
-import { InstallPhaseExtraDetails } from "./InstallPhaseExtraDetails";
 import { DetailsList } from "../detailsList/Detailslist";
-import { GUARDIAN_ADDRESS_DETAILS_TEXTS } from "../../constants/explainingTexts";
 import { BoldText } from "../texts/boldText";
 import { CountryLegalTicker } from "./CountryLegalTicker";
 import ActionButton from "@bit/orbs-network.commons.action-button";
 import { useAccountConnectionSectionTranslations } from "../../translations/translationsHooks";
+import { useGuardiansAddressDetailsTexts } from "../../pages/GuardianFormDetailsList";
 type TWalletConnectionPhase = "install" | "connect";
 const INSTALL_PHASE: TWalletConnectionPhase = "install";
 const CONNECT_PHASE: TWalletConnectionPhase = "connect";
@@ -64,6 +46,7 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
     isMetaMaskProvider,
   } = props;
   const accountConnectionSectionTranslations = useAccountConnectionSectionTranslations();
+  const guardiansAddressDetailsTexts = useGuardiansAddressDetailsTexts();
 
   const [legalTickerValue, setLegalTickerValue] = useState(false);
   const [countryTickerValue, setCountryTickerValue] = useState(false);
@@ -120,8 +103,8 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
       {/*{hasExtraDetailsSection && <InstallPhaseExtraDetails />}*/}
       {hasExtraDetailsSection && (
         <DetailsList
-          conceptName={"Guardian Address"}
-          details={GUARDIAN_ADDRESS_DETAILS_TEXTS}
+          conceptName={guardiansAddressDetailsTexts.conceptName}
+          details={guardiansAddressDetailsTexts.texts}
         />
       )}
 
