@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Paper, Typography, useTheme } from "@material-ui/core";
 import ActionButton from "@bit/orbs-network.commons.action-button";
+import { useDelegatingToAnotherSectionTranslations } from "../../../translations/translationsHooks";
 
 interface IProps {
   userAddress: string;
@@ -12,6 +13,7 @@ interface IProps {
 export const DelegatingToOtherAccountSection = React.memo<IProps>((props) => {
   const { userAddress, currentSelectedGuardianAddress, unDelegate } = props;
   const theme = useTheme();
+  const delegatingToAnotherSectionTranslations = useDelegatingToAnotherSectionTranslations();
 
   return (
     <Box
@@ -32,11 +34,11 @@ export const DelegatingToOtherAccountSection = React.memo<IProps>((props) => {
           textDecoration: "underline",
         }}
       >
-        Please note
+        {delegatingToAnotherSectionTranslations("text_pleaseNote")}
       </Typography>
       <br />
       <Typography style={{ fontWeight: "bold" }}>
-        Connected with address{" "}
+        {delegatingToAnotherSectionTranslations("text_connectedWithAddress")}
       </Typography>
       <Typography
         color={"secondary"}
@@ -47,7 +49,9 @@ export const DelegatingToOtherAccountSection = React.memo<IProps>((props) => {
       </Typography>
       <br />
       <Typography style={{ fontWeight: "bold" }}>
-        This address is currently delegating to
+        {delegatingToAnotherSectionTranslations(
+          "text_thisAddressIsCurrentlyDelegatingTo"
+        )}
       </Typography>
 
       <Typography
@@ -59,13 +63,13 @@ export const DelegatingToOtherAccountSection = React.memo<IProps>((props) => {
       </Typography>
       <br />
       <Typography variant={"body2"}>
-        Prior to registering as a Guardian this delegation needs to be
-        cancelled.
+        {delegatingToAnotherSectionTranslations(
+          "explanation_previousDelegationsNeedsToBeCanceled"
+        )}
       </Typography>
       <br />
       <ActionButton className={"d"} onClick={unDelegate}>
-        {" "}
-        Undelegate{" "}
+        {delegatingToAnotherSectionTranslations("action_unDelegate")}
       </ActionButton>
     </Box>
   );

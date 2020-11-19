@@ -5,6 +5,7 @@ import {
   IAccountConnectionSectionTranslations,
   IAppTranslations,
   ICommonsTranslations,
+  IDelegatingToAnotherAccountSection,
   IExplanationTexts,
   IHeaderTranslations,
 } from "./translationsTypes";
@@ -38,4 +39,10 @@ export function useCommonsTranslations() {
 
 export function useExplanationTextsTranslations() {
   return useSpecificTypeSafeTFunction<IExplanationTexts>("explanationsTexts");
+}
+
+export function useDelegatingToAnotherSectionTranslations() {
+  return useSpecificTypeSafeTFunction<IDelegatingToAnotherAccountSection>(
+    "delegatingToAnotherAccountSection"
+  );
 }
