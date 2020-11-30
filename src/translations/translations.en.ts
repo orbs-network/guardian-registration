@@ -6,6 +6,7 @@ import explanationTextsJson from "./locales/en/explanationsTexts.json";
 import accountConnectionSectionTranslationsJson from "./locales/en/accountConnectionSection.json";
 import registerGuardianSectionTranslationsJson from "./locales/en/registerGuardianSection.json";
 import delegatingToAnotherSectionTranslationsJson from "./locales/en/delegatingToAnotherAccountSection.json";
+import guardianDataFormsTranslationsJson from "./locales/en/gaurdianDataForms.json";
 
 export const ENGLISH_TEXTS: IAppTranslations = {
   commons: commonsTranslationsJson,
@@ -14,4 +15,5 @@ export const ENGLISH_TEXTS: IAppTranslations = {
   header: headerTranslationsJson,
   registerGuardianSection: registerGuardianSectionTranslationsJson,
   delegatingToAnotherAccountSection: delegatingToAnotherSectionTranslationsJson,
+  guardianDataForms: guardianDataFormsTranslationsJson,
 };

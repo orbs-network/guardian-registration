@@ -40,7 +40,6 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
 
   const REWARDS_FREQUENCY_MESSAGE = `Valid values are between 0 and ${delegatorsCutMaxValue}`;
 
-  const showEditOptions = useBoolean(false);
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
   const delegatorsCut = useNumber(Math.min(currentDelegatorsCut || 0, 66), {
@@ -60,8 +59,6 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
   useEffect(() => {
     setDelegCut(Math.min(currentDelegatorsCut || 0, delegatorsCutMaxValue));
   }, [currentDelegatorsCut, delegatorsCutMaxValue, setDelegCut]);
-
-  console.log({ currentDelegatorsCut });
 
   const titleText = useMemo(() => {
     return isUsingDefaultValue

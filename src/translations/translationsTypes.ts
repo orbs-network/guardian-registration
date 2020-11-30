@@ -5,6 +5,7 @@ export interface IAppTranslations {
   accountConnectionSection: IAccountConnectionSectionTranslations;
   registerGuardianSection: IRegisterGuardianSection;
   delegatingToAnotherAccountSection: IDelegatingToAnotherAccountSection;
+  guardianDataForms: IGuardianDataForms;
 }
 
 export interface ICommonsTranslations {
@@ -53,4 +54,15 @@ export interface IDelegatingToAnotherAccountSection {
   text_thisAddressIsCurrentlyDelegatingTo: string;
   explanation_previousDelegationsNeedsToBeCanceled: string;
   action_unDelegate: string;
+}
+
+export interface IGuardianDataForms {
+  conceptName_delegatorsShare: string;
+  conceptExplanation_delegatorsShare: string;
+  fieldLabel_guardianName: string;
+  fieldLabel_guardianWebsite: string;
+  fieldLabel_nodeIpAddress: string;
+  fieldLabel_nodeEthereumAddress: string;
+  fieldLabel_delegatorsShare: string;
+  fieldTooltipTitle_delegatorsShare: string;
 }

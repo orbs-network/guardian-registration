@@ -1,20 +1,13 @@
 import React, { DetailedHTMLProps, useCallback, useEffect } from "react";
 import { useStateful } from "react-hanger";
-import {
-  Button,
-  TextField,
-  Tooltip,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/core/styles";
-import { FormHelperListTexts } from "../../../components/forms/FormHelperListTexts";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 import { validURL } from "./inoputValidators";
 import ActionButton from "@bit/orbs-network.commons.action-button";
+import { useGuardianDataFormsTranslations } from "../../../translations/translationsHooks";
 
 interface IProps {
   actionButtonTitle: string;
@@ -105,9 +98,10 @@ export const GuardiansDetailsForm = React.memo<
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
+  const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
+
   const name = useStateful(guardianInitialInfo.name);
   const website = useStateful(guardianInitialInfo.website);
-  // const contactInfo = useStateful(guardianInitialInfo.contact);
   const ipAddress = useStateful(guardianInitialInfo.ip);
   const nodeAddress = useStateful(guardianInitialInfo.orbsAddr);
 
@@ -118,7 +112,6 @@ export const GuardiansDetailsForm = React.memo<
   // DEV_NOTE : Taking ref for eslint-hooks
   const nameSetValue = name.setValue;
   const websiteSetValue = website.setValue;
-  // const contactInfoSetValue = contactInfo.setValue;
   const ipAddressSetValue = ipAddress.setValue;
   const nodeAddressSetValue = nodeAddress.setValue;
 
@@ -126,45 +119,18 @@ export const GuardiansDetailsForm = React.memo<
   // TODO : O.L : Fix this
   useEffect(() => {
     if (guardianInitialInfo) {
-      console.log("Re-setting data");
       nameSetValue(guardianInitialInfo.name);
       websiteSetValue(guardianInitialInfo.website);
-      // contactInfoSetValue(guardianInitialInfo.contact);
       ipAddressSetValue(guardianInitialInfo.ip);
       nodeAddressSetValue(guardianInitialInfo.orbsAddr);
     }
   }, [
-    // contactInfoSetValue,
     guardianInitialInfo,
     ipAddressSetValue,
     nameSetValue,
     nodeAddressSetValue,
     websiteSetValue,
   ]);
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
-  console.log(isMobile);
-
-  const buildHelperMessage = useCallback(
-    (hasError: boolean, errorText?: string, infoTexts?: React.ReactNode[]) => {
-      let message: React.ReactNode | undefined;
-      // DEV_NOTE: O.L :  We would like to display the info text to the user on mobile (no hove effect)
-      // if (isMobile) {
-      if (infoTexts) {
-        message = <FormHelperListTexts helperTexts={infoTexts} />;
-      }
-      // }
-
-      // If we have an error, we would like to display it
-      if (hasError && errorText) {
-        message = errorText;
-      }
-
-      return message;
-    },
-    []
-  );
 
   // TODO : O.L : Add tx progress indicator
   const submit = useCallback(
@@ -174,7 +140,6 @@ export const GuardiansDetailsForm = React.memo<
         orbsAddr: formData.nodeAddress,
         name: formData.name,
         website: formData.website,
-        // contact: formData.contactInfo,
       };
       submitInfo(guardianRegistrationPayload);
     },
@@ -188,19 +153,12 @@ export const GuardiansDetailsForm = React.memo<
       className={classes.form}
       {...rest}
     >
-      {/*<InstallPhaseExtraDetails />*/}
-
       <TextField
         InputLabelProps={{ style: { pointerEvents: "auto" } }}
         name={"name"}
-        label={"Guardian name"}
+        label={guardianDataFormsTranslations("fieldLabel_guardianName")}
         placeholder={PLACE_HOLDER_GUARDIAN_NAME}
         title={INFO_MESSAGE_GUARDIAN_NAME[0]}
-        // helperText={buildHelperMessage(
-        //   false,
-        //   undefined,
-        //   INFO_MESSAGE_GUARDIAN_NAME
-        // )}
         value={name.value}
         onChange={(e) => name.setValue(e.target.value)}
         required
@@ -213,14 +171,9 @@ export const GuardiansDetailsForm = React.memo<
       <TextField
         fullWidth
         name={"website"}
-        label={"Guardian website"}
+        label={guardianDataFormsTranslations("fieldLabel_guardianWebsite")}
         placeholder={PLACE_HOLDER_WEBSITE}
         title={INFO_MESSAGE_WEBSITE[0]}
-        // helperText={buildHelperMessage(
-        //   errorWebsite,
-        //   WEBSITE_MESSAGE,
-        //   INFO_MESSAGE_WEBSITE
-        // )}
         helperText={errorWebsite && WEBSITE_MESSAGE}
         value={website.value}
         onChange={(e) => website.setValue(e.target.value)}
@@ -229,22 +182,12 @@ export const GuardiansDetailsForm = React.memo<
         inputRef={register({ validate: validURL })}
         className={classes.textField}
       />
-      {/*<br />*/}
-      {/*<TextField*/}
-      {/*  fullWidth*/}
-      {/*  name={"contactInfo"}*/}
-      {/*  title={"contactInfo"}*/}
-      {/*  label={"Contact Info"}*/}
-      {/*  value={contactInfo.value}*/}
-      {/*  onChange={(e) => contactInfo.setValue(e.target.value)}*/}
-      {/*  required*/}
-      {/*  inputRef={register}*/}
-      {/*/>*/}
+
       <br />
       <TextField
         fullWidth
         name={"ipAddress"}
-        label={"Node IP"}
+        label={guardianDataFormsTranslations("fieldLabel_nodeIpAddress")}
         placeholder={PLACE_HOLDER_IP}
         title={INFO_MESSAGE_IP[0]}
         value={ipAddress.value}
@@ -252,11 +195,6 @@ export const GuardiansDetailsForm = React.memo<
         required
         inputRef={register({ pattern: IP_REGEX })}
         error={errorIPAddress}
-        // helperText={buildHelperMessage(
-        //   errorIPAddress,
-        //   IP_ADDRESS_MESSAGE,
-        //   INFO_MESSAGE_IP
-        // )}
         helperText={errorIPAddress && IP_ADDRESS_MESSAGE}
         className={classes.textField}
       />
@@ -264,17 +202,12 @@ export const GuardiansDetailsForm = React.memo<
       <br />
       <TextField
         name={"nodeAddress"}
-        label={"Node address"}
+        label={guardianDataFormsTranslations("fieldLabel_nodeEthereumAddress")}
         placeholder={PLACE_HOLDER_NODE_ADDRESS}
         title={INFO_MESSAGE_NODE_ADDRESS[1] as string}
         value={nodeAddress.value}
         onChange={(e) => nodeAddress.setValue(e.target.value)}
         error={errorNodeAddress}
-        // helperText={buildHelperMessage(
-        //   errorNodeAddress,
-        //   NODE_ADDRESS_MESSAGE,
-        //   INFO_MESSAGE_NODE_ADDRESS
-        // )}
         helperText={errorNodeAddress && NODE_ADDRESS_MESSAGE}
         required
         inputRef={register({ pattern: ETHEREUM_ADDRESS_REGEX })}

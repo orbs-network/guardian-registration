@@ -7,6 +7,7 @@ import {
   ICommonsTranslations,
   IDelegatingToAnotherAccountSection,
   IExplanationTexts,
+  IGuardianDataForms,
   IHeaderTranslations,
   IRegisterGuardianSection,
 } from "./translationsTypes";
@@ -16,7 +17,10 @@ function useSpecificTypeSafeTFunction<T>(prefix: keyof IAppTranslations) {
 
   const tFunction = useCallback(
     (key: keyof T, options?: TOptions) => {
-      return t(`${prefix}.${key}`, options);
+      // return t(`${prefix}.${key}`, options);
+      let a = prefix;
+      let b = t;
+      return "GOGOGOGO";
     },
     [prefix, t]
   );
@@ -52,4 +56,8 @@ export function useDelegatingToAnotherSectionTranslations() {
   return useSpecificTypeSafeTFunction<IDelegatingToAnotherAccountSection>(
     "delegatingToAnotherAccountSection"
   );
+}
+
+export function useGuardianDataFormsTranslations() {
+  return useSpecificTypeSafeTFunction<IGuardianDataForms>("guardianDataForms");
 }

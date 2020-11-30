@@ -1,0 +1,12 @@
+{
+  "conceptName_delegatorsShare": "Delegators share",
+  "conceptExplanation_delegatorsShare": "% out of staking rewards",
+  "fieldLabel_guardianName" : "Guardian name",
+  "fieldLabel_guardianWebsite" :"Guardian website",
+  "fieldLabel_nodeIpAddress" : "Node IP",
+  "fieldLabel_nodeEthereumAddress" :"Node Address",
+  "fieldLabel_delegatorsShare" : "$t(conceptName_delegatorsShare) ($(conceptExplanation_delegatorsShare))",
+  "fieldTooltipTitle_delegatorsShare" : "$t(conceptName_delegatorsShare) ($(conceptExplanation_delegatorsShare))",
+  "fieldLabel_" : "",
+  "fieldLabel_" : ""
+}
