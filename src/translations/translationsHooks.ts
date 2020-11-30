@@ -6,6 +6,7 @@ import {
   IAppTranslations,
   ICommonsTranslations,
   IDelegatingToAnotherAccountSection,
+  IDomainTranslations,
   IExplanationTexts,
   IGuardianDataForms,
   IHeaderTranslations,
@@ -40,6 +41,10 @@ export function useHeaderTranslations() {
 
 export function useCommonsTranslations() {
   return useSpecificTypeSafeTFunction<ICommonsTranslations>("commons");
+}
+
+export function useDomainTranslations() {
+  return useSpecificTypeSafeTFunction<IDomainTranslations>("domain");
 }
 
 export function useExplanationTextsTranslations() {

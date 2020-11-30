@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
-import { Avatar, Box, Paper, Typography } from "@material-ui/core";
+import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
 import { GuardianFormDetailsList } from "../../GuardianFormDetailsList";
@@ -12,6 +12,8 @@ import {
 import useTheme from "@material-ui/core/styles/useTheme";
 import {
   useCommonsTranslations,
+  useDomainTranslations,
+  useGuardianDataFormsTranslations,
   useRegisterGuardianSectionTranslations,
 } from "../../../translations/translationsHooks";
 import { renderToString } from "react-dom/server";
@@ -62,29 +64,13 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
     cryptoWalletConnectionService,
   } = props;
 
-  const theme = useTheme();
-  const commonsTranslations = useCommonsTranslations();
+  const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
+  const domainTranslations = useDomainTranslations();
   const registerGuardianSectionTranslations = useRegisterGuardianSectionTranslations();
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   );
-
-  // const { shouldDisable, messageToExplainDisable } = useMemo(() => {
-  //   let shouldDisable: boolean = false;
-  //   let messageToExplainDisable: string | undefined = undefined;
-  //
-  //   if (ethereumBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
-  //     shouldDisable = true;
-  //     messageToExplainDisable =
-  //       "A minimal balance of 1 Ether is required in order to register as a guardian";
-  //   }
-  //
-  //   return {
-  //     shouldDisable,
-  //     messageToExplainDisable,
-  //   };
-  // }, [ethereumBalance]);
 
   /**
    * We will use this function to perform validations just before calling 'register'
@@ -134,7 +120,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
     {
       conceptGuardianName: renderToString(
         <span className={classes.boldText}>
-          {commonsTranslations("concept_guardianName")}
+          {domainTranslations("conceptName_guardianName")}
         </span>
       ),
     }
@@ -186,7 +172,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       <GuardiansDetailsForm
         submitInfo={checkBalanceBeforeRegistration}
         guardianInitialInfo={emptyInitialInfo}
-        actionButtonTitle={"Register"}
+        actionButtonTitle={guardianDataFormsTranslations("action_register")}
         messageForSubmitButton={errorMessage}
       />
     </div>

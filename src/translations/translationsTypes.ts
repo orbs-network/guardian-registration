@@ -1,5 +1,6 @@
 export interface IAppTranslations {
   commons: ICommonsTranslations;
+  domain: IDomainTranslations;
   header: IHeaderTranslations;
   explanationsTexts: IExplanationTexts;
   accountConnectionSection: IAccountConnectionSectionTranslations;
@@ -16,7 +17,12 @@ export interface ICommonsTranslations {
   privacyPolicy: string;
 
   version: string;
-  concept_guardianName: string;
+}
+
+export interface IDomainTranslations {
+  conceptName_guardianName: string;
+  conceptName_delegatorsShare: string;
+  conceptExplanation_delegatorsShare: string;
 }
 
 export interface IAccountConnectionSectionTranslations {}
@@ -57,12 +63,25 @@ export interface IDelegatingToAnotherAccountSection {
 }
 
 export interface IGuardianDataForms {
-  conceptName_delegatorsShare: string;
-  conceptExplanation_delegatorsShare: string;
   fieldLabel_guardianName: string;
   fieldLabel_guardianWebsite: string;
   fieldLabel_nodeIpAddress: string;
   fieldLabel_nodeEthereumAddress: string;
   fieldLabel_delegatorsShare: string;
+  fieldTooltipTitle_guardianName: string;
+  fieldTooltipTitle_guardianWebsite: string;
+  fieldTooltipTitle_nodeIpAddress: string;
+  fieldTooltipTitle_nodeEthereumAddress: string;
   fieldTooltipTitle_delegatorsShare: string;
+  fieldPlaceHolder_guardianName: string;
+  fieldPlaceHolder_guardianWebsite: string;
+  fieldPlaceHolder_nodeIpAddress: string;
+  fieldPlaceHolder_nodeEthereumAddress: string;
+  fieldPlaceHolder_delegatorsShare: string;
+  fieldErrorMessage_guardianName: string;
+  fieldErrorMessage_guardianWebsite: string;
+  fieldErrorMessage_nodeIpAddress: string;
+  fieldErrorMessage_nodeEthereumAddress: string;
+  fieldErrorMessage_delegatorsShare: string;
+  action_register: string;
 }
