@@ -10,6 +10,7 @@ import {
   IExplanationTexts,
   IGuardianDataForms,
   IHeaderTranslations,
+  INoEthereumProviderSectionTranslations,
   IRegisterGuardianSection,
 } from "./translationsTypes";
 
@@ -18,10 +19,10 @@ function useSpecificTypeSafeTFunction<T>(prefix: keyof IAppTranslations) {
 
   const tFunction = useCallback(
     (key: keyof T, options?: TOptions) => {
-      // return t(`${prefix}.${key}`, options);
-      let a = prefix;
-      let b = t;
-      return "GOGOGOGO";
+      return t(`${prefix}.${key}`, options);
+      // let a = prefix;
+      // let b = t;
+      // return "GOGOGOGO";
     },
     [prefix, t]
   );
@@ -32,6 +33,12 @@ function useSpecificTypeSafeTFunction<T>(prefix: keyof IAppTranslations) {
 export function useAccountConnectionSectionTranslations() {
   return useSpecificTypeSafeTFunction<IAccountConnectionSectionTranslations>(
     "accountConnectionSection"
+  );
+}
+
+export function useNoEthereumProviderSectionTranslations() {
+  return useSpecificTypeSafeTFunction<INoEthereumProviderSectionTranslations>(
+    "noEthereumProviderSection"
   );
 }
 

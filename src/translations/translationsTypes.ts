@@ -4,6 +4,7 @@ export interface IAppTranslations {
   header: IHeaderTranslations;
   explanationsTexts: IExplanationTexts;
   accountConnectionSection: IAccountConnectionSectionTranslations;
+  noEthereumProviderSection: INoEthereumProviderSectionTranslations;
   registerGuardianSection: IRegisterGuardianSection;
   delegatingToAnotherAccountSection: IDelegatingToAnotherAccountSection;
   guardianDataForms: IGuardianDataForms;
@@ -21,11 +22,26 @@ export interface ICommonsTranslations {
 
 export interface IDomainTranslations {
   conceptName_guardianName: string;
+  conceptName_guardianAddress: string;
   conceptName_delegatorsShare: string;
   conceptExplanation_delegatorsShare: string;
 }
 
-export interface IAccountConnectionSectionTranslations {}
+export interface IAccountConnectionSectionTranslations {
+  title_accountConnectionRequired: string;
+  subTitle_pleaseConnectWithYourGuardianAddress: string;
+  ticker_message_agreeToTheToUAndPrivacyPolicy: string;
+  ticker_message_confirmIAmNotACitizenOrResident: string;
+  ticker_subMessage_theStateOfIsrael: string;
+  ticker_subMessage_otherRegions: string;
+  action_connect: string;
+}
+
+export interface INoEthereumProviderSectionTranslations {
+  title_noEthereumProviderDetected: string;
+  subTitle_pleaseInstallMetamaskAndRefresh: string;
+  action_install: string;
+}
 
 export interface IHeaderTranslations {
   title_appName: string;

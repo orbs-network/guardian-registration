@@ -1,3 +1,9 @@
 {
-
+  "title_accountConnectionRequired": "Account connection required",
+  "subTitle_pleaseConnectWithYourGuardianAddress": "To begin, please connect with your {{conceptGuardianAddress}}.",
+  "ticker_message_agreeToTheToUAndPrivacyPolicy":  "I agree to the {{termsOfUseText}} and {{privacyPolicyText}}",
+  "ticker_message_confirmIAmNotACitizenOrResident":  "I confirm that I am not a citizen, resident of, or otherwise located in any of the following:",
+  "ticker_subMessage_theStateOfIsrael":  "The state odf Israel",
+  "ticker_subMessage_otherRegions":  "Any country or region subject to comprehensive sanctions, including, but not limited to, the Crimean region of Ukraine, Cuba, Iran, Lebanon, North Korea, Sudan and Syria.",
+  "action_connect": "connect"
 }

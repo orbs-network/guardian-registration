@@ -1,5 +1,6 @@
 {
   "conceptName_delegatorsShare": "Delegators share",
-  "conceptName_guardianName": "Guardian address",
+  "conceptName_guardianName": "Guardian name",
+  "conceptName_guardianAddress": "Guardian address",
   "conceptExplanation_delegatorsShare": "% out of staking rewards"
 }

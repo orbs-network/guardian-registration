@@ -6,7 +6,11 @@ import { DetailsList } from "../detailsList/Detailslist";
 import { BoldText } from "../texts/boldText";
 import { CountryLegalTicker } from "./CountryLegalTicker";
 import ActionButton from "@bit/orbs-network.commons.action-button";
-import { useAccountConnectionSectionTranslations } from "../../translations/translationsHooks";
+import {
+  useAccountConnectionSectionTranslations,
+  useDomainTranslations,
+  useNoEthereumProviderSectionTranslations,
+} from "../../translations/translationsHooks";
 import { useGuardiansAddressDetailsTexts } from "../../pages/GuardianFormDetailsList";
 type TWalletConnectionPhase = "install" | "connect";
 const INSTALL_PHASE: TWalletConnectionPhase = "install";
@@ -37,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const NoEthereumProviderSection = React.memo<IProps>((props) => {
+export const EthereumProviderSection = React.memo<IProps>((props) => {
   const classes = useStyles();
   const {
     walletConnectionPhase,
@@ -46,6 +50,8 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
     isMetaMaskProvider,
   } = props;
   const accountConnectionSectionTranslations = useAccountConnectionSectionTranslations();
+  const noEthereumProviderSectionTranslations = useNoEthereumProviderSectionTranslations();
+  const domainTranslations = useDomainTranslations();
   const guardiansAddressDetailsTexts = useGuardiansAddressDetailsTexts();
 
   const [legalTickerValue, setLegalTickerValue] = useState(false);
@@ -78,20 +84,41 @@ export const NoEthereumProviderSection = React.memo<IProps>((props) => {
 
     return {
       titleText: isInstall
-        ? "No Ethereum provider detected"
-        : `Account connection required`,
-      subTitleText: isInstall ? (
-        "you should install MetaMask and refresh the page"
-      ) : (
-        <>
-          To begin, please connect with your{" "}
-          <BoldText>Guardian address.</BoldText>
-        </>
-      ),
+        ? noEthereumProviderSectionTranslations(
+            "title_noEthereumProviderDetected"
+          )
+        : accountConnectionSectionTranslations(
+            "title_accountConnectionRequired"
+          ),
+      subTitleText: isInstall
+        ? noEthereumProviderSectionTranslations(
+            "subTitle_pleaseInstallMetamaskAndRefresh"
+          )
+        : // TODO : O.L : Add BoldText for the 'Guardian address concept'
+          accountConnectionSectionTranslations(
+            "subTitle_pleaseConnectWithYourGuardianAddress",
+            {
+              conceptGuardianAddress: domainTranslations(
+                "conceptName_guardianAddress"
+              ),
+            }
+          ),
+      // <>
+      //   To begin, please connect with your{" "}
+      //   <BoldText>Guardian address.</BoldText>
+      // </>
       buttonText:
-        walletConnectionPhase === INSTALL_PHASE ? "Install" : "Connect",
+        walletConnectionPhase === INSTALL_PHASE
+          ? noEthereumProviderSectionTranslations("action_install")
+          : accountConnectionSectionTranslations("action_connect"),
     };
-  }, [isInstall, walletConnectionPhase]);
+  }, [
+    accountConnectionSectionTranslations,
+    domainTranslations,
+    isInstall,
+    noEthereumProviderSectionTranslations,
+    walletConnectionPhase,
+  ]);
 
   return (
     <div className={classes.noEthereumProviderSection}>

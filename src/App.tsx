@@ -6,7 +6,7 @@ import {
   useOrbsAccountStore,
 } from "./store/storeHooks";
 import { observer } from "mobx-react";
-import { NoEthereumProviderSection } from "./components/ethereumConnection/NoEthereumProviderSection";
+import { EthereumProviderSection } from "./components/ethereumConnection/EthereumProviderSection";
 import { GuardiansRegisterOrEditPage } from "./pages/GuardiandRegisterOrEdit/GuardianRegisterOrEditPage";
 import { Background } from "./components/structure/Background";
 import { Header } from "./components/structure/Header";
@@ -46,7 +46,7 @@ const App = observer(() => {
     if (!isConnected) {
       return (
         <Page>
-          <NoEthereumProviderSection
+          <EthereumProviderSection
             walletConnectionPhase={"connect"}
             actionFunction={() => cryptoWalletIntegrationStore.askToConnect()}
             isMetaMaskProvider={
