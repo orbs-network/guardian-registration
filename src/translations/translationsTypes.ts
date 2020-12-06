@@ -5,9 +5,10 @@ export interface IAppTranslations {
   explanationsTexts: IExplanationTexts;
   accountConnectionSection: IAccountConnectionSectionTranslations;
   noEthereumProviderSection: INoEthereumProviderSectionTranslations;
-  registerGuardianSection: IRegisterGuardianSection;
-  delegatingToAnotherAccountSection: IDelegatingToAnotherAccountSection;
-  guardianDataForms: IGuardianDataForms;
+  registerGuardianSection: IRegisterGuardianSectionTranslations;
+  delegatingToAnotherAccountSection: IDelegatingToAnotherAccountSectionTranslations;
+  guardianDataForms: IGuardianDataFormsTranslations;
+  guardianEditPage: IGuardianEditPageTranslations;
 }
 
 export interface ICommonsTranslations {
@@ -61,7 +62,7 @@ export interface IExplanationTexts {
   text_nodeAddress_doesNotHoldYourTokens: string;
 }
 
-export interface IRegisterGuardianSection {
+export interface IRegisterGuardianSectionTranslations {
   error_nodeAddressCannotBeTheSameAsGuardianAddress: string;
   error_minimalBalanceAtNodeAddressIsRequired: string;
   title_guardianRegistration: string;
@@ -70,7 +71,7 @@ export interface IRegisterGuardianSection {
   action_register: string;
 }
 
-export interface IDelegatingToAnotherAccountSection {
+export interface IDelegatingToAnotherAccountSectionTranslations {
   text_pleaseNote: string;
   text_connectedWithAddress: string;
   text_thisAddressIsCurrentlyDelegatingTo: string;
@@ -78,12 +79,13 @@ export interface IDelegatingToAnotherAccountSection {
   action_unDelegate: string;
 }
 
-export interface IGuardianDataForms {
+export interface IGuardianDataFormsTranslations {
   fieldLabel_guardianName: string;
   fieldLabel_guardianWebsite: string;
   fieldLabel_nodeIpAddress: string;
   fieldLabel_nodeEthereumAddress: string;
   fieldLabel_delegatorsShare: string;
+  fieldLabel_guardianDetailsUrl: string;
   fieldTooltipTitle_guardianName: string;
   fieldTooltipTitle_guardianWebsite: string;
   fieldTooltipTitle_nodeIpAddress: string;
@@ -99,5 +101,21 @@ export interface IGuardianDataForms {
   fieldErrorMessage_nodeIpAddress: string;
   fieldErrorMessage_nodeEthereumAddress: string;
   fieldErrorMessage_delegatorsShare: string;
+  fieldValueNote_usingDefaultValue: string;
+  fieldValueNote_certifiedCommittee: string;
+  fieldValueNote_youHaveNotSetYourDetailsPageUrl: string;
   action_register: string;
+  action_update: string;
+  action_cancel: string;
+}
+
+export interface IGuardianEditPageTranslations {
+  tabHeader_info: string;
+  tabHeader_editInfo: string;
+  tabHeader_delegatorsShare: string;
+  tabHeader_guardianDetailsUrl: string;
+  tabHeader_unregister: string;
+  action_updateInfo: string;
+  action_updateDelegatorsShare: string;
+  action_updateCertifiedCommitteeUrl: string;
 }

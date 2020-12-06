@@ -20,6 +20,7 @@ import { FormWrapper } from "../../../components/forms/FormWrapper";
 import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 import { BoxProps } from "@material-ui/core/Box/Box";
+import { useGuardianEditPageTranslations } from "../../../translations/translationsHooks";
 
 interface IProps {}
 
@@ -67,6 +68,8 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const { enqueueSnackbar } = useSnackbar();
     const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
     const orbsAccountStore = useOrbsAccountStore();
+
+    const guardianEditPageTranslations = useGuardianEditPageTranslations();
 
     // TODO : ORL : The whole modal logic is duplicated from 'Subscription UI' - Unite them properly
     const [showModal, setShowModal] = useState(false);
@@ -260,45 +263,41 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 variant="fullWidth"
                 indicatorColor="secondary"
                 textColor="primary"
-                aria-label="icon tabs example"
                 TabIndicatorProps={{
                   color: "secondary",
                 }}
               >
                 <Tab
-                  // textColor={"secondary"}
-                  // icon={<PermIdentityIcon />}
-                  label="Info"
+                  label={guardianEditPageTranslations("tabHeader_info")}
                   aria-label="phone"
                   className={classes.tab}
                   value={TABS_IDS.info}
                 />
                 <Tab
                   className={classes.tab}
-                  // icon={<EditIcon />}
-                  label={"Edit Info"}
+                  label={guardianEditPageTranslations("tabHeader_editInfo")}
                   value={TABS_IDS.editInfo}
                   aria-label="phone"
                 />
                 <Tab
                   className={classes.tab}
-                  // icon={<MoneyIcon />}
-                  label={"Delegators share"}
+                  label={guardianEditPageTranslations(
+                    "tabHeader_delegatorsShare"
+                  )}
                   value={TABS_IDS.delegatorsShare}
                   aria-label="favorite"
                 />
                 <Tab
                   className={classes.tab}
-                  // icon={<VerifiedUserIcon />}
-                  // label={"Certificate URL"}
-                  label={"Guardian details URL"}
+                  label={guardianEditPageTranslations(
+                    "tabHeader_guardianDetailsUrl"
+                  )}
                   value={TABS_IDS.certificate}
                   aria-label="favorite"
                 />
                 <Tab
                   className={classes.tab}
-                  // icon={<HighlightOffIcon />}
-                  label={"Unregister"}
+                  label={guardianEditPageTranslations("tabHeader_unregister")}
                   value={TABS_IDS.unregister}
                   aria-label="person"
                 />
@@ -312,7 +311,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               value={tabValue}
               index={TABS_IDS.info}
               dir={theme.direction}
-            ></TabPanel>
+            />
 
             {/* Edit Details */}
             <TabPanel
@@ -325,7 +324,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 <GuardiansDetailsForm
                   submitInfo={updateGuardianDetails}
                   guardianInitialInfo={orbsAccountStore.guardianInfo}
-                  actionButtonTitle={"Update"}
+                  actionButtonTitle={guardianEditPageTranslations(
+                    "action_updateInfo"
+                  )}
                 />
                 {/*<Typography variant={"h6"}>*/}
                 {/*    Details Last updated: {lastUpdateDate.toLocaleString()}*/}

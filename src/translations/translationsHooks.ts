@@ -5,13 +5,14 @@ import {
   IAccountConnectionSectionTranslations,
   IAppTranslations,
   ICommonsTranslations,
-  IDelegatingToAnotherAccountSection,
+  IDelegatingToAnotherAccountSectionTranslations,
   IDomainTranslations,
   IExplanationTexts,
-  IGuardianDataForms,
+  IGuardianDataFormsTranslations,
+  IGuardianEditPageTranslations,
   IHeaderTranslations,
   INoEthereumProviderSectionTranslations,
-  IRegisterGuardianSection,
+  IRegisterGuardianSectionTranslations,
 } from "./translationsTypes";
 
 function useSpecificTypeSafeTFunction<T>(prefix: keyof IAppTranslations) {
@@ -20,9 +21,9 @@ function useSpecificTypeSafeTFunction<T>(prefix: keyof IAppTranslations) {
   const tFunction = useCallback(
     (key: keyof T, options?: TOptions) => {
       return t(`${prefix}.${key}`, options);
-      // let a = prefix;
-      // let b = t;
-      // return "GOGOGOGO";
+      let a = prefix;
+      let b = t;
+      return "GOGOGOGO";
     },
     [prefix, t]
   );
@@ -59,17 +60,25 @@ export function useExplanationTextsTranslations() {
 }
 
 export function useRegisterGuardianSectionTranslations() {
-  return useSpecificTypeSafeTFunction<IRegisterGuardianSection>(
+  return useSpecificTypeSafeTFunction<IRegisterGuardianSectionTranslations>(
     "registerGuardianSection"
   );
 }
 
 export function useDelegatingToAnotherSectionTranslations() {
-  return useSpecificTypeSafeTFunction<IDelegatingToAnotherAccountSection>(
-    "delegatingToAnotherAccountSection"
-  );
+  return useSpecificTypeSafeTFunction<
+    IDelegatingToAnotherAccountSectionTranslations
+  >("delegatingToAnotherAccountSection");
 }
 
 export function useGuardianDataFormsTranslations() {
-  return useSpecificTypeSafeTFunction<IGuardianDataForms>("guardianDataForms");
+  return useSpecificTypeSafeTFunction<IGuardianDataFormsTranslations>(
+    "guardianDataForms"
+  );
+}
+
+export function useGuardianEditPageTranslations() {
+  return useSpecificTypeSafeTFunction<IGuardianEditPageTranslations>(
+    "guardianEditPage"
+  );
 }

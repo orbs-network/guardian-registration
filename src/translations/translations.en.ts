@@ -8,6 +8,7 @@ import accountConnectionSectionTranslationsJson from "./locales/en/accountConnec
 import registerGuardianSectionTranslationsJson from "./locales/en/registerGuardianSection.json";
 import delegatingToAnotherSectionTranslationsJson from "./locales/en/delegatingToAnotherAccountSection.json";
 import guardianDataFormsTranslationsJson from "./locales/en/gaurdianDataForms.json";
+import guardianEditPageTranslationsJson from "./locales/en/guardianEditPage.json";
 
 export const ENGLISH_TEXTS: IAppTranslations = {
   commons: commonsTranslationsJson,
@@ -20,4 +21,6 @@ export const ENGLISH_TEXTS: IAppTranslations = {
   delegatingToAnotherAccountSection: delegatingToAnotherSectionTranslationsJson,
   // @ts-ignore
   guardianDataForms: guardianDataFormsTranslationsJson,
+  // @ts-ignore
+  guardianEditPage: guardianEditPageTranslationsJson,
 };
