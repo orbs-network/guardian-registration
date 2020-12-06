@@ -104,7 +104,12 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
         helperText={
           errorDelegatorsCut
             ? REWARDS_FREQUENCY_MESSAGE
-            : `The percentage of the staking rewards that is distributed to your Delegators, between 0% and ${delegatorsCutMaxValue}%`
+            : guardianDataFormsTranslations(
+                "fieldExplanation_delegatorsShare",
+                {
+                  delegatorsCutMaxValue,
+                }
+              )
         }
         InputProps={{
           startAdornment: "%",

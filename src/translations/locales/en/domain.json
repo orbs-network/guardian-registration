@@ -2,5 +2,6 @@
   "conceptName_delegatorsShare": "Delegators share",
   "conceptName_guardianName": "Guardian name",
   "conceptName_guardianAddress": "Guardian address",
+  "conceptName_certifiedCommittee": "Certified Committee",
   "conceptExplanation_delegatorsShare": "% out of staking rewards"
 }

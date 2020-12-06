@@ -6,5 +6,6 @@
   "tabHeader_unregister":  "unregister",
   "action_updateInfo": "update info",
   "action_updateDelegatorsShare": "update Delegators share",
-  "action_updateCertifiedCommitteeUrl": "update your certified committee URL"
+  "action_updateCertifiedCommitteeUrl": "update your certified committee URL",
+  "action_unregister": "unregister"
 }
