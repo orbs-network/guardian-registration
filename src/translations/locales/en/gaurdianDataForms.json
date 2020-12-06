@@ -3,13 +3,13 @@
   "fieldLabel_guardianWebsite" :"Guardian website",
   "fieldLabel_nodeIpAddress" : "Node IP",
   "fieldLabel_nodeEthereumAddress" :"Node Address",
-  "fieldLabel_delegatorsShare" : "$t(domain:conceptName_delegatorsShare) ($(domain:conceptExplanation_delegatorsShare))",
+  "fieldLabel_delegatorsShare" : "$t(domain.conceptName_delegatorsShare)",
   "fieldLabel_guardianDetailsUrl": "Guardian details URL",
   "fieldTooltipTitle_guardianName":  "The name that the Guardian will be recognized by.",
   "fieldTooltipTitle_guardianWebsite": "The Guardian website is used by Delegators when selecting a Guardian.",
   "fieldTooltipTitle_nodeIpAddress":  "A valid IPv4 address is required to allow the Guardian’s node to connect to the network gossip topology.",
   "fieldTooltipTitle_nodeEthereumAddress": "Should be different from the {{GuardianAddress}}",
-  "fieldTooltipTitle_delegatorsShare" : "$t(domain:conceptName_delegatorsShare) ($(domain:conceptExplanation_delegatorsShare))",
+  "fieldTooltipTitle_delegatorsShare" : "$t(domain.conceptName_delegatorsShare) ($t(domain.conceptExplanation_delegatorsShare))",
   "fieldPlaceHolder_guardianName": "e.g: Number One ORBS Guardian",
   "fieldPlaceHolder_guardianWebsite": "e.g: https://www.number1guardian.com",
   "fieldPlaceHolder_nodeIpAddress":  "e.g: 123.17.46.251",
@@ -24,5 +24,5 @@
   "fieldErrorMessage_guardianWebsite": "Please use a valid URL",
   "fieldErrorMessage_nodeIpAddress":  "Please use a valid IPV4 address",
   "fieldErrorMessage_nodeEthereumAddress": "Please use a valid address",
-  "fieldErrorMessage_delegatorsShare":  ""
+  "fieldErrorMessage_delegatorsShare":  "Valid values are between 0 and {{delegatorsCutMaxValue}}"
 }
