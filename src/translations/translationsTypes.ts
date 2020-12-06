@@ -2,6 +2,7 @@ export interface IAppTranslations {
   commons: ICommonsTranslations;
   domain: IDomainTranslations;
   header: IHeaderTranslations;
+  modals: IModalsTranslations;
   explanationsTexts: IExplanationTexts;
   accountConnectionSection: IAccountConnectionSectionTranslations;
   noEthereumProviderSection: INoEthereumProviderSectionTranslations;
@@ -125,4 +126,29 @@ export interface IGuardianEditPageTranslations {
   action_updateDelegatorsShare: string;
   action_updateCertifiedCommitteeUrl: string;
   action_unregister: string;
+}
+
+export interface IModalsTranslations {
+  modalTitle_updateGuardianInfo: string;
+  modalTitle_updateDelegatorsShare: string;
+  modalTitle_guardianDetailsPageUrl: string;
+  modalTitle_unregister: string;
+  acceptText_yes: string;
+  acceptText_default: string;
+  cancelText_default: string;
+  modalInstruction_defaultTx: string;
+  modalInstruction_unregister: string;
+  modalContent_delegatorsShare: string;
+  modalContent_guardianDetailsPageUrl: string;
+  modalContent_unregister: string;
+  actionCanceled_default: string;
+  message_txCanceled: string;
+  successMessage_guardianInfo: string;
+  successMessage_delegatorsShare: string;
+  successMessage_guardianDetailsPageURL: string;
+  successMessage_unregister: string;
+  errorMessage_guardianInfo: string;
+  errorMessage_delegatorsShare: string;
+  errorMessage_guardianDetailsPageURL: string;
+  errorMessage_unregister: string;
 }

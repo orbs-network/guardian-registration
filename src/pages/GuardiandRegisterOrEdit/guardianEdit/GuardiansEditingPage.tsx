@@ -20,7 +20,10 @@ import { FormWrapper } from "../../../components/forms/FormWrapper";
 import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 import { BoxProps } from "@material-ui/core/Box/Box";
-import { useGuardianEditPageTranslations } from "../../../translations/translationsHooks";
+import {
+  useGuardianEditPageTranslations,
+  useModalsTranslations,
+} from "../../../translations/translationsHooks";
 
 interface IProps {}
 
@@ -68,6 +71,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const { enqueueSnackbar } = useSnackbar();
     const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
     const orbsAccountStore = useOrbsAccountStore();
+    const modalsTranslations = useModalsTranslations();
 
     const guardianEditPageTranslations = useGuardianEditPageTranslations();
 
@@ -88,9 +92,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const updateGuardianDetails = useCallback(
       async (guardianRegistrationPayload: TGuardianUpdatePayload) => {
         setDialogTexts({
-          title: `Update your Details`,
-          instruction: "Please press 'Accept' and confirm the transaction",
-          onCancelMessage: "Action canceled",
+          title: modalsTranslations("modalTitle_updateGuardianInfo"),
+          instruction: modalsTranslations("modalInstruction_defaultTx"),
+          onCancelMessage: modalsTranslations("actionCanceled_default"),
         });
         setShowModal(true);
         setOnDialogAccept(() => async () => {
@@ -100,13 +104,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             );
 
             if (txRes) {
-              enqueueSnackbar("Guardian details successfully updated", {
-                variant: "success",
-              });
+              enqueueSnackbar(
+                modalsTranslations("successMessage_guardianInfo"),
+                {
+                  variant: "success",
+                }
+              );
             }
           } catch (e) {
             enqueueSnackbar(
-              `Error in 'Guardian Details Update' TX ${e.message}`,
+              modalsTranslations("errorMessage_guardianInfo", {
+                errorMessage: e.message,
+              }),
               {
                 variant: "error",
               }
@@ -114,16 +123,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
           }
         });
       },
-      [enqueueSnackbar, orbsAccountStore]
+      [enqueueSnackbar, modalsTranslations, orbsAccountStore]
     );
 
     const updateDelegatorsShare = useCallback(
       async (delegatorsSharePercentage: number) => {
         setDialogTexts({
-          title: `Update Delegators share`,
-          content: `Your Delegator's share will change to to ${delegatorsSharePercentage.toLocaleString()}%`,
-          instruction: "Please press 'Accept' and confirm the transaction",
-          onCancelMessage: "Action canceled",
+          title: modalsTranslations("modalTitle_updateDelegatorsShare"),
+          content: modalsTranslations("modalContent_delegatorsShare", {
+            newDelegatorsShare: delegatorsSharePercentage.toLocaleString(),
+          }),
+          instruction: modalsTranslations("modalInstruction_defaultTx"),
+          onCancelMessage: modalsTranslations("actionCanceled_default"),
         });
         setShowModal(true);
         setOnDialogAccept(() => async () => {
@@ -133,13 +144,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             );
 
             if (txRes) {
-              enqueueSnackbar("Delegators share successfully updated", {
-                variant: "success",
-              });
+              enqueueSnackbar(
+                modalsTranslations("successMessage_delegatorsShare"),
+                {
+                  variant: "success",
+                }
+              );
             }
           } catch (e) {
             enqueueSnackbar(
-              `Error in 'Delegators share percentage Update' TX ${e.message}`,
+              modalsTranslations("errorMessage_delegatorsShare", {
+                errorMessage: e.message,
+              }),
               {
                 variant: "error",
               }
@@ -147,16 +163,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
           }
         });
       },
-      [enqueueSnackbar, orbsAccountStore]
+      [enqueueSnackbar, modalsTranslations, orbsAccountStore]
     );
 
     const updateGuardianDetailsPage = useCallback(
       async (guardianDetailsPageUrl: string) => {
         setDialogTexts({
-          title: `Update details page URL`,
-          content: `Your details page URL will change to ${guardianDetailsPageUrl}`,
-          instruction: "Please press 'Accept' and confirm the transaction",
-          onCancelMessage: "Action canceled",
+          title: modalsTranslations("modalTitle_guardianDetailsPageUrl"),
+          content: modalsTranslations("modalContent_guardianDetailsPageUrl", {
+            guardianDetailsPageUrl: guardianDetailsPageUrl,
+          }),
+          instruction: modalsTranslations("modalInstruction_defaultTx"),
+          onCancelMessage: modalsTranslations("actionCanceled_default"),
         });
         setShowModal(true);
         setOnDialogAccept(() => async () => {
@@ -166,13 +184,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             );
 
             if (txRes) {
-              enqueueSnackbar("Guardian details page URL updated", {
-                variant: "success",
-              });
+              enqueueSnackbar(
+                modalsTranslations("successMessage_guardianDetailsPageURL"),
+                {
+                  variant: "success",
+                }
+              );
             }
           } catch (e) {
             enqueueSnackbar(
-              `Error in 'Guardian details page URL Update' TX ${e.message}`,
+              modalsTranslations("errorMessage_guardianDetailsPageURL", {
+                errorMessage: e.message,
+              }),
               {
                 variant: "error",
               }
@@ -180,29 +203,39 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
           }
         });
       },
-      [enqueueSnackbar, orbsAccountStore]
+      [enqueueSnackbar, modalsTranslations, orbsAccountStore]
     );
 
     const unregisterGuardian = useCallback(async () => {
       setDialogTexts({
-        title: `You are about to unregister from the Orbs Guardian role`,
-        content:
-          "You and your Delegators will no longer be eligible for rewards",
-        instruction: "Are you sure ?",
-        acceptText: "yes",
-        onCancelMessage: "Action canceled",
+        title: modalsTranslations("modalTitle_unregister"),
+        content: modalsTranslations("modalContent_unregister"),
+        instruction: modalsTranslations("modalInstruction_unregister"),
+        acceptText: modalsTranslations("acceptText_yes"),
+        onCancelMessage: modalsTranslations("actionCanceled_default"),
       });
       setShowModal(true);
       setOnDialogAccept(() => async () => {
         try {
-          await orbsAccountStore.unregisterGuardian();
+          const txRes = await orbsAccountStore.unregisterGuardian();
+
+          if (txRes) {
+            enqueueSnackbar(modalsTranslations("successMessage_unregister"), {
+              variant: "success",
+            });
+          }
         } catch (e) {
-          enqueueSnackbar(`Error in 'Unregister guardian' TX ${e.message}`, {
-            variant: "error",
-          });
+          enqueueSnackbar(
+            modalsTranslations("errorMessage_unregister", {
+              errorMessage: e.message,
+            }),
+            {
+              variant: "error",
+            }
+          );
         }
       });
-    }, [enqueueSnackbar, orbsAccountStore]);
+    }, [enqueueSnackbar, modalsTranslations, orbsAccountStore]);
 
     const [tabValue, setTabValue] = React.useState(TABS_IDS.info);
 

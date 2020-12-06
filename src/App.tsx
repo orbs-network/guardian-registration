@@ -17,6 +17,7 @@ import { useSnackbar } from "notistack";
 import { Footer } from "./components/structure/Footer";
 import { useCryptoWalletConnectionService } from "./services/servicesHooks";
 import { HEADER_HEIGHT_REM } from "./theme/Theme";
+import { useModalsTranslations } from "./translations/translationsHooks";
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -41,6 +42,7 @@ const App = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
 
   const isConnected = cryptoWalletIntegrationStore.isConnectedToWallet;
+  const modalsTranslations = useModalsTranslations();
 
   const appContent = useMemo(() => {
     if (!isConnected) {
@@ -85,9 +87,11 @@ const App = observer(() => {
   const txCanceled = orbsAccountStore.txCanceled;
   useEffect(() => {
     if (txCanceled) {
-      enqueueSnackbar("Transaction canceled", { variant: "info" });
+      enqueueSnackbar(modalsTranslations("message_txCanceled"), {
+        variant: "info",
+      });
     }
-  }, [enqueueSnackbar, txCanceled]);
+  }, [enqueueSnackbar, modalsTranslations, txCanceled]);
 
   // TODO : O.L : Change background image to the orbs one.
   return (

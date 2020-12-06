@@ -9,11 +9,14 @@ import registerGuardianSectionTranslationsJson from "./locales/en/registerGuardi
 import delegatingToAnotherSectionTranslationsJson from "./locales/en/delegatingToAnotherAccountSection.json";
 import guardianDataFormsTranslationsJson from "./locales/en/gaurdianDataForms.json";
 import guardianEditPageTranslationsJson from "./locales/en/guardianEditPage.json";
+import modalsJson from "./locales/en/modals.json";
 
 export const ENGLISH_TEXTS: IAppTranslations = {
   commons: commonsTranslationsJson,
   // @ts-ignore
   domain: domainTranslationsJson,
+  // @ts-ignore
+  modals: modalsJson,
   accountConnectionSection: accountConnectionSectionTranslationsJson,
   explanationsTexts: explanationTextsJson,
   header: headerTranslationsJson,

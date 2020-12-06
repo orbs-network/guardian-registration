@@ -11,6 +11,7 @@ import {
   IGuardianDataFormsTranslations,
   IGuardianEditPageTranslations,
   IHeaderTranslations,
+  IModalsTranslations,
   INoEthereumProviderSectionTranslations,
   IRegisterGuardianSectionTranslations,
 } from "./translationsTypes";
@@ -53,6 +54,10 @@ export function useCommonsTranslations() {
 
 export function useDomainTranslations() {
   return useSpecificTypeSafeTFunction<IDomainTranslations>("domain");
+}
+
+export function useModalsTranslations() {
+  return useSpecificTypeSafeTFunction<IModalsTranslations>("modals");
 }
 
 export function useExplanationTextsTranslations() {
