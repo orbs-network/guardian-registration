@@ -1,7 +1,7 @@
 {
-  "conceptName_delegatorsShare": "Delegators share",
-  "conceptName_guardianName": "Guardian name",
-  "conceptName_guardianAddress": "Guardian address",
+  "conceptExplanation_delegatorsShare": "% out of staking rewards",
   "conceptName_certifiedCommittee": "Certified Committee",
-  "conceptExplanation_delegatorsShare": "% out of staking rewards"
+  "conceptName_delegatorsShare": "Delegators share",
+  "conceptName_guardianAddress": "Guardian address",
+  "conceptName_guardianName": "Guardian name"
 }

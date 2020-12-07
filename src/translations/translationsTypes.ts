@@ -100,7 +100,6 @@ export interface IGuardianDataFormsTranslations {
   fieldPlaceHolder_nodeIpAddress: string;
   fieldPlaceHolder_nodeEthereumAddress: string;
   fieldPlaceHolder_delegatorsShare: string;
-  fieldErrorMessage_guardianName: string;
   fieldErrorMessage_guardianWebsite: string;
   fieldErrorMessage_nodeIpAddress: string;
   fieldErrorMessage_nodeEthereumAddress: string;
