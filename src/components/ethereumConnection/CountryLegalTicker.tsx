@@ -3,10 +3,7 @@ import { Checkbox, FormControlLabel, Typography } from "@material-ui/core";
 import { renderToString } from "react-dom/server";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { baseTheme } from "../../theme/Theme";
-import { InTextLink } from "../InTextLink";
-import configs from "../../configs";
-import { DetailsList } from "../detailsList/Detailslist";
-import { GUARDIAN_ADDRESS_DETAILS_TEXTS } from "../../constants/explainingTexts";
+import { useAccountConnectionSectionTranslations } from "../../translations/translationsHooks";
 
 interface IProps {
   value: boolean;
@@ -14,14 +11,16 @@ interface IProps {
 }
 
 export const CountryLegalTicker = React.memo<IProps>((props) => {
+  const accountConnectionSectionTranslations = useAccountConnectionSectionTranslations();
   const { value, onValueChange } = props;
 
   // DEV_NOTE : IMPORTANT: O.L : While 'rendering to string' we will lose the them if not applying it directly inside the rendered component.
   const innerHtmlForLegalAgreement = renderToString(
     <ThemeProvider theme={baseTheme}>
       <Typography>
-        I confirm that I am not a citizen, resident of or otherwise located in
-        any of the following:
+        {accountConnectionSectionTranslations(
+          "ticker_message_confirmIAmNotACitizenOrResident"
+        )}
       </Typography>
     </ThemeProvider>
   );
@@ -50,14 +49,16 @@ export const CountryLegalTicker = React.memo<IProps>((props) => {
       <ul>
         <li>
           <Typography style={{ textAlign: "start" }}>
-            The State of Israel.
+            {accountConnectionSectionTranslations(
+              "ticker_subMessage_theStateOfIsrael"
+            )}
           </Typography>
         </li>
         <li>
           <Typography style={{ textAlign: "start" }}>
-            Any country or region subject to comprehensive sanctions, including,
-            but not limited to, the Crimean region of Ukraine, Cuba, Iran,
-            Lebanon, North Korea, Sudan and Syria.
+            {accountConnectionSectionTranslations(
+              "ticker_subMessage_otherRegions"
+            )}
           </Typography>
         </li>
       </ul>

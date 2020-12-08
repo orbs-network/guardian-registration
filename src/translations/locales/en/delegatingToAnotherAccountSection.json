@@ -1,0 +1,7 @@
+{
+  "action_unDelegate": "Undelegate",
+  "explanation_previousDelegationsNeedsToBeCanceled": "Prior to registering as a Guardian this delegation needs to be cancelled.",
+  "text_connectedWithAddress": "Connected with address",
+  "text_pleaseNote": "Please note",
+  "text_thisAddressIsCurrentlyDelegatingTo": "This address is currently delegating to"
+}

@@ -1,12 +1,13 @@
 import React, { useCallback } from "react";
 import { CssBaseline, useTheme } from "@material-ui/core";
-import { NoEthereumProviderSection } from "../components/ethereumConnection/NoEthereumProviderSection";
+import { EthereumProviderSection } from "../components/ethereumConnection/EthereumProviderSection";
 import { useBoolean } from "react-hanger";
 import { ContentContainer } from "../components/structure/ContentContainer";
 import { Background } from "../components/structure/Background";
 import { Header } from "../components/structure/Header";
 import { Page } from "../components/structure/Page";
 import { makeStyles } from "@material-ui/core/styles";
+import { useNoEthereumProviderSectionTranslations } from "../translations/translationsHooks";
 
 type TWalletConnectionPhase = "install" | "connect";
 
@@ -40,7 +41,7 @@ export const NoEthereumProviderPage = React.memo<IProps>((props) => {
       <main className={classes.app}>
         <ContentContainer id={"appContainer"}>
           <Page>
-            <NoEthereumProviderSection
+            <EthereumProviderSection
               walletConnectionPhase={"install"}
               actionFunction={installMetaMask}
             />

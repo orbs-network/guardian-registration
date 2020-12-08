@@ -6,6 +6,10 @@ import clsx from "clsx";
 import { PaperProps } from "@material-ui/core/Paper/Paper";
 import { InTextLink } from "../../../components/InTextLink";
 import { DETAILS_REQUIREMENTS_LINK } from "./sections/EditDelegatorsCertificateSection";
+import {
+  useDomainTranslations,
+  useGuardianDataFormsTranslations,
+} from "../../../translations/translationsHooks";
 
 export interface IDefaultableValue<T> {
   isUsingDefaultValue: boolean;
@@ -66,8 +70,11 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
   const shouldFadeOthers =
     highlightInfo || highlightDelegatorsShare || highlightCertificateUrl;
 
+  const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
+  const domainTranslations = useDomainTranslations();
+
   const delegatorsShareUsingDefaultMessage = delegatorsShare.isUsingDefaultValue
-    ? " (using default value)"
+    ? ` (${guardianDataFormsTranslations("fieldValueNote_usingDefaultValue")})`
     : null;
 
   const guardianCertificateUrlDataText = useMemo(() => {
@@ -86,11 +93,14 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
         />
       </Typography>
     ) : (
-      `You have not set your details page URL`
+      guardianDataFormsTranslations(
+        "fieldValueNote_youHaveNotSetYourDetailsPageUrl"
+      )
     );
   }, [
     guardianCertificationUrl.currentGuardianDetailsUrl,
     guardianCertificationUrl.hasGuardianDetailsUrl,
+    guardianDataFormsTranslations,
     highlightCertificateUrl,
     shouldFadeOthers,
   ]);
@@ -107,20 +117,22 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
       }}
     >
       <TitleValuePair
-        title={"Guardian address : "}
+        title={domainTranslations("conceptName_guardianAddress") + " :"}
         value={guardianAddress}
         shouldfade={shouldFadeOthers}
       />
       <br />
       <TitleValuePair
-        title={"Guardian name : "}
+        title={guardianDataFormsTranslations("fieldLabel_guardianName") + " :"}
         value={guardianInfo.name}
         shouldHighlight={highlightInfo}
         shouldfade={!highlightInfo && shouldFadeOthers}
       />
       <br />
       <TitleValuePair
-        title={"Guardian website : "}
+        title={
+          guardianDataFormsTranslations("fieldLabel_guardianWebsite") + " :"
+        }
         value={
           <InTextLink
             text={guardianInfo.website}
@@ -133,7 +145,7 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
       />
       <br />
       <TitleValuePair
-        title={"Node IP : "}
+        title={guardianDataFormsTranslations("fieldLabel_nodeIpAddress") + " :"}
         value={guardianInfo.ip}
         shouldHighlight={highlightInfo}
         shouldfade={!highlightInfo && shouldFadeOthers}
@@ -141,14 +153,18 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
 
       <br />
       <TitleValuePair
-        title={"Node address : "}
+        title={
+          guardianDataFormsTranslations("fieldLabel_nodeEthereumAddress") + " :"
+        }
         value={guardianInfo.orbsAddr}
         shouldHighlight={highlightInfo}
         shouldfade={!highlightInfo && shouldFadeOthers}
       />
       <br />
       <TitleValuePair
-        title={`Delegators share${delegatorsShareUsingDefaultMessage} : `}
+        title={`${guardianDataFormsTranslations(
+          "fieldLabel_delegatorsShare"
+        )}${delegatorsShareUsingDefaultMessage} : `}
         value={`${
           delegatorsShare.isUsingDefaultValue
             ? delegatorsShare.defaultValue
@@ -162,9 +178,11 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
       <TitleValuePair
         title={
           <>
-            Guardian details URL (
+            {guardianDataFormsTranslations("fieldLabel_guardianDetailsUrl")} (
             <InTextLink
-              text={"Certified Committee"}
+              text={guardianDataFormsTranslations(
+                "fieldValueNote_certifiedCommittee"
+              )}
               href={DETAILS_REQUIREMENTS_LINK}
               shouldfade={!highlightCertificateUrl && shouldFadeOthers}
             />

@@ -8,6 +8,7 @@ import { OrbsAccountStore } from "./OrbsAccountStore";
 import "mobx-react-lite/batchingForReactDom";
 import {
   ICryptoWalletConnectionService,
+  IDelegationsService,
   IGuardiansService,
   IStakingRewardsService,
 } from "@orbs-network/contracts-js";
@@ -27,7 +28,8 @@ export function configureMobx() {
 export function getStores(
   cryptoWalletConnectionService: ICryptoWalletConnectionService,
   guardiansV2Service: IGuardiansService,
-  stakingRewardsV2Service: IStakingRewardsService
+  stakingRewardsV2Service: IStakingRewardsService,
+  delegationsService: IDelegationsService
 ): IStores {
   // Create stores instances + Hydrate the stores
   const cryptoWalletIntegrationStore = new CryptoWalletConnectionStore(
@@ -37,6 +39,7 @@ export function getStores(
     cryptoWalletIntegrationStore,
     guardiansV2Service,
     stakingRewardsV2Service,
+    delegationsService,
     cryptoWalletConnectionService
   );
 

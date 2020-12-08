@@ -3,9 +3,11 @@ import { Typography } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { BoldText } from "../texts/boldText";
 
+export type TInnerHtmlFunction = () => string;
+
 interface IProps {
   conceptName: string;
-  details: React.ReactNode[];
+  details: Array<string | TInnerHtmlFunction>;
   caption?: boolean;
 }
 
@@ -40,14 +42,21 @@ export const DetailsList = React.memo<
   return (
     <div className={classes.container} {...others}>
       <Typography>
-        Your <BoldText>{conceptName}:</BoldText>
+        <BoldText>{conceptName}:</BoldText>
       </Typography>
       <ul className={classes.textsList}>
         {details.map((detail) => (
           <li key={detail!.toString()}>
-            <Typography variant={caption ? "caption" : "body2"}>
-              {detail}
-            </Typography>
+            {typeof detail === "string" ? (
+              <Typography variant={caption ? "caption" : "body2"}>
+                {detail}
+              </Typography>
+            ) : (
+              <Typography
+                variant={caption ? "caption" : "body2"}
+                dangerouslySetInnerHTML={{ __html: detail() }}
+              />
+            )}
           </li>
         ))}
       </ul>

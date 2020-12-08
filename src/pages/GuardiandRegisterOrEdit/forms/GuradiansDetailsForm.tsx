@@ -1,20 +1,13 @@
 import React, { DetailedHTMLProps, useCallback, useEffect } from "react";
 import { useStateful } from "react-hanger";
-import {
-  Button,
-  TextField,
-  Tooltip,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/core/styles";
-import { FormHelperListTexts } from "../../../components/forms/FormHelperListTexts";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 import { validURL } from "./inoputValidators";
-import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
+import ActionButton from "@bit/orbs-network.commons.action-button";
+import { useGuardianDataFormsTranslations } from "../../../translations/translationsHooks";
 
 interface IProps {
   actionButtonTitle: string;
@@ -28,39 +21,6 @@ interface IProps {
 
 const ETHEREUM_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
 const IP_REGEX = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
-
-const NODE_ADDRESS_MESSAGE = "Please use a valid address";
-const IP_ADDRESS_MESSAGE = "Please use a valid IPV4 address";
-const WEBSITE_MESSAGE = "Please use a valid URL";
-
-const INFO_MESSAGE_GUARDIAN_NAME = [
-  "The name that the Guardian will be recognized by.",
-];
-const INFO_MESSAGE_WEBSITE = [
-  "The Guardian website is used by Delegators when selecting a Guardian.",
-];
-const INFO_MESSAGE_IP = [
-  "A valid IPv4 address is required to allow the Guardian’s node to connect to the network gossip topology.",
-];
-const INFO_MESSAGE_NODE_ADDRESS = [
-  <>
-    Should be different from the{" "}
-    <div style={{ display: "contents", fontWeight: "bold" }}>
-      Guardian address
-    </div>
-    .
-  </>,
-  "Used by the Orbs node to automatically send transactions such as ReadyForCommittee.",
-  "Used to sign blocks on Orbs platform.",
-  "Should hold ETH for the automated transactions gas (A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian).",
-  "The Orbs Node address should differ from the Guardian address.",
-];
-
-const PLACE_HOLDER_GUARDIAN_NAME = "e.g: Number One ORBS Guardian";
-const PLACE_HOLDER_WEBSITE = "e.g: https://www.number1guardian.com";
-const PLACE_HOLDER_IP = "e.g: 123.17.46.251";
-const PLACE_HOLDER_NODE_ADDRESS =
-  "e.g: 0x0cBb46287c93357be4CF60fe9601c2c7A2700dC2";
 
 type TFormData = {
   name: string;
@@ -105,9 +65,10 @@ export const GuardiansDetailsForm = React.memo<
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
+  const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
+
   const name = useStateful(guardianInitialInfo.name);
   const website = useStateful(guardianInitialInfo.website);
-  // const contactInfo = useStateful(guardianInitialInfo.contact);
   const ipAddress = useStateful(guardianInitialInfo.ip);
   const nodeAddress = useStateful(guardianInitialInfo.orbsAddr);
 
@@ -118,7 +79,6 @@ export const GuardiansDetailsForm = React.memo<
   // DEV_NOTE : Taking ref for eslint-hooks
   const nameSetValue = name.setValue;
   const websiteSetValue = website.setValue;
-  // const contactInfoSetValue = contactInfo.setValue;
   const ipAddressSetValue = ipAddress.setValue;
   const nodeAddressSetValue = nodeAddress.setValue;
 
@@ -126,45 +86,18 @@ export const GuardiansDetailsForm = React.memo<
   // TODO : O.L : Fix this
   useEffect(() => {
     if (guardianInitialInfo) {
-      console.log("Re-setting data");
       nameSetValue(guardianInitialInfo.name);
       websiteSetValue(guardianInitialInfo.website);
-      // contactInfoSetValue(guardianInitialInfo.contact);
       ipAddressSetValue(guardianInitialInfo.ip);
       nodeAddressSetValue(guardianInitialInfo.orbsAddr);
     }
   }, [
-    // contactInfoSetValue,
     guardianInitialInfo,
     ipAddressSetValue,
     nameSetValue,
     nodeAddressSetValue,
     websiteSetValue,
   ]);
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
-  console.log(isMobile);
-
-  const buildHelperMessage = useCallback(
-    (hasError: boolean, errorText?: string, infoTexts?: React.ReactNode[]) => {
-      let message: React.ReactNode | undefined;
-      // DEV_NOTE: O.L :  We would like to display the info text to the user on mobile (no hove effect)
-      // if (isMobile) {
-      if (infoTexts) {
-        message = <FormHelperListTexts helperTexts={infoTexts} />;
-      }
-      // }
-
-      // If we have an error, we would like to display it
-      if (hasError && errorText) {
-        message = errorText;
-      }
-
-      return message;
-    },
-    []
-  );
 
   // TODO : O.L : Add tx progress indicator
   const submit = useCallback(
@@ -174,7 +107,6 @@ export const GuardiansDetailsForm = React.memo<
         orbsAddr: formData.nodeAddress,
         name: formData.name,
         website: formData.website,
-        // contact: formData.contactInfo,
       };
       submitInfo(guardianRegistrationPayload);
     },
@@ -188,19 +120,14 @@ export const GuardiansDetailsForm = React.memo<
       className={classes.form}
       {...rest}
     >
-      {/*<InstallPhaseExtraDetails />*/}
-
       <TextField
         InputLabelProps={{ style: { pointerEvents: "auto" } }}
         name={"name"}
-        label={"Guardian name"}
-        placeholder={PLACE_HOLDER_GUARDIAN_NAME}
-        title={INFO_MESSAGE_GUARDIAN_NAME[0]}
-        // helperText={buildHelperMessage(
-        //   false,
-        //   undefined,
-        //   INFO_MESSAGE_GUARDIAN_NAME
-        // )}
+        label={guardianDataFormsTranslations("fieldLabel_guardianName")}
+        placeholder={guardianDataFormsTranslations(
+          "fieldPlaceHolder_guardianName"
+        )}
+        title={guardianDataFormsTranslations("fieldTooltipTitle_guardianName")}
         value={name.value}
         onChange={(e) => name.setValue(e.target.value)}
         required
@@ -213,15 +140,17 @@ export const GuardiansDetailsForm = React.memo<
       <TextField
         fullWidth
         name={"website"}
-        label={"Guardian website"}
-        placeholder={PLACE_HOLDER_WEBSITE}
-        title={INFO_MESSAGE_WEBSITE[0]}
-        // helperText={buildHelperMessage(
-        //   errorWebsite,
-        //   WEBSITE_MESSAGE,
-        //   INFO_MESSAGE_WEBSITE
-        // )}
-        helperText={errorWebsite && WEBSITE_MESSAGE}
+        label={guardianDataFormsTranslations("fieldLabel_guardianWebsite")}
+        placeholder={guardianDataFormsTranslations(
+          "fieldPlaceHolder_guardianWebsite"
+        )}
+        title={guardianDataFormsTranslations(
+          "fieldTooltipTitle_guardianWebsite"
+        )}
+        helperText={
+          errorWebsite &&
+          guardianDataFormsTranslations("fieldErrorMessage_guardianWebsite")
+        }
         value={website.value}
         onChange={(e) => website.setValue(e.target.value)}
         required
@@ -229,53 +158,45 @@ export const GuardiansDetailsForm = React.memo<
         inputRef={register({ validate: validURL })}
         className={classes.textField}
       />
-      {/*<br />*/}
-      {/*<TextField*/}
-      {/*  fullWidth*/}
-      {/*  name={"contactInfo"}*/}
-      {/*  title={"contactInfo"}*/}
-      {/*  label={"Contact Info"}*/}
-      {/*  value={contactInfo.value}*/}
-      {/*  onChange={(e) => contactInfo.setValue(e.target.value)}*/}
-      {/*  required*/}
-      {/*  inputRef={register}*/}
-      {/*/>*/}
+
       <br />
       <TextField
         fullWidth
         name={"ipAddress"}
-        label={"Node IP"}
-        placeholder={PLACE_HOLDER_IP}
-        title={INFO_MESSAGE_IP[0]}
+        label={guardianDataFormsTranslations("fieldLabel_nodeIpAddress")}
+        placeholder={guardianDataFormsTranslations(
+          "fieldPlaceHolder_nodeIpAddress"
+        )}
+        title={guardianDataFormsTranslations("fieldTooltipTitle_nodeIpAddress")}
         value={ipAddress.value}
         onChange={(e) => ipAddress.setValue(e.target.value)}
         required
         inputRef={register({ pattern: IP_REGEX })}
         error={errorIPAddress}
-        // helperText={buildHelperMessage(
-        //   errorIPAddress,
-        //   IP_ADDRESS_MESSAGE,
-        //   INFO_MESSAGE_IP
-        // )}
-        helperText={errorIPAddress && IP_ADDRESS_MESSAGE}
+        helperText={
+          errorIPAddress &&
+          guardianDataFormsTranslations("fieldErrorMessage_nodeIpAddress")
+        }
         className={classes.textField}
       />
 
       <br />
       <TextField
         name={"nodeAddress"}
-        label={"Node address"}
-        placeholder={PLACE_HOLDER_NODE_ADDRESS}
-        title={INFO_MESSAGE_NODE_ADDRESS[1] as string}
+        label={guardianDataFormsTranslations("fieldLabel_nodeEthereumAddress")}
+        placeholder={guardianDataFormsTranslations(
+          "fieldPlaceHolder_nodeEthereumAddress"
+        )}
+        title={guardianDataFormsTranslations(
+          "fieldTooltipTitle_nodeEthereumAddress"
+        )}
         value={nodeAddress.value}
         onChange={(e) => nodeAddress.setValue(e.target.value)}
         error={errorNodeAddress}
-        // helperText={buildHelperMessage(
-        //   errorNodeAddress,
-        //   NODE_ADDRESS_MESSAGE,
-        //   INFO_MESSAGE_NODE_ADDRESS
-        // )}
-        helperText={errorNodeAddress && NODE_ADDRESS_MESSAGE}
+        helperText={
+          errorNodeAddress &&
+          guardianDataFormsTranslations("fieldErrorMessage_nodeEthereumAddress")
+        }
         required
         inputRef={register({ pattern: ETHEREUM_ADDRESS_REGEX })}
         fullWidth

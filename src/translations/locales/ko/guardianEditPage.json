@@ -1,0 +1,11 @@
+{
+  "action_unregister": "등록해제",
+  "action_updateCertifiedCommitteeUrl": "인증 위원회 URL 업데이트",
+  "action_updateDelegatorsShare": "델리게이터 배포 비율 업데이트",
+  "action_updateInfo": "정보 업데이트",
+  "tabHeader_delegatorsShare": "델리게이터 비율",
+  "tabHeader_editInfo": "정보 수정",
+  "tabHeader_guardianDetailsUrl": "가디언 정보 url",
+  "tabHeader_info": "정보",
+  "tabHeader_unregister": "등록해제"
+}

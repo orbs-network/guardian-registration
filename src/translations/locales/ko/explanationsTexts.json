@@ -1,0 +1,13 @@
+{
+  "conceptName_guardianAddress": "가디언 주소",
+  "conceptName_nodeAddress": "노드 주소",
+  "text_guardianAddress_holdsSelfStake": "가디언 자체 스테이킹",
+  "text_guardianAddress_receivesGuardianRewards": "가디언 리워드 받기",
+  "text_guardianAddress_representsInGuardiansList": "가디언 목록에서 가디언을 보여줍니다",
+  "text_guardianAddress_usedByDelegatorsToDelegate": "델리게이커가 가디언에게 위임할 때 사용합니다",
+  "text_nodeAddress_doesNotHoldYourTokens": "ORBS 토큰을 이곳에 보관하지 마세요",
+  "text_nodeAddress_holdsEthForAutomatedTransactionsGas": "노드에서 자동으로 트랜잭션을 할 수 있도록 가스비용 ETH를 넣어두세요",
+  "text_nodeAddress_minimalBalanceRequired": "등록시 최소 1 ETH가 들어있어야합니다",
+  "text_nodeAddress_shouldBeDifferentFromGuardianAddress": "가디언 주소({{conceptNameGuardianAddress}})는 노드주소와 같이 사용할 수 없습니다",
+  "text_nodeAddress_usedToSignBlocks": "오브스 블록체인에서 노드가 블록에 서명하는데 사용됩니다"
+}

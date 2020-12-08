@@ -1,0 +1,8 @@
+{
+  "action_register": "등록하기",
+  "error_minimalBalanceAtNodeAddressIsRequired": "가디언 등록을 위해 '노드 주소'에 최소 1 ETH가 들어있어야 합니다.",
+  "error_nodeAddressCannotBeTheSameAsGuardianAddress": "노드주소는 가디언 주소({{guardianAddress}})를 같이 사용할 수 없습니다",
+  "text_pleaseNote": "주의사항: ",
+  "title_guardianRegistration": "가디언 등록",
+  "title_yourGuardianAddressIs": "귀하의 {{conceptGuardianName}}는..."
+}

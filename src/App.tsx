@@ -6,7 +6,7 @@ import {
   useOrbsAccountStore,
 } from "./store/storeHooks";
 import { observer } from "mobx-react";
-import { NoEthereumProviderSection } from "./components/ethereumConnection/NoEthereumProviderSection";
+import { EthereumProviderSection } from "./components/ethereumConnection/EthereumProviderSection";
 import { GuardiansRegisterOrEditPage } from "./pages/GuardiandRegisterOrEdit/GuardianRegisterOrEditPage";
 import { Background } from "./components/structure/Background";
 import { Header } from "./components/structure/Header";
@@ -17,6 +17,7 @@ import { useSnackbar } from "notistack";
 import { Footer } from "./components/structure/Footer";
 import { useCryptoWalletConnectionService } from "./services/servicesHooks";
 import { HEADER_HEIGHT_REM } from "./theme/Theme";
+import { useModalsTranslations } from "./translations/translationsHooks";
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -41,12 +42,13 @@ const App = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
 
   const isConnected = cryptoWalletIntegrationStore.isConnectedToWallet;
+  const modalsTranslations = useModalsTranslations();
 
   const appContent = useMemo(() => {
     if (!isConnected) {
       return (
         <Page>
-          <NoEthereumProviderSection
+          <EthereumProviderSection
             walletConnectionPhase={"connect"}
             actionFunction={() => cryptoWalletIntegrationStore.askToConnect()}
             isMetaMaskProvider={
@@ -74,7 +76,10 @@ const App = observer(() => {
   const txHadError = orbsAccountStore.txHadError;
   useEffect(() => {
     if (txHadError) {
-      enqueueSnackbar("Error in Transaction", { variant: "error" });
+      enqueueSnackbar("Error in Transaction", {
+        variant: "error",
+        autoHideDuration: 7000,
+      });
     }
   }, [enqueueSnackbar, txHadError]);
 
@@ -82,9 +87,11 @@ const App = observer(() => {
   const txCanceled = orbsAccountStore.txCanceled;
   useEffect(() => {
     if (txCanceled) {
-      enqueueSnackbar("Transaction canceled", { variant: "info" });
+      enqueueSnackbar(modalsTranslations("message_txCanceled"), {
+        variant: "info",
+      });
     }
-  }, [enqueueSnackbar, txCanceled]);
+  }, [enqueueSnackbar, modalsTranslations, txCanceled]);
 
   // TODO : O.L : Change background image to the orbs one.
   return (

@@ -1,54 +1,29 @@
 import React, { useCallback, useState } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
-import {
-  Avatar,
-  Backdrop,
-  Box,
-  CircularProgress,
-  Collapse,
-  Divider,
-  Tab,
-  Tabs,
-  Typography,
-} from "@material-ui/core";
-import { EditGuardianInfoSection } from "./sections/EditGuardianInfoSection";
-import { EditRewardsDistributionSection } from "./sections/EditRewardsDistributionSection";
-import { UnregisterSection } from "./sections/UnregisterSection";
+import { Backdrop, Box, CircularProgress, Tab, Tabs } from "@material-ui/core";
 import {
   useCryptoWalletIntegrationStore,
   useOrbsAccountStore,
 } from "../../../store/storeHooks";
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
-import { EditDelegatorsShareSection } from "./sections/EditDelegatorsShareSection";
 import { observer } from "mobx-react";
-import { IReactComponent } from "mobx-react/dist/types/IReactComponent";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
-import {
-  DETAILS_REQUIREMENTS_LINK,
-  EditDelegatorsCertificateSection,
-} from "./sections/EditDelegatorsCertificateSection";
-import { CompactInput } from "../../../components/CompactInput/CompactInput";
-import PhoneIcon from "@material-ui/icons/Phone";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import PersonPinIcon from "@material-ui/icons/PersonPin";
-import MoneyIcon from "@material-ui/icons/Money";
-import PermIdentityIcon from "@material-ui/icons/PermIdentity";
-import EditIcon from "@material-ui/icons/Edit";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
-import SwipeableViews from "react-swipeable-views";
+import { DETAILS_REQUIREMENTS_LINK } from "./sections/EditDelegatorsCertificateSection";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { GuardianDetails } from "./GuardianDetails";
 import { UnregisterForm } from "../forms/UnregisterForm";
 import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
 import { DelegatorsShareForm } from "../forms/DelegatorsShareForm";
 import { FormWrapper } from "../../../components/forms/FormWrapper";
-import Fade from "@material-ui/core/Fade";
 import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 import { BoxProps } from "@material-ui/core/Box/Box";
+import {
+  useGuardianEditPageTranslations,
+  useModalsTranslations,
+} from "../../../translations/translationsHooks";
 
 interface IProps {}
 
@@ -96,6 +71,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const { enqueueSnackbar } = useSnackbar();
     const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
     const orbsAccountStore = useOrbsAccountStore();
+    const modalsTranslations = useModalsTranslations();
+
+    const guardianEditPageTranslations = useGuardianEditPageTranslations();
 
     // TODO : ORL : The whole modal logic is duplicated from 'Subscription UI' - Unite them properly
     const [showModal, setShowModal] = useState(false);
@@ -114,9 +92,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const updateGuardianDetails = useCallback(
       async (guardianRegistrationPayload: TGuardianUpdatePayload) => {
         setDialogTexts({
-          title: `Update your Details`,
-          instruction: "Please press 'Accept' and confirm the transaction",
-          onCancelMessage: "Action canceled",
+          title: modalsTranslations("modalTitle_updateGuardianInfo"),
+          instruction: modalsTranslations("modalInstruction_defaultTx"),
+          onCancelMessage: modalsTranslations("actionCanceled_default"),
         });
         setShowModal(true);
         setOnDialogAccept(() => async () => {
@@ -126,13 +104,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             );
 
             if (txRes) {
-              enqueueSnackbar("Guardian details successfully updated", {
-                variant: "success",
-              });
+              enqueueSnackbar(
+                modalsTranslations("successMessage_guardianInfo"),
+                {
+                  variant: "success",
+                }
+              );
             }
           } catch (e) {
             enqueueSnackbar(
-              `Error in 'Guardian Details Update' TX ${e.message}`,
+              modalsTranslations("errorMessage_guardianInfo", {
+                errorMessage: e.message,
+              }),
               {
                 variant: "error",
               }
@@ -140,16 +123,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
           }
         });
       },
-      [enqueueSnackbar, orbsAccountStore]
+      [enqueueSnackbar, modalsTranslations, orbsAccountStore]
     );
 
     const updateDelegatorsShare = useCallback(
       async (delegatorsSharePercentage: number) => {
         setDialogTexts({
-          title: `Update Delegators share`,
-          content: `Your Delegator's share will change to to ${delegatorsSharePercentage.toLocaleString()}%`,
-          instruction: "Please press 'Accept' and confirm the transaction",
-          onCancelMessage: "Action canceled",
+          title: modalsTranslations("modalTitle_updateDelegatorsShare"),
+          content: modalsTranslations("modalContent_delegatorsShare", {
+            newDelegatorsShare: delegatorsSharePercentage.toLocaleString(),
+          }),
+          instruction: modalsTranslations("modalInstruction_defaultTx"),
+          onCancelMessage: modalsTranslations("actionCanceled_default"),
         });
         setShowModal(true);
         setOnDialogAccept(() => async () => {
@@ -159,13 +144,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             );
 
             if (txRes) {
-              enqueueSnackbar("Delegators share successfully updated", {
-                variant: "success",
-              });
+              enqueueSnackbar(
+                modalsTranslations("successMessage_delegatorsShare"),
+                {
+                  variant: "success",
+                }
+              );
             }
           } catch (e) {
             enqueueSnackbar(
-              `Error in 'Delegators share percentage Update' TX ${e.message}`,
+              modalsTranslations("errorMessage_delegatorsShare", {
+                errorMessage: e.message,
+              }),
               {
                 variant: "error",
               }
@@ -173,16 +163,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
           }
         });
       },
-      [enqueueSnackbar, orbsAccountStore]
+      [enqueueSnackbar, modalsTranslations, orbsAccountStore]
     );
 
     const updateGuardianDetailsPage = useCallback(
       async (guardianDetailsPageUrl: string) => {
         setDialogTexts({
-          title: `Update details page URL`,
-          content: `Your details page URL will change to ${guardianDetailsPageUrl}`,
-          instruction: "Please press 'Accept' and confirm the transaction",
-          onCancelMessage: "Action canceled",
+          title: modalsTranslations("modalTitle_guardianDetailsPageUrl"),
+          content: modalsTranslations("modalContent_guardianDetailsPageUrl", {
+            guardianDetailsPageUrl: guardianDetailsPageUrl,
+          }),
+          instruction: modalsTranslations("modalInstruction_defaultTx"),
+          onCancelMessage: modalsTranslations("actionCanceled_default"),
         });
         setShowModal(true);
         setOnDialogAccept(() => async () => {
@@ -192,13 +184,18 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             );
 
             if (txRes) {
-              enqueueSnackbar("Guardian details page URL updated", {
-                variant: "success",
-              });
+              enqueueSnackbar(
+                modalsTranslations("successMessage_guardianDetailsPageURL"),
+                {
+                  variant: "success",
+                }
+              );
             }
           } catch (e) {
             enqueueSnackbar(
-              `Error in 'Guardian details page URL Update' TX ${e.message}`,
+              modalsTranslations("errorMessage_guardianDetailsPageURL", {
+                errorMessage: e.message,
+              }),
               {
                 variant: "error",
               }
@@ -206,29 +203,39 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
           }
         });
       },
-      [enqueueSnackbar, orbsAccountStore]
+      [enqueueSnackbar, modalsTranslations, orbsAccountStore]
     );
 
     const unregisterGuardian = useCallback(async () => {
       setDialogTexts({
-        title: `You are about to unregister from the Orbs Guardian role`,
-        content:
-          "You and your Delegators will no longer be eligible for rewards",
-        instruction: "Are you sure ?",
-        acceptText: "yes",
-        onCancelMessage: "Action canceled",
+        title: modalsTranslations("modalTitle_unregister"),
+        content: modalsTranslations("modalContent_unregister"),
+        instruction: modalsTranslations("modalInstruction_unregister"),
+        acceptText: modalsTranslations("acceptText_yes"),
+        onCancelMessage: modalsTranslations("actionCanceled_default"),
       });
       setShowModal(true);
       setOnDialogAccept(() => async () => {
         try {
-          await orbsAccountStore.unregisterGuardian();
+          const txRes = await orbsAccountStore.unregisterGuardian();
+
+          if (txRes) {
+            enqueueSnackbar(modalsTranslations("successMessage_unregister"), {
+              variant: "success",
+            });
+          }
         } catch (e) {
-          enqueueSnackbar(`Error in 'Unregister guardian' TX ${e.message}`, {
-            variant: "error",
-          });
+          enqueueSnackbar(
+            modalsTranslations("errorMessage_unregister", {
+              errorMessage: e.message,
+            }),
+            {
+              variant: "error",
+            }
+          );
         }
       });
-    }, [enqueueSnackbar, orbsAccountStore]);
+    }, [enqueueSnackbar, modalsTranslations, orbsAccountStore]);
 
     const [tabValue, setTabValue] = React.useState(TABS_IDS.info);
 
@@ -289,45 +296,41 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 variant="fullWidth"
                 indicatorColor="secondary"
                 textColor="primary"
-                aria-label="icon tabs example"
                 TabIndicatorProps={{
                   color: "secondary",
                 }}
               >
                 <Tab
-                  // textColor={"secondary"}
-                  // icon={<PermIdentityIcon />}
-                  label="Info"
+                  label={guardianEditPageTranslations("tabHeader_info")}
                   aria-label="phone"
                   className={classes.tab}
                   value={TABS_IDS.info}
                 />
                 <Tab
                   className={classes.tab}
-                  // icon={<EditIcon />}
-                  label={"Edit Info"}
+                  label={guardianEditPageTranslations("tabHeader_editInfo")}
                   value={TABS_IDS.editInfo}
                   aria-label="phone"
                 />
                 <Tab
                   className={classes.tab}
-                  // icon={<MoneyIcon />}
-                  label={"Delegators share"}
+                  label={guardianEditPageTranslations(
+                    "tabHeader_delegatorsShare"
+                  )}
                   value={TABS_IDS.delegatorsShare}
                   aria-label="favorite"
                 />
                 <Tab
                   className={classes.tab}
-                  // icon={<VerifiedUserIcon />}
-                  // label={"Certificate URL"}
-                  label={"Guardian details URL"}
+                  label={guardianEditPageTranslations(
+                    "tabHeader_guardianDetailsUrl"
+                  )}
                   value={TABS_IDS.certificate}
                   aria-label="favorite"
                 />
                 <Tab
                   className={classes.tab}
-                  // icon={<HighlightOffIcon />}
-                  label={"Unregister"}
+                  label={guardianEditPageTranslations("tabHeader_unregister")}
                   value={TABS_IDS.unregister}
                   aria-label="person"
                 />
@@ -341,7 +344,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               value={tabValue}
               index={TABS_IDS.info}
               dir={theme.direction}
-            ></TabPanel>
+            />
 
             {/* Edit Details */}
             <TabPanel
@@ -354,7 +357,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 <GuardiansDetailsForm
                   submitInfo={updateGuardianDetails}
                   guardianInitialInfo={orbsAccountStore.guardianInfo}
-                  actionButtonTitle={"Update"}
+                  actionButtonTitle={guardianEditPageTranslations(
+                    "action_updateInfo"
+                  )}
                 />
                 {/*<Typography variant={"h6"}>*/}
                 {/*    Details Last updated: {lastUpdateDate.toLocaleString()}*/}

@@ -11,8 +11,12 @@ import EditIcon from "@material-ui/icons/Edit";
 import { Transition } from "react-spring/renderprops-universal";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
 import { GuardianDetails } from "../GuardianDetails";
-import { ActionButton } from "../../../../components/shared/ActionButton/ActionButton";
+import ActionButton from "@bit/orbs-network.commons.action-button";
 import { useBoolean } from "react-hanger";
+import {
+  useGuardianDataFormsTranslations,
+  useGuardianEditPageTranslations,
+} from "../../../../translations/translationsHooks";
 
 interface IProps {
   guardianAddress: string;
@@ -46,6 +50,8 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
 
   console.log({ isEditingData: isEditingData.value });
   const { lastUpdateTime, registrationTime } = guardianContractInteractionTimes;
+  const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
+  const guardianEditPageTranslations = useGuardianEditPageTranslations();
 
   const registrationDate = useMemo(() => {
     return fromUnixTime(registrationTime);
@@ -128,10 +134,12 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
                     <GuardiansDetailsForm
                       submitInfo={updateGuardianDetails}
                       guardianInitialInfo={guardianInfo}
-                      actionButtonTitle={"Update"}
+                      actionButtonTitle={guardianDataFormsTranslations(
+                        "action_update"
+                      )}
                     />
                     <ActionButton onClick={isEditingData.setFalse}>
-                      Cancel
+                      {guardianDataFormsTranslations("action_cancel")}
                     </ActionButton>
                     <br />
                     <br />
@@ -148,7 +156,7 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
                     {/*  guardianInfo={guardianInfo}*/}
                     {/*/>*/}
                     <ActionButton onClick={isEditingData.setTrue}>
-                      Edit
+                      {guardianEditPageTranslations("action_updateInfo")}
                     </ActionButton>
                   </div>
                 )

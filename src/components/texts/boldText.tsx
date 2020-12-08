@@ -14,5 +14,5 @@ const useStyles = makeStyles((theme) => ({
 export const BoldText = React.memo<IProps>((props) => {
   const { children } = props;
   const classes = useStyles();
-  return <div className={classes.boldText}>{children}</div>;
+  return <span className={classes.boldText}>{children}</span>;
 });

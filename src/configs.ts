@@ -20,6 +20,7 @@ interface IConfig {
   v2contractsAddressesOverride: Partial<{
     guardiansRegistration: string;
     stakingRewards: string;
+    delegations: string;
   }>;
   ETHEREUM_PROVIDER_WS: string;
 
@@ -39,12 +40,13 @@ const configs: IConfig = {
 // Webpack will remove this section on production build //
 if (process.env.NODE_ENV !== "production") {
   // if (ethereumNetwork === "local") {
-    const addresses = require("./local/addresses.json");
+  const addresses = require("./local/addresses.json");
 
-    configs.v2contractsAddressesOverride.guardiansRegistration =
-      addresses.guardiansRegistration;
-    configs.v2contractsAddressesOverride.stakingRewards =
-      addresses.stakingRewards;
+  configs.v2contractsAddressesOverride.guardiansRegistration =
+    addresses.guardiansRegistration;
+  configs.v2contractsAddressesOverride.stakingRewards =
+    addresses.stakingRewards;
+  configs.v2contractsAddressesOverride.delegations = addresses.delegations;
   // }
 }
 

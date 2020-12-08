@@ -3,10 +3,17 @@ import { Button, TextField, Typography } from "@material-ui/core";
 import { useStateful, useBoolean } from "react-hanger";
 import { useForm } from "react-hook-form";
 import { config, Transition } from "react-spring/renderprops-universal";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { InTextLink } from "../../../components/InTextLink";
 import { validURL } from "./inoputValidators";
-import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
+import ActionButton from "@bit/orbs-network.commons.action-button";
+import {
+  useDomainTranslations,
+  useGuardianDataFormsTranslations,
+  useGuardianEditPageTranslations,
+} from "../../../translations/translationsHooks";
+import { renderToString } from "react-dom/server";
+import { baseTheme } from "../../../theme/Theme";
 
 interface IProps {
   currentGuardianDetailsUrl?: string;
@@ -38,15 +45,32 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
     detailsRequirementsLink,
   } = props;
 
-  const REWARDS_FREQUENCY_ERROR_MESSAGE = `Please use a valid URL`;
-  const REWARDS_FREQUENCY_DATA_MESSAGE = (
-    <Typography component={"span"} variant={"caption"}>
-      Setting a URL to your details page is a prerequisite for joining the{" "}
-      <InTextLink text={"certified committee"} href={detailsRequirementsLink} />
-    </Typography>
+  const domainTranslations = useDomainTranslations();
+  const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
+  const guardianEditPageTranslations = useGuardianEditPageTranslations();
+
+  const certifiedCommitteeExplanation = (
+    <Typography
+      component={"span"}
+      variant={"caption"}
+      dangerouslySetInnerHTML={{
+        __html: guardianDataFormsTranslations(
+          "fieldExplanation_certifiedCommittee",
+          {
+            certifiedCommitteeLink: renderToString(
+              <ThemeProvider theme={baseTheme}>
+                <InTextLink
+                  text={domainTranslations("conceptName_certifiedCommittee")}
+                  href={detailsRequirementsLink}
+                />
+              </ThemeProvider>
+            ),
+          }
+        ),
+      }}
+    />
   );
 
-  const showEditOptions = useBoolean(false);
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
   const errorGuardianDetailsUrl = !!errors.guardianDetailsUrl;
@@ -65,24 +89,6 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
     setFormGuardianDetailsUrl(currentGuardianDetailsUrl || "");
   }, [setFormGuardianDetailsUrl, currentGuardianDetailsUrl]);
 
-  const titleText = useMemo(() => {
-    return hasGuardianDetailsUrl ? (
-      <Typography component={"span"}>
-        Your details page :{" "}
-        <InTextLink
-          href={
-            currentGuardianDetailsUrl?.startsWith("http")
-              ? currentGuardianDetailsUrl
-              : "http://" + currentGuardianDetailsUrl
-          }
-          text={currentGuardianDetailsUrl!}
-        />
-      </Typography>
-    ) : (
-      `You have not set your details page URL`
-    );
-  }, [currentGuardianDetailsUrl, hasGuardianDetailsUrl]);
-
   return (
     <form
       style={{
@@ -95,8 +101,12 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
       <TextField
         fullWidth
         name={"guardianDetailsUrl"}
-        title={`Certified Committee URL`}
-        label={"Certified Committee URL"}
+        title={guardianDataFormsTranslations(
+          "fieldLabel_certifiedCommitteeUrl"
+        )}
+        label={guardianDataFormsTranslations(
+          "fieldTooltipTitle_certifiedCommitteeUrl"
+        )}
         value={formGuardianDetailsUrl.value}
         onChange={(e) => {
           formGuardianDetailsUrl.setValue(e.target.value || "");
@@ -106,8 +116,10 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
         error={errorGuardianDetailsUrl}
         helperText={
           errorGuardianDetailsUrl
-            ? REWARDS_FREQUENCY_ERROR_MESSAGE
-            : REWARDS_FREQUENCY_DATA_MESSAGE
+            ? guardianDataFormsTranslations(
+                "fieldErrorMessage_certifiedCommittee"
+              )
+            : certifiedCommitteeExplanation
         }
         className={classes.textField}
         autoFocus
@@ -115,7 +127,7 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
       <br />
       <br />
       <ActionButton type={"submit"}>
-        Update your Certified Committee URL
+        {guardianEditPageTranslations("action_updateCertifiedCommitteeUrl")}
       </ActionButton>
     </form>
   );

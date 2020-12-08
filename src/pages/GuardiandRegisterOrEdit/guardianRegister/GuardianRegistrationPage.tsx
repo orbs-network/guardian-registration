@@ -1,7 +1,13 @@
 import React, { useCallback } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
-import { Backdrop, CircularProgress } from "@material-ui/core";
+import {
+  Backdrop,
+  Box,
+  CircularProgress,
+  Paper,
+  Typography,
+} from "@material-ui/core";
 import { RegisterGuardianSection } from "./RegisterGuardianSection";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -11,6 +17,8 @@ import {
 import { useSnackbar } from "notistack";
 import { useCryptoWalletConnectionService } from "../../../services/servicesHooks";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
+import useTheme from "@material-ui/core/styles/useTheme";
+import { DelegatingToOtherAccountSection } from "./DelegatingToOtherAccountSection";
 
 interface IProps {}
 
@@ -23,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const GuardianRegistrationPage = React.memo<IProps>((props) => {
   const classes = useStyles();
+  const theme = useTheme();
 
   const { enqueueSnackbar } = useSnackbar();
   const cryptoWalletIntegrationService = useCryptoWalletConnectionService();
@@ -42,6 +51,16 @@ export const GuardianRegistrationPage = React.memo<IProps>((props) => {
     [enqueueSnackbar, orbsAccountStore]
   );
 
+  const unDelegate = useCallback(async () => {
+    try {
+      await orbsAccountStore.unDelegateCurrentDelegation();
+    } catch (e) {
+      enqueueSnackbar(`Error in 'un-delegating' TX ${e.message}`, {
+        variant: "error",
+      });
+    }
+  }, [enqueueSnackbar, orbsAccountStore]);
+
   return (
     <Page>
       <ContentFitting>
@@ -49,18 +68,26 @@ export const GuardianRegistrationPage = React.memo<IProps>((props) => {
         <div
           style={{
             display: "flex",
-            // flexDirection: "column",
             maxWidth: "100%",
-            // textAlign: "center",
-            // alignItems: "center",
-            // alignContent: "center",
           }}
         >
-          <RegisterGuardianSection
-            registerGuardian={registerGuardian}
-            guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-            cryptoWalletConnectionService={cryptoWalletIntegrationService}
-          />
+          {orbsAccountStore.isDelegatingToOtherAccount && (
+            <DelegatingToOtherAccountSection
+              userAddress={cryptoWalletIntegrationStore.mainAddress}
+              currentSelectedGuardianAddress={
+                orbsAccountStore.selectedGuardianAddress || ""
+              }
+              unDelegate={unDelegate}
+            />
+          )}
+
+          {!orbsAccountStore.isDelegatingToOtherAccount && (
+            <RegisterGuardianSection
+              registerGuardian={registerGuardian}
+              guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+              cryptoWalletConnectionService={cryptoWalletIntegrationService}
+            />
+          )}
         </div>
         <Backdrop
           className={classes.backdrop}

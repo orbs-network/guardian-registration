@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { InTextLink } from "../InTextLink";
 import configs from "../../configs";
 import Color from "color";
+import { useCommonsTranslations } from "../../translations/translationsHooks";
 
 interface IProps {
   version?: string;
@@ -63,6 +64,8 @@ export const Footer = React.memo<IProps>((props) => {
   const classes = useStyles();
   const { version } = props;
 
+  const commonsTranslations = useCommonsTranslations();
+
   return (
     <div className={classes.footerContainer}>
       {/* TODO : This 'Toolbar' is here to keep space between content and footer, should make a better solution */}
@@ -87,18 +90,20 @@ export const Footer = React.memo<IProps>((props) => {
             }}
           >
             <InTextLink
-              text={"Term of use"}
+              text={commonsTranslations("termsOfUse")}
               href={configs.termsOfUseUrl}
               style={{ paddingInlineEnd: "1em", justifySelf: "center" }}
             />
             <InTextLink
               href={configs.privacyPolicyUrl}
-              text={"Privacy Policy"}
+              text={commonsTranslations("privacyPolicy")}
             />
           </div>
 
           <div className={classes.appVersion}>
-            <Typography variant={"caption"}>version {version}</Typography>
+            <Typography variant={"caption"}>
+              {commonsTranslations("version", { versionNumber: version })}
+            </Typography>
           </div>
         </div>
       </AppBar>

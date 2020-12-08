@@ -9,6 +9,14 @@ import {
   ICryptoWalletConnectionService,
   TGuardianRegistrationPayload,
 } from "@orbs-network/contracts-js";
+import useTheme from "@material-ui/core/styles/useTheme";
+import {
+  useCommonsTranslations,
+  useDomainTranslations,
+  useGuardianDataFormsTranslations,
+  useRegisterGuardianSectionTranslations,
+} from "../../../translations/translationsHooks";
+import { renderToString } from "react-dom/server";
 
 interface IProps {
   guardianAddress: string;
@@ -56,25 +64,13 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
     cryptoWalletConnectionService,
   } = props;
 
+  const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
+  const domainTranslations = useDomainTranslations();
+  const registerGuardianSectionTranslations = useRegisterGuardianSectionTranslations();
+
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   );
-
-  // const { shouldDisable, messageToExplainDisable } = useMemo(() => {
-  //   let shouldDisable: boolean = false;
-  //   let messageToExplainDisable: string | undefined = undefined;
-  //
-  //   if (ethereumBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
-  //     shouldDisable = true;
-  //     messageToExplainDisable =
-  //       "A minimal balance of 1 Ether is required in order to register as a guardian";
-  //   }
-  //
-  //   return {
-  //     shouldDisable,
-  //     messageToExplainDisable,
-  //   };
-  // }, [ethereumBalance]);
 
   /**
    * We will use this function to perform validations just before calling 'register'
@@ -86,7 +82,10 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         guardianAddress.toLowerCase()
       ) {
         setErrorMessage(
-          `Your Orbs node address cannot be the same as your Guardian address ${guardianAddress}`
+          registerGuardianSectionTranslations(
+            "error_nodeAddressCannotBeTheSameAsGuardianAddress",
+            { guardianAddress }
+          )
         );
         return;
       }
@@ -97,14 +96,34 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
 
       if (orbsNodeBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
         setErrorMessage(
-          `A minimal balance of 1 Ether at the 'Node Address' is required in order to register as a guardian.`
+          registerGuardianSectionTranslations(
+            "error_minimalBalanceAtNodeAddressIsRequired"
+          )
         );
         return;
       }
 
+      // All tests passes, remove old error message if exists
+      setErrorMessage("");
       registerGuardian(guardianRegistrationPayload);
     },
-    [cryptoWalletConnectionService, guardianAddress, registerGuardian]
+    [
+      cryptoWalletConnectionService,
+      guardianAddress,
+      registerGuardian,
+      registerGuardianSectionTranslations,
+    ]
+  );
+
+  const yourGuardianAddressTextInnerHtml = registerGuardianSectionTranslations(
+    "title_yourGuardianAddressIs",
+    {
+      conceptGuardianName: renderToString(
+        <span className={classes.boldText}>
+          {domainTranslations("conceptName_guardianName")}
+        </span>
+      ),
+    }
   );
 
   return (
@@ -114,6 +133,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+
         //  DEV_NOTE : 'min-content' will allow us to limit width to the width of the address text (it has max-content width)
         //            removing it will allow us to display elements wider than the address.
         // If removed, add 'maxWidth'
@@ -130,11 +150,13 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
           textAlign: "center",
         }}
       >
-        <Typography variant={"h5"}>Guardian Registration</Typography>
-        <Typography variant={"h6"}>
-          Your <div className={classes.boldText}>Guardian address </div>
-          is:
+        <Typography variant={"h5"}>
+          {registerGuardianSectionTranslations("title_guardianRegistration")}
         </Typography>
+        <Typography
+          variant={"h6"}
+          dangerouslySetInnerHTML={{ __html: yourGuardianAddressTextInnerHtml }}
+        />
         <Typography
           style={{
             textOverflow: "ellipsis",
@@ -150,7 +172,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       <GuardiansDetailsForm
         submitInfo={checkBalanceBeforeRegistration}
         guardianInitialInfo={emptyInitialInfo}
-        actionButtonTitle={"Register"}
+        actionButtonTitle={guardianDataFormsTranslations("action_register")}
         messageForSubmitButton={errorMessage}
       />
     </div>

@@ -1,0 +1,9 @@
+{
+  "action_connect": "연결하기",
+  "subTitle_pleaseConnectWithYourGuardianAddress": "시작하려면 가디언 주소({{conceptGuardianAddress}})를 연결해주세요",
+  "ticker_message_agreeToTheToUAndPrivacyPolicy": "{{termsOfUseText}}와 {{privacyPolicyText}}에 동의합니다",
+  "ticker_message_confirmIAmNotACitizenOrResident": "다음에 해당하는 국가의 시민이거나 해당 국가에 거주하거나 머물고 있지 않음을 확인합니다:",
+  "ticker_subMessage_otherRegions": "우크라이나 크림지역, 쿠바,이란, 레바논, 북한, 수단, 시리아를 포함하되 이에 국한되지 않는 포괄적 제재 대상 국가 또는 지역.",
+  "ticker_subMessage_theStateOfIsrael": "이스라엘 ODF",
+  "title_accountConnectionRequired": "먼저 계정을 연결해야합니다"
+}

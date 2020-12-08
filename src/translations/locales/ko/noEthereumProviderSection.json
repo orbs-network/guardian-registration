@@ -1,0 +1,5 @@
+{
+  "action_install": "설치",
+  "subTitle_pleaseInstallMetamaskAndRefresh": "Metamask 설치 후 페이지를 새로고침해주세요",
+  "title_noEthereumProviderDetected": "이더리움 프로바이더가 확인되지 않습니다"
+}

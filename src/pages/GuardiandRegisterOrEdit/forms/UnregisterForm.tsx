@@ -4,7 +4,8 @@ import { useBoolean } from "react-hanger";
 import { useForm } from "react-hook-form";
 import { Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
-import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
+import ActionButton from "@bit/orbs-network.commons.action-button";
+import { useGuardianEditPageTranslations } from "../../../translations/translationsHooks";
 
 interface IProps {
   unregisterGuardian: () => void;
@@ -47,6 +48,8 @@ export const UnregisterForm = React.memo<IProps>((props) => {
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
+  const guardianEditPageTranslations = useGuardianEditPageTranslations();
+
   const submitUnregister = useCallback(
     (formData: TFormData) => {
       unregisterGuardian();
@@ -62,8 +65,8 @@ export const UnregisterForm = React.memo<IProps>((props) => {
       }}
       onSubmit={handleSubmit(submitUnregister)}
     >
-      <ActionButton type={"submit"} errorVariant>
-        Unregister
+      <ActionButton warningVariant type={"submit"} errorVariant>
+        {guardianEditPageTranslations("action_unregister")}
       </ActionButton>
     </form>
   );

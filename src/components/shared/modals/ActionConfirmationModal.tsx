@@ -11,6 +11,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import { useModalsTranslations } from "../../../translations/translationsHooks";
 
 interface IProps {
   // Dialog
@@ -58,6 +59,8 @@ export const ActionConfirmationModal = React.memo<IProps>((props) => {
   // const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const fullScreen = false;
 
+  const modalsTranslations = useModalsTranslations();
+
   return (
     <Dialog
       className={classes.dialogPaper}
@@ -89,7 +92,7 @@ export const ActionConfirmationModal = React.memo<IProps>((props) => {
           color="secondary"
           variant={"contained"}
         >
-          {cancelText || "Cancel"}
+          {cancelText || modalsTranslations("cancelText_default")}
         </Button>
         <Button
           className={classes.button}
@@ -98,7 +101,7 @@ export const ActionConfirmationModal = React.memo<IProps>((props) => {
           autoFocus
           variant={"contained"}
         >
-          {acceptText || "Accept"}
+          {acceptText || modalsTranslations("acceptText_default")}
         </Button>
       </DialogActions>
     </Dialog>

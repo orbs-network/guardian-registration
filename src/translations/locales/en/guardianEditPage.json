@@ -1,0 +1,11 @@
+{
+  "action_unregister": "unregister",
+  "action_updateCertifiedCommitteeUrl": "update your certified committee URL",
+  "action_updateDelegatorsShare": "update Delegators share",
+  "action_updateInfo": "update info",
+  "tabHeader_delegatorsShare": "delegators share",
+  "tabHeader_editInfo": "edit info",
+  "tabHeader_guardianDetailsUrl": "guardian details url",
+  "tabHeader_info": "info",
+  "tabHeader_unregister": "unregister"
+}

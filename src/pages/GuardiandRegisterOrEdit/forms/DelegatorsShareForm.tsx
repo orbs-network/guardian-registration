@@ -4,7 +4,11 @@ import { useBoolean, useNumber } from "react-hanger";
 import { useForm } from "react-hook-form";
 import { config, Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
-import { ActionButton } from "../../../components/shared/ActionButton/ActionButton";
+import ActionButton from "@bit/orbs-network.commons.action-button";
+import {
+  useGuardianDataFormsTranslations,
+  useGuardianEditPageTranslations,
+} from "../../../translations/translationsHooks";
 
 interface IProps {
   currentDelegatorsCut?: number;
@@ -38,9 +42,16 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
     delegatorsCutMaxValue,
   } = props;
 
-  const REWARDS_FREQUENCY_MESSAGE = `Valid values are between 0 and ${delegatorsCutMaxValue}`;
+  const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
+  const guardianEditPageTranslations = useGuardianEditPageTranslations();
 
-  const showEditOptions = useBoolean(false);
+  const REWARDS_FREQUENCY_MESSAGE = guardianDataFormsTranslations(
+    "fieldErrorMessage_delegatorsShare",
+    {
+      delegatorsCutMaxValue,
+    }
+  );
+
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
   const delegatorsCut = useNumber(Math.min(currentDelegatorsCut || 0, 66), {
@@ -61,14 +72,6 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
     setDelegCut(Math.min(currentDelegatorsCut || 0, delegatorsCutMaxValue));
   }, [currentDelegatorsCut, delegatorsCutMaxValue, setDelegCut]);
 
-  console.log({ currentDelegatorsCut });
-
-  const titleText = useMemo(() => {
-    return isUsingDefaultValue
-      ? `Current share : Default value (${delegatorsCutDefaultValue}%)`
-      : `Current share : ${currentDelegatorsCut}%`;
-  }, [currentDelegatorsCut, delegatorsCutDefaultValue, isUsingDefaultValue]);
-
   return (
     <form
       style={{
@@ -81,8 +84,10 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
       <TextField
         fullWidth
         name={"delegatorsCut"}
-        title={`Delegators share (% out of staking rewards)`}
-        label={"Delegators share (% out of staking rewards)"}
+        title={guardianDataFormsTranslations(
+          "fieldTooltipTitle_delegatorsShare"
+        )}
+        label={guardianDataFormsTranslations("fieldLabel_delegatorsShare")}
         value={delegatorsCut.value}
         inputProps={{
           step: 1,
@@ -99,7 +104,12 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
         helperText={
           errorDelegatorsCut
             ? REWARDS_FREQUENCY_MESSAGE
-            : `The percentage of the staking rewards that is distributed to your Delegators, between 0% and ${delegatorsCutMaxValue}%`
+            : guardianDataFormsTranslations(
+                "fieldExplanation_delegatorsShare",
+                {
+                  delegatorsCutMaxValue,
+                }
+              )
         }
         InputProps={{
           startAdornment: "%",
@@ -110,7 +120,7 @@ export const DelegatorsShareForm = React.memo<IProps>((props) => {
       <br />
       <br />
       <ActionButton type={"submit"} fullWidth>
-        Update Delegators share
+        {guardianEditPageTranslations("action_updateDelegatorsShare")}
       </ActionButton>
     </form>
   );

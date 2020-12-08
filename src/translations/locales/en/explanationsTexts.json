@@ -1,0 +1,13 @@
+{
+  "conceptName_guardianAddress": "Guardian Address",
+  "conceptName_nodeAddress": "Node Address",
+  "text_guardianAddress_holdsSelfStake": "Holds the Guardian's self-delegated stake",
+  "text_guardianAddress_receivesGuardianRewards": "Receives the Guardians rewards",
+  "text_guardianAddress_representsInGuardiansList": "Represents the Guardian in the Guardians list",
+  "text_guardianAddress_usedByDelegatorsToDelegate": "Used by Delegators to delegate to the Guardian",
+  "text_nodeAddress_doesNotHoldYourTokens": "Does NOT hold your Guardian ORBS tokens",
+  "text_nodeAddress_holdsEthForAutomatedTransactionsGas": "Holds ETH for node automated transactions gas",
+  "text_nodeAddress_minimalBalanceRequired": "A minimal balance of 1 ETH is required upon registration",
+  "text_nodeAddress_shouldBeDifferentFromGuardianAddress": "Should be different from the {{conceptNameGuardianAddress}}",
+  "text_nodeAddress_usedToSignBlocks": "Used by the node to sign blocks on Orbs blockchain"
+}
