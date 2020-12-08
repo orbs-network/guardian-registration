@@ -1,1 +1,7 @@
-{}
+{
+  "action_unDelegate": "위임 해제",
+  "explanation_previousDelegationsNeedsToBeCanceled": "가디언을 등록하기에 앞서 현재 위임을 먼저 해제해야합니다.",
+  "text_connectedWithAddress": "주소와 연결되었습니다",
+  "text_pleaseNote": "주의 사항: ",
+  "text_thisAddressIsCurrentlyDelegatingTo": "이 주소는 현재 다음에게 위임되어 있습니다: "
+}

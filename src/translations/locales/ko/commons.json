@@ -1,1 +1,8 @@
-{}
+{
+  "concept_guardianName": "가디언 주소",
+  "loading": "로딩중...",
+  "loadingFailed": "로딩 실패",
+  "privacyPolicy": "개인정보 처리방침",
+  "termsOfUse": "이용약관",
+  "version": "버전 {{versionNumber}}"
+}

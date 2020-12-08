@@ -1,1 +1,7 @@
-{}
+{
+  "conceptExplanation_delegatorsShare": "% (전체 스테이킹 리워드 대비)",
+  "conceptName_certifiedCommittee": "인증 위원회",
+  "conceptName_delegatorsShare": "델리게이터 비율",
+  "conceptName_guardianAddress": "가디언 주소",
+  "conceptName_guardianName": "가디언 이름"
+}
