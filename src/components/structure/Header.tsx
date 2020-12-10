@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { HEADER_HEIGHT_REM } from "../../theme/Theme";
 import { useHeaderTranslations } from "../../translations/translationsHooks";
+import { LanguagesSelector } from "./languageSelector/LanguagesSelector";
 
 interface IProps {}
 
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "1em",
     marginBottom: "1em",
   },
+  languageBar: {},
 }));
 
 export const Header = React.memo<IProps>((props) => {
@@ -32,6 +34,9 @@ export const Header = React.memo<IProps>((props) => {
           <Typography variant="h5">
             {headerTranslations("title_appName")}
           </Typography>
+        </div>
+        <div className={classes.languageBar}>
+          <LanguagesSelector />
         </div>
       </Toolbar>
     </AppBar>

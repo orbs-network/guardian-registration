@@ -1,1 +1,9 @@
-{}
+{
+  "action_connect": "接続",
+  "subTitle_pleaseConnectWithYourGuardianAddress": "開始するには {{conceptGuardianAddress}}に接続してください。",
+  "ticker_message_agreeToTheToUAndPrivacyPolicy": "{{termsOfUseText}}と{{privacyPolicyText}}に同意します。",
+  "ticker_message_confirmIAmNotACitizenOrResident": "私は、以下のいずれかの市民、居住者、または所属していないことを確認します。",
+  "ticker_subMessage_otherRegions": "ウクライナのクリミア地域、キューバ、イラン、レバノン、北朝鮮、スーダン、シリアを含む、包括的な制裁の対象となる国または地域。",
+  "ticker_subMessage_theStateOfIsrael": "イスラエル国",
+  "title_accountConnectionRequired": "アカウント接続が必要です。"
+}

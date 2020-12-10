@@ -1,1 +1,5 @@
-{}
+{
+  "action_install": "インストール",
+  "subTitle_pleaseInstallMetamaskAndRefresh": "メタマスクをインストールして、ページを更新してください",
+  "title_noEthereumProviderDetected": "イーサリアム・プロバイダーが検出されません"
+}

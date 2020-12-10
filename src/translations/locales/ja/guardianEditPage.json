@@ -1,1 +1,11 @@
-{}
+{
+  "action_unregister": "未登録です",
+  "action_updateCertifiedCommitteeUrl": "認定委員会のURLを更新する",
+  "action_updateDelegatorsShare": "ガーディアンのシェアを更新",
+  "action_updateInfo": "情報を更新",
+  "tabHeader_delegatorsShare": "デリゲータのシェア",
+  "tabHeader_editInfo": "情報を編集",
+  "tabHeader_guardianDetailsUrl": "ガーディアンの詳細URL",
+  "tabHeader_info": "情報",
+  "tabHeader_unregister": "未登録"
+}

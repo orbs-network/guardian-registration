@@ -1,1 +1,7 @@
-{}
+{
+  "action_unDelegate": "未委任",
+  "explanation_previousDelegationsNeedsToBeCanceled": "ガーディアンとして登録する前に、この委任をキャンセルする必要があります。",
+  "text_connectedWithAddress": "アドレスに接続",
+  "text_pleaseNote": "ご注意ください",
+  "text_thisAddressIsCurrentlyDelegatingTo": "このアドレスは現在、委任しています。"
+}

@@ -1,1 +1,8 @@
-{}
+{
+  "action_register": "登録",
+  "error_minimalBalanceAtNodeAddressIsRequired": "ガーディアンとして登録するには、「ノードアドレス」に最低1ETHの残高が必要です。",
+  "error_nodeAddressCannotBeTheSameAsGuardianAddress": "Orbsノードアドレスとガーディアンのアドレス{{guardianAddress}}は同じにすることはできません",
+  "text_pleaseNote": "ご注意ください",
+  "title_guardianRegistration": "ガーディアン登録",
+  "title_yourGuardianAddressIs": "あなたの{{conceptGuardianName}}は"
+}

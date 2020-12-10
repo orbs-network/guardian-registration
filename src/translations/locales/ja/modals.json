@@ -1,1 +1,24 @@
-{}
+{
+  "acceptText_default": "同意する",
+  "acceptText_yes": "はい",
+  "actionCanceled_default": "アクションがキャンセルされました",
+  "cancelText_default": "キャンセル",
+  "errorMessage_delegatorsShare": "'デリゲーた共有％更新' TX {{errorMessage}}のエラー",
+  "errorMessage_guardianDetailsPageURL": "'ガーディアンの詳細ページのURL更新' TX {{errorMessage}}のエラー",
+  "errorMessage_guardianInfo": "'ガーディアンの詳細ページの更新' TX{{errorMessage}}のエラー",
+  "errorMessage_unregister": "'ガーディアンの未登録' TX{{errorMessage}}のエラー",
+  "message_txCanceled": "取引がキャンセルされました",
+  "modalContent_delegatorsShare": "デリゲータのシェアは{{newDelegatorsShare}}％に変更されます",
+  "modalContent_guardianDetailsPageUrl": "詳細ページのURLが{{guardianDetailsPageUrl}}に変更されます",
+  "modalContent_unregister": "あなたとあなたのデリゲータはリワードの受領資格がありません",
+  "modalInstruction_defaultTx": "「同意する」を押して、取引を確認してください",
+  "modalInstruction_unregister": "よろしいですか？",
+  "modalTitle_guardianDetailsPageUrl": "詳細ページのURLを更新",
+  "modalTitle_unregister": "Orbsガーディアンから登録を解除しようとしています",
+  "modalTitle_updateDelegatorsShare": "デリゲータのシェアを更新",
+  "modalTitle_updateGuardianInfo": "詳細を更新する",
+  "successMessage_delegatorsShare": "デリゲータのシェアは正常に更新されました",
+  "successMessage_guardianDetailsPageURL": "ガーディアンの詳細ページのURLが更新された",
+  "successMessage_guardianInfo": "ガーディアンの詳細が正常に更新されました",
+  "successMessage_unregister": "正常に登録が解除されました"
+}
