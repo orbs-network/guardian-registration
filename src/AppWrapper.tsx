@@ -7,8 +7,13 @@ import { StylesProvider, ThemeProvider } from "@material-ui/core/styles";
 import { AppStyles, baseTheme } from "./theme/Theme";
 import { SnackbarProvider } from "notistack";
 import i18n from "i18next";
-import { useTranslation, initReactI18next } from "react-i18next";
+import {
+  useTranslation,
+  initReactI18next,
+  I18nextProvider,
+} from "react-i18next";
 import { ENGLISH_TEXTS } from "./translations/translations.en";
+import { resources } from "./translations/translations";
 
 interface IProps {
   appComponent: React.ReactNode;
@@ -29,11 +34,7 @@ const stores = getStores(
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
-    resources: {
-      en: {
-        translation: ENGLISH_TEXTS,
-      },
-    },
+    resources: resources,
     lng: "en",
     fallbackLng: "en",
 
@@ -47,13 +48,15 @@ export const AppWrapper = React.memo<IProps>((props) => {
   const { appComponent } = props;
   return (
     <Router>
-      <Provider {...stores} {...services}>
-        <StylesProvider injectFirst>
-          <ThemeProvider theme={baseTheme}>
-            <SnackbarProvider maxSnack={3}>{appComponent}</SnackbarProvider>
-          </ThemeProvider>
-        </StylesProvider>
-      </Provider>
+      <I18nextProvider i18n={i18n}>
+        <Provider {...stores} {...services}>
+          <StylesProvider injectFirst>
+            <ThemeProvider theme={baseTheme}>
+              <SnackbarProvider maxSnack={3}>{appComponent}</SnackbarProvider>
+            </ThemeProvider>
+          </StylesProvider>
+        </Provider>
+      </I18nextProvider>
     </Router>
   );
 });

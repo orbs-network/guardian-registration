@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { ContentContainer } from "./components/structure/ContentContainer";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import {
   useCryptoWalletIntegrationStore,
   useOrbsAccountStore,
@@ -18,6 +18,7 @@ import { Footer } from "./components/structure/Footer";
 import { useCryptoWalletConnectionService } from "./services/servicesHooks";
 import { HEADER_HEIGHT_REM } from "./theme/Theme";
 import { useModalsTranslations } from "./translations/translationsHooks";
+import i18n from "i18next";
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -34,6 +35,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+function getForcedLanguage(pathname: string) {
+  const langMatch = pathname.match(/\/(en|ko|jp)\/?/);
+
+  return langMatch ? langMatch[1] : "";
+}
+
+function updateLanguage(lang: string) {
+  console.log("Updating with " + lang);
+  i18n.changeLanguage(lang);
+}
+
 const App = observer(() => {
   const classes = useStyles();
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
@@ -43,6 +55,29 @@ const App = observer(() => {
 
   const isConnected = cryptoWalletIntegrationStore.isConnectedToWallet;
   const modalsTranslations = useModalsTranslations();
+
+  const location = useLocation();
+  const forcedLang = getForcedLanguage(location.pathname);
+
+  // TODO : FUTURE : O.L : Change this to am ore elegant solution
+  // Update language by url
+  useEffect(() => {
+    // debugger;
+    let langBaseName = "";
+    if (forcedLang) {
+      langBaseName = `/${forcedLang}/`;
+      if (i18n.language !== forcedLang) {
+        updateLanguage(forcedLang);
+      }
+    } else {
+      const navigatorLang = navigator.language.split("-")[0];
+      if (i18n.languages.indexOf(navigatorLang) > -1) {
+        if (i18n.language !== navigatorLang) {
+          updateLanguage(navigatorLang);
+        }
+      }
+    }
+  }, [forcedLang]);
 
   const appContent = useMemo(() => {
     if (!isConnected) {
