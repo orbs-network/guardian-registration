@@ -24,7 +24,7 @@ import {
   useGuardianEditPageTranslations,
   useModalsTranslations,
 } from "../../../translations/translationsHooks";
-import { TabsHeader } from "../../../components/shared/tabs/TabsHeader";
+import TabsHeader from "@bit/orbs-network.commons.tabs-header/dist/TabsHeader";
 
 interface IProps {}
 

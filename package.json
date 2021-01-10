@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@bit/orbs-network.commons.action-button": "0.0.4",
+    "@bit/orbs-network.commons.tabs-header": "0.0.1",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@orbs-network/contracts-js": "0.0.35",
