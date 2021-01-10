@@ -32,7 +32,7 @@ export const baseTheme = responsiveFontSizes(
       },
       background: {
         // DEV_NOTE : This sets the app background color
-        default: "#16317d",
+        default: "#000000",
         // paper: "rgba(0, 31, 107, 0.6)",
         paper: "#09142c",
       },
@@ -47,23 +47,6 @@ export const baseTheme = responsiveFontSizes(
     },
     typography: {
       // fontFamily: 'Montserrat',
-    },
-    overrides: {
-      MuiPaper: {
-        root: {
-          // backgroundColor: COLOR1,
-        },
-      },
-      MuiTypography: {
-        colorPrimary: {
-          // color: PRIMARY_TEXT,
-        },
-      },
-      MuiLink: {
-        root: {
-          // color: blue[500],
-        },
-      },
     },
   })
 );

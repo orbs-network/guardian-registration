@@ -19,9 +19,10 @@ interface IProps {
 
 const useStyles = makeStyles((theme) => ({
   footerContainer: {
+    width: "100%",
     position: "absolute",
     bottom: 0,
-    // opacity: "0.5",
+    backgroundColor: theme.palette.background.default,
   },
   bottomAppBar: {
     // paddingTop: "1em",
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     height: "3em",
     bottom: 0,
     top: "auto",
-    backgroundColor: Color(theme.palette.primary.main).fade(0.3).toString(),
+    // backgroundColor: Color(theme.palette.primary.main).fade(0.3).toString(),
 
     display: "flex",
     flexDirection: "row",

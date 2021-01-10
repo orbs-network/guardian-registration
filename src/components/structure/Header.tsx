@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "0.5rem",
     paddingBottom: "0.5rem",
     boxSizing: "border-box",
+    backgroundColor: theme.palette.background.default,
   },
   title: {
     flexGrow: 1,

@@ -20,16 +20,17 @@ import { HEADER_HEIGHT_REM } from "./theme/Theme";
 import { useModalsTranslations } from "./translations/translationsHooks";
 import i18n from "i18next";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   app: {
     // height: "100%",
     // minHeight: `calc(100% - ${HEADER_HEIGHT_REM}rem)`,
     minHeight: `100%`,
     flex: 1,
-    backgroundColor: "#06142e",
-    backgroundRepeat: "repeat-y",
-    backgroundImage:
-      "url(https://www.orbs.com/wp-content/uploads/2019/02/technology-background1.png)",
+    backgroundColor: theme.palette.background.default,
+    // backgroundColor: "#06142e",
+    // backgroundRepeat: "repeat-y",
+    // backgroundImage:
+    //   "url(https://www.orbs.com/wp-content/uploads/2019/02/technology-background1.png)",
     backgroundAttachment: "scroll",
     backgroundPosition: "top center",
   },
