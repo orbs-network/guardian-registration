@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     height: "3em",
     bottom: 0,
     top: "auto",
+    backgroundColor: theme.palette.background.default,
     // backgroundColor: Color(theme.palette.primary.main).fade(0.3).toString(),
 
     display: "flex",

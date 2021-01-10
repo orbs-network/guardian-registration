@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { ChangeEvent, useCallback, useState } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
 import { Backdrop, Box, CircularProgress, Tab, Tabs } from "@material-ui/core";
@@ -24,6 +24,7 @@ import {
   useGuardianEditPageTranslations,
   useModalsTranslations,
 } from "../../../translations/translationsHooks";
+import { TabsHeader } from "../../../components/shared/tabs/TabsHeader";
 
 interface IProps {}
 
@@ -288,23 +289,17 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
           >
             {/*  TODO : ORL : Make the 'Tabs' scrollable on mobile */}
             {/*  Tabs  */}
-            <div style={{}}>
-              <Tabs
-                scrollButtons={"auto"}
+            <div>
+              <TabsHeader
                 value={tabValue}
-                onChange={(event, value) => setTabValue(value)}
-                variant="fullWidth"
-                indicatorColor="secondary"
-                textColor="primary"
-                TabIndicatorProps={{
-                  color: "secondary",
-                }}
+                onTabValueChange={(newTabValue) => setTabValue(newTabValue)}
               >
                 <Tab
                   label={guardianEditPageTranslations("tabHeader_info")}
                   aria-label="phone"
                   className={classes.tab}
                   value={TABS_IDS.info}
+                  style={{ paddingBottom: "-100px" }}
                 />
                 <Tab
                   className={classes.tab}
@@ -334,7 +329,23 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                   value={TABS_IDS.unregister}
                   aria-label="person"
                 />
-              </Tabs>
+              </TabsHeader>
+              {/*<Tabs*/}
+              {/*  scrollButtons={"auto"}*/}
+              {/*  value={tabValue}*/}
+              {/*  onChange={(event, value) => setTabValue(value)}*/}
+              {/*  variant="fullWidth"*/}
+              {/*  indicatorColor="secondary"*/}
+              {/*  textColor="primary"*/}
+              {/*  TabIndicatorProps={{*/}
+              {/*    color: "secondary",*/}
+              {/*  }}*/}
+              {/*  style={{*/}
+              {/*    borderBottom: "1px solid #f0f0f0",*/}
+              {/*  }}*/}
+              {/*>*/}
+
+              {/*</Tabs>*/}
             </div>
             {showDetails && guardianDetails}
 
