@@ -298,7 +298,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       <Page>
         <ContentFitting
           style={{
-            width: "35rem",
+            // width: "35rem",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -382,9 +382,6 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                     "action_updateInfo"
                   )}
                 />
-                {/*<Typography variant={"h6"}>*/}
-                {/*    Details Last updated: {lastUpdateDate.toLocaleString()}*/}
-                {/*</Typography>*/}
               </FormWrapper>
             </TabPanel>
             {/* Edit Delegator's share */}

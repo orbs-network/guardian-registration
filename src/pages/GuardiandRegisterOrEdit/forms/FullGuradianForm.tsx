@@ -1,6 +1,6 @@
 import React, { DetailedHTMLProps, useCallback, useEffect } from "react";
 import { useStateful } from "react-hanger";
-import { TextField, Typography } from "@material-ui/core";
+import { Grid, TextField, Typography } from "@material-ui/core";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,6 +10,7 @@ import ActionButton from "@bit/orbs-network.commons.action-button";
 import { useGuardianDataFormsTranslations } from "../../../translations/translationsHooks";
 
 interface IProps {
+  /// **** Guardian General info ****
   actionButtonTitle: string;
   guardianInitialInfo: TGuardianInfo;
   submitInfo: (
@@ -17,6 +18,22 @@ interface IProps {
   ) => void;
   disableSubmit?: boolean;
   messageForSubmitButton?: string;
+
+  /// **** Delegators share ****
+  currentDelegatorsCut?: number;
+  updateDelegatorsCut: (delegatorsCut: number) => void;
+  isUsingDefaultValue?: boolean;
+  // Configs
+  delegatorsCutMaxValue: number;
+  delegatorsCutDefaultValue: number;
+
+  /// **** Guardian details url ****
+  currentGuardianDetailsUrl?: string;
+  updateGuardianDetailsUrl: (guardianDetailsUrl: string) => void;
+  hasGuardianDetailsUrl?: boolean;
+
+  // External links
+  detailsRequirementsLink?: string;
 }
 
 const ETHEREUM_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
@@ -40,6 +57,11 @@ const useStyles = makeStyles((theme) => ({
     "& label.Mui-focused": {
       color: "#f5f5f5",
     },
+    borderBottom: "1px solid #f0f0f0",
+  },
+  inputGridItem: {
+    paddingLeft: "1rem",
+    paddingRight: "1rem",
   },
 }));
 
@@ -120,88 +142,113 @@ export const FullGuardianForm = React.memo<
       className={classes.form}
       {...rest}
     >
-      <TextField
-        InputLabelProps={{ style: { pointerEvents: "auto" } }}
-        name={"name"}
-        label={guardianDataFormsTranslations("fieldLabel_guardianName")}
-        placeholder={guardianDataFormsTranslations(
-          "fieldPlaceHolder_guardianName"
-        )}
-        title={guardianDataFormsTranslations("fieldTooltipTitle_guardianName")}
-        value={name.value}
-        onChange={(e) => name.setValue(e.target.value)}
-        required
-        inputRef={register}
-        fullWidth
-        className={classes.textField}
-        autoFocus
-      />
-      <br />
-      <TextField
-        fullWidth
-        name={"website"}
-        label={guardianDataFormsTranslations("fieldLabel_guardianWebsite")}
-        placeholder={guardianDataFormsTranslations(
-          "fieldPlaceHolder_guardianWebsite"
-        )}
-        title={guardianDataFormsTranslations(
-          "fieldTooltipTitle_guardianWebsite"
-        )}
-        helperText={
-          errorWebsite &&
-          guardianDataFormsTranslations("fieldErrorMessage_guardianWebsite")
-        }
-        value={website.value}
-        onChange={(e) => website.setValue(e.target.value)}
-        required
-        error={errorWebsite}
-        inputRef={register({ validate: validURL })}
-        className={classes.textField}
-      />
+      <Grid container direction={"column"}>
+        {/* Row 1 */}
+        <Grid item container direction={"row"} justify={"space-between"}>
+          <Grid item sm={6} className={classes.inputGridItem}>
+            <TextField
+              name={"name"}
+              label={guardianDataFormsTranslations("fieldLabel_guardianName")}
+              placeholder={guardianDataFormsTranslations(
+                "fieldPlaceHolder_guardianName"
+              )}
+              title={guardianDataFormsTranslations(
+                "fieldTooltipTitle_guardianName"
+              )}
+              value={name.value}
+              onChange={(e) => name.setValue(e.target.value)}
+              autoFocus
+              required
+              fullWidth
+              InputLabelProps={{ style: { pointerEvents: "auto" } }}
+              inputRef={register}
+              className={classes.textField}
+            />
+          </Grid>
 
-      <br />
-      <TextField
-        fullWidth
-        name={"ipAddress"}
-        label={guardianDataFormsTranslations("fieldLabel_nodeIpAddress")}
-        placeholder={guardianDataFormsTranslations(
-          "fieldPlaceHolder_nodeIpAddress"
-        )}
-        title={guardianDataFormsTranslations("fieldTooltipTitle_nodeIpAddress")}
-        value={ipAddress.value}
-        onChange={(e) => ipAddress.setValue(e.target.value)}
-        required
-        inputRef={register({ pattern: IP_REGEX })}
-        error={errorIPAddress}
-        helperText={
-          errorIPAddress &&
-          guardianDataFormsTranslations("fieldErrorMessage_nodeIpAddress")
-        }
-        className={classes.textField}
-      />
+          <Grid item sm={6} className={classes.inputGridItem}>
+            <TextField
+              name={"website"}
+              label={guardianDataFormsTranslations(
+                "fieldLabel_guardianWebsite"
+              )}
+              placeholder={guardianDataFormsTranslations(
+                "fieldPlaceHolder_guardianWebsite"
+              )}
+              title={guardianDataFormsTranslations(
+                "fieldTooltipTitle_guardianWebsite"
+              )}
+              helperText={
+                errorWebsite &&
+                guardianDataFormsTranslations(
+                  "fieldErrorMessage_guardianWebsite"
+                )
+              }
+              value={website.value}
+              onChange={(e) => website.setValue(e.target.value)}
+              error={errorWebsite}
+              inputRef={register({ validate: validURL })}
+              fullWidth
+              required
+              className={classes.textField}
+            />
+          </Grid>
+        </Grid>
+        {/* Row 2 */}
+        <Grid item container direction={"row"} justify={"space-between"}>
+          <Grid item sm={6} className={classes.inputGridItem}>
+            <TextField
+              fullWidth
+              name={"ipAddress"}
+              label={guardianDataFormsTranslations("fieldLabel_nodeIpAddress")}
+              placeholder={guardianDataFormsTranslations(
+                "fieldPlaceHolder_nodeIpAddress"
+              )}
+              title={guardianDataFormsTranslations(
+                "fieldTooltipTitle_nodeIpAddress"
+              )}
+              value={ipAddress.value}
+              onChange={(e) => ipAddress.setValue(e.target.value)}
+              required
+              inputRef={register({ pattern: IP_REGEX })}
+              error={errorIPAddress}
+              helperText={
+                errorIPAddress &&
+                guardianDataFormsTranslations("fieldErrorMessage_nodeIpAddress")
+              }
+              className={classes.textField}
+            />
+          </Grid>
+          <Grid item sm={6} className={classes.inputGridItem}>
+            <TextField
+              name={"nodeAddress"}
+              label={guardianDataFormsTranslations(
+                "fieldLabel_nodeEthereumAddress"
+              )}
+              placeholder={guardianDataFormsTranslations(
+                "fieldPlaceHolder_nodeEthereumAddress"
+              )}
+              title={guardianDataFormsTranslations(
+                "fieldTooltipTitle_nodeEthereumAddress"
+              )}
+              value={nodeAddress.value}
+              onChange={(e) => nodeAddress.setValue(e.target.value)}
+              error={errorNodeAddress}
+              helperText={
+                errorNodeAddress &&
+                guardianDataFormsTranslations(
+                  "fieldErrorMessage_nodeEthereumAddress"
+                )
+              }
+              required
+              inputRef={register({ pattern: ETHEREUM_ADDRESS_REGEX })}
+              fullWidth
+              className={classes.textField}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
 
-      <br />
-      <TextField
-        name={"nodeAddress"}
-        label={guardianDataFormsTranslations("fieldLabel_nodeEthereumAddress")}
-        placeholder={guardianDataFormsTranslations(
-          "fieldPlaceHolder_nodeEthereumAddress"
-        )}
-        title={guardianDataFormsTranslations(
-          "fieldTooltipTitle_nodeEthereumAddress"
-        )}
-        value={nodeAddress.value}
-        onChange={(e) => nodeAddress.setValue(e.target.value)}
-        error={errorNodeAddress}
-        helperText={
-          errorNodeAddress &&
-          guardianDataFormsTranslations("fieldErrorMessage_nodeEthereumAddress")
-        }
-        required
-        inputRef={register({ pattern: ETHEREUM_ADDRESS_REGEX })}
-        fullWidth
-        className={classes.textField}
-      />
       <br />
       <br />
       <ActionButton type={"submit"} disabled={disableSubmit}>

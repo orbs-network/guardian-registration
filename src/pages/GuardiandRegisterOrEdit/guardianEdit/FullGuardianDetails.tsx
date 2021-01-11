@@ -11,6 +11,7 @@ import {
   useGuardianDataFormsTranslations,
 } from "../../../translations/translationsHooks";
 import { TitleValuePair } from "../../../components/titleValuePair/TitleValuePair";
+import { FullGuardianForm } from "../forms/FullGuradianForm";
 
 export interface IDefaultableValue<T> {
   isUsingDefaultValue: boolean;
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: "1.5rem",
     maxWidth: "100%",
-    width: "30rem",
+    width: "40rem",
     overflow: "hidden",
     backgroundColor: theme.palette.background.default,
     display: "flex",
@@ -103,6 +104,28 @@ export const FullGuardianDetails = React.memo<IProps & PaperProps>((props) => {
       <Typography color={"secondary"} style={{ fontWeight: "bold" }}>
         {guardianAddress}
       </Typography>
+
+      <br />
+      <FullGuardianForm
+        /// **** Guardian General info ****
+        actionButtonTitle={"action title"}
+        guardianInitialInfo={guardianInfo}
+        submitInfo={(guardianRegistrationPayload) => null}
+        disableSubmit={false}
+        messageForSubmitButton={"Message for submit button"}
+        /// **** Delegators share ****
+        currentDelegatorsCut={delegatorsShare.value}
+        updateDelegatorsCut={(delegatorsCut) => null}
+        delegatorsCutMaxValue={100}
+        delegatorsCutDefaultValue={0}
+        // isUsingDefaultValue
+        /// **** Guardian details url ****
+        currentGuardianDetailsUrl={
+          guardianCertificationUrl.currentGuardianDetailsUrl
+        }
+        updateGuardianDetailsUrl={(guardianDetailsUrl) => null}
+        hasGuardianDetailsUrl={guardianCertificationUrl.hasGuardianDetailsUrl}
+      />
 
       {/*<TitleValuePair*/}
       {/*  title={domainTranslations("conceptName_guardianAddress") + " :"}*/}
