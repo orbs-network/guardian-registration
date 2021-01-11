@@ -1,5 +1,5 @@
 import React, { DetailedHTMLProps, useCallback, useEffect } from "react";
-import { useStateful } from "react-hanger";
+import { useNumber, useStateful } from "react-hanger";
 import { Grid, TextField, Typography } from "@material-ui/core";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { useForm } from "react-hook-form";
@@ -45,6 +45,8 @@ type TFormData = {
   contactInfo: string;
   ipAddress: string;
   nodeAddress: string;
+
+  delegatorsCut: string;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -82,6 +84,15 @@ export const FullGuardianForm = React.memo<
     actionButtonTitle,
     disableSubmit,
     messageForSubmitButton,
+    currentDelegatorsCut,
+    updateDelegatorsCut,
+    isUsingDefaultValue,
+    delegatorsCutMaxValue,
+    delegatorsCutDefaultValue,
+    currentGuardianDetailsUrl,
+    updateGuardianDetailsUrl,
+    hasGuardianDetailsUrl,
+    detailsRequirementsLink,
     ...rest
   } = props;
 
@@ -120,6 +131,22 @@ export const FullGuardianForm = React.memo<
     nodeAddressSetValue,
     websiteSetValue,
   ]);
+
+  const delegatorsCut = useNumber(Math.min(currentDelegatorsCut || 0, 66), {
+    upperLimit: delegatorsCutMaxValue,
+  });
+  const errorDelegatorsCut = !!errors.delegatorsCut;
+  const REWARDS_FREQUENCY_MESSAGE = guardianDataFormsTranslations(
+    "fieldErrorMessage_delegatorsShare",
+    {
+      delegatorsCutMaxValue,
+    }
+  );
+
+  const setDelegCut = delegatorsCut.setValue;
+  useEffect(() => {
+    setDelegCut(Math.min(currentDelegatorsCut || 0, delegatorsCutMaxValue));
+  }, [currentDelegatorsCut, delegatorsCutMaxValue, setDelegCut]);
 
   // TODO : O.L : Add tx progress indicator
   const submit = useCallback(
@@ -168,59 +195,6 @@ export const FullGuardianForm = React.memo<
 
           <Grid item sm={6} className={classes.inputGridItem}>
             <TextField
-              name={"website"}
-              label={guardianDataFormsTranslations(
-                "fieldLabel_guardianWebsite"
-              )}
-              placeholder={guardianDataFormsTranslations(
-                "fieldPlaceHolder_guardianWebsite"
-              )}
-              title={guardianDataFormsTranslations(
-                "fieldTooltipTitle_guardianWebsite"
-              )}
-              helperText={
-                errorWebsite &&
-                guardianDataFormsTranslations(
-                  "fieldErrorMessage_guardianWebsite"
-                )
-              }
-              value={website.value}
-              onChange={(e) => website.setValue(e.target.value)}
-              error={errorWebsite}
-              inputRef={register({ validate: validURL })}
-              fullWidth
-              required
-              className={classes.textField}
-            />
-          </Grid>
-        </Grid>
-        {/* Row 2 */}
-        <Grid item container direction={"row"} justify={"space-between"}>
-          <Grid item sm={6} className={classes.inputGridItem}>
-            <TextField
-              fullWidth
-              name={"ipAddress"}
-              label={guardianDataFormsTranslations("fieldLabel_nodeIpAddress")}
-              placeholder={guardianDataFormsTranslations(
-                "fieldPlaceHolder_nodeIpAddress"
-              )}
-              title={guardianDataFormsTranslations(
-                "fieldTooltipTitle_nodeIpAddress"
-              )}
-              value={ipAddress.value}
-              onChange={(e) => ipAddress.setValue(e.target.value)}
-              required
-              inputRef={register({ pattern: IP_REGEX })}
-              error={errorIPAddress}
-              helperText={
-                errorIPAddress &&
-                guardianDataFormsTranslations("fieldErrorMessage_nodeIpAddress")
-              }
-              className={classes.textField}
-            />
-          </Grid>
-          <Grid item sm={6} className={classes.inputGridItem}>
-            <TextField
               name={"nodeAddress"}
               label={guardianDataFormsTranslations(
                 "fieldLabel_nodeEthereumAddress"
@@ -246,6 +220,104 @@ export const FullGuardianForm = React.memo<
               className={classes.textField}
             />
           </Grid>
+        </Grid>
+        {/* Row 2 */}
+        <Grid item container direction={"row"} justify={"space-between"}>
+          <Grid item sm={6} className={classes.inputGridItem}>
+            <TextField
+              name={"website"}
+              label={guardianDataFormsTranslations(
+                "fieldLabel_guardianWebsite"
+              )}
+              placeholder={guardianDataFormsTranslations(
+                "fieldPlaceHolder_guardianWebsite"
+              )}
+              title={guardianDataFormsTranslations(
+                "fieldTooltipTitle_guardianWebsite"
+              )}
+              helperText={
+                errorWebsite &&
+                guardianDataFormsTranslations(
+                  "fieldErrorMessage_guardianWebsite"
+                )
+              }
+              value={website.value}
+              onChange={(e) => website.setValue(e.target.value)}
+              error={errorWebsite}
+              inputRef={register({ validate: validURL })}
+              fullWidth
+              required
+              className={classes.textField}
+            />
+          </Grid>
+          <Grid item sm={6} className={classes.inputGridItem}>
+            <TextField
+              fullWidth
+              name={"delegatorsCut"}
+              title={guardianDataFormsTranslations(
+                "fieldTooltipTitle_delegatorsShare"
+              )}
+              label={guardianDataFormsTranslations(
+                "fieldLabel_delegatorsShare"
+              )}
+              value={delegatorsCut.value}
+              inputProps={{
+                step: 1,
+              }}
+              onChange={(e) => {
+                delegatorsCut.setValue(parseFloat(e.target.value) || 0);
+              }}
+              required
+              type={"number"}
+              inputRef={register({
+                max: delegatorsCutMaxValue,
+              })}
+              error={errorDelegatorsCut}
+              // DEV_NOTE : O.L : I removed the non-error helper text after the ui overhaul
+              helperText={
+                errorDelegatorsCut
+                  ? REWARDS_FREQUENCY_MESSAGE
+                  : // : guardianDataFormsTranslations(
+                    //     "fieldExplanation_delegatorsShare",
+                    //     {
+                    //       delegatorsCutMaxValue,
+                    //     }
+                    //   )
+                    ""
+              }
+              InputProps={{
+                startAdornment: "%",
+              }}
+              className={classes.textField}
+              autoFocus
+            />
+          </Grid>
+        </Grid>
+        <Grid item container direction={"row"} justify={"space-between"}>
+          <Grid item sm={6} className={classes.inputGridItem}>
+            <TextField
+              fullWidth
+              name={"ipAddress"}
+              label={guardianDataFormsTranslations("fieldLabel_nodeIpAddress")}
+              placeholder={guardianDataFormsTranslations(
+                "fieldPlaceHolder_nodeIpAddress"
+              )}
+              title={guardianDataFormsTranslations(
+                "fieldTooltipTitle_nodeIpAddress"
+              )}
+              value={ipAddress.value}
+              onChange={(e) => ipAddress.setValue(e.target.value)}
+              required
+              inputRef={register({ pattern: IP_REGEX })}
+              error={errorIPAddress}
+              helperText={
+                errorIPAddress &&
+                guardianDataFormsTranslations("fieldErrorMessage_nodeIpAddress")
+              }
+              className={classes.textField}
+            />
+          </Grid>
+          <Grid item sm={6} className={classes.inputGridItem}></Grid>
         </Grid>
       </Grid>
 
