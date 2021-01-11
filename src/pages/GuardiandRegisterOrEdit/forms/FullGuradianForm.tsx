@@ -3,11 +3,17 @@ import { useNumber, useStateful } from "react-hanger";
 import { Grid, TextField, Typography } from "@material-ui/core";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { useForm } from "react-hook-form";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 import { validURL } from "./inoputValidators";
 import ActionButton from "@bit/orbs-network.commons.action-button";
-import { useGuardianDataFormsTranslations } from "../../../translations/translationsHooks";
+import {
+  useDomainTranslations,
+  useGuardianDataFormsTranslations,
+} from "../../../translations/translationsHooks";
+import { renderToString } from "react-dom/server";
+import { baseTheme } from "../../../theme/Theme";
+import { InTextLink } from "../../../components/InTextLink";
 
 interface IProps {
   /// **** Guardian General info ****
@@ -47,6 +53,8 @@ type TFormData = {
   nodeAddress: string;
 
   delegatorsCut: string;
+
+  guardianDetailsUrl: string;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -98,6 +106,7 @@ export const FullGuardianForm = React.memo<
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
+  const domainTranslations = useDomainTranslations();
   const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
 
   const name = useStateful(guardianInitialInfo.name);
@@ -147,6 +156,35 @@ export const FullGuardianForm = React.memo<
   useEffect(() => {
     setDelegCut(Math.min(currentDelegatorsCut || 0, delegatorsCutMaxValue));
   }, [currentDelegatorsCut, delegatorsCutMaxValue, setDelegCut]);
+
+  const formGuardianDetailsUrl = useStateful("");
+
+  const setFormGuardianDetailsUrl = formGuardianDetailsUrl.setValue;
+  useEffect(() => {
+    setFormGuardianDetailsUrl(currentGuardianDetailsUrl || "");
+  }, [setFormGuardianDetailsUrl, currentGuardianDetailsUrl]);
+  const errorGuardianDetailsUrl = !!errors.guardianDetailsUrl;
+  const certifiedCommitteeExplanation = (
+    <Typography
+      component={"span"}
+      variant={"caption"}
+      dangerouslySetInnerHTML={{
+        __html: guardianDataFormsTranslations(
+          "fieldExplanation_certifiedCommittee",
+          {
+            certifiedCommitteeLink: renderToString(
+              <ThemeProvider theme={baseTheme}>
+                <InTextLink
+                  text={domainTranslations("conceptName_certifiedCommittee")}
+                  href={detailsRequirementsLink}
+                />
+              </ThemeProvider>
+            ),
+          }
+        ),
+      }}
+    />
+  );
 
   // TODO : O.L : Add tx progress indicator
   const submit = useCallback(
@@ -317,7 +355,36 @@ export const FullGuardianForm = React.memo<
               className={classes.textField}
             />
           </Grid>
-          <Grid item sm={6} className={classes.inputGridItem}></Grid>
+          <Grid item sm={6} className={classes.inputGridItem}>
+            <TextField
+              fullWidth
+              name={"guardianDetailsUrl"}
+              title={guardianDataFormsTranslations(
+                "fieldLabel_certifiedCommitteeUrl"
+              )}
+              label={guardianDataFormsTranslations(
+                "fieldTooltipTitle_certifiedCommitteeUrl"
+              )}
+              value={formGuardianDetailsUrl.value}
+              onChange={(e) => {
+                formGuardianDetailsUrl.setValue(e.target.value || "");
+              }}
+              required
+              inputRef={register({ validate: validURL })}
+              error={errorGuardianDetailsUrl}
+              // DEV_NOTE : O.L : I removed the non-error helper text after the ui overhaul
+              helperText={
+                errorGuardianDetailsUrl
+                  ? guardianDataFormsTranslations(
+                      "fieldErrorMessage_certifiedCommittee"
+                    )
+                  : // : certifiedCommitteeExplanation
+                    ""
+              }
+              className={classes.textField}
+              autoFocus
+            />
+          </Grid>
         </Grid>
       </Grid>
 
