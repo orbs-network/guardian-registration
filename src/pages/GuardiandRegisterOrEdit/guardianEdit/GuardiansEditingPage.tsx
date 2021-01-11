@@ -25,6 +25,8 @@ import {
   useModalsTranslations,
 } from "../../../translations/translationsHooks";
 import TabsHeader from "@bit/orbs-network.commons.tabs-header/dist/TabsHeader";
+import { FullGuardianForm } from "../forms/FullGuradianForm";
+import { FullGuardianDetails } from "./FullGuardianDetails";
 
 interface IProps {}
 
@@ -240,8 +242,33 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
 
     const [tabValue, setTabValue] = React.useState(TABS_IDS.info);
 
-    const guardianDetails = (
+    const guardianDetails1 = (
       <GuardianDetails
+        guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+        guardianInfo={orbsAccountStore.guardianInfo}
+        delegatorsShare={{
+          defaultValue:
+            orbsAccountStore.rewardsContractSettings
+              .defaultDelegatorsStakingRewardsPercent,
+          isUsingDefaultValue:
+            orbsAccountStore.isUsingDefaultDelegatorsCutPercentage,
+          maxValue:
+            orbsAccountStore.rewardsContractSettings
+              .maxDelegatorsStakingRewardsPercent,
+          value: orbsAccountStore.delegatorsCutPercentage,
+        }}
+        guardianCertificationUrl={{
+          currentGuardianDetailsUrl: orbsAccountStore.detailsPageUrl || "",
+          hasGuardianDetailsUrl: orbsAccountStore.hasGuardianDetailsURL,
+        }}
+        highlightInfo={tabValue === TABS_IDS.editInfo}
+        highlightDelegatorsShare={tabValue === TABS_IDS.delegatorsShare}
+        highlightCertificateUrl={tabValue === TABS_IDS.certificate}
+      />
+    );
+
+    const guardianDetails = (
+      <FullGuardianDetails
         guardianAddress={cryptoWalletIntegrationStore.mainAddress}
         guardianInfo={orbsAccountStore.guardianInfo}
         delegatorsShare={{
@@ -289,64 +316,47 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
           >
             {/*  TODO : ORL : Make the 'Tabs' scrollable on mobile */}
             {/*  Tabs  */}
-            <div>
-              <TabsHeader
-                value={tabValue}
-                onTabValueChange={(newTabValue) => setTabValue(newTabValue)}
-              >
-                <Tab
-                  label={guardianEditPageTranslations("tabHeader_info")}
-                  aria-label="phone"
-                  className={classes.tab}
-                  value={TABS_IDS.info}
-                  style={{ paddingBottom: "-100px" }}
-                />
-                <Tab
-                  className={classes.tab}
-                  label={guardianEditPageTranslations("tabHeader_editInfo")}
-                  value={TABS_IDS.editInfo}
-                  aria-label="phone"
-                />
-                <Tab
-                  className={classes.tab}
-                  label={guardianEditPageTranslations(
-                    "tabHeader_delegatorsShare"
-                  )}
-                  value={TABS_IDS.delegatorsShare}
-                  aria-label="favorite"
-                />
-                <Tab
-                  className={classes.tab}
-                  label={guardianEditPageTranslations(
-                    "tabHeader_guardianDetailsUrl"
-                  )}
-                  value={TABS_IDS.certificate}
-                  aria-label="favorite"
-                />
-                <Tab
-                  className={classes.tab}
-                  label={guardianEditPageTranslations("tabHeader_unregister")}
-                  value={TABS_IDS.unregister}
-                  aria-label="person"
-                />
-              </TabsHeader>
-              {/*<Tabs*/}
-              {/*  scrollButtons={"auto"}*/}
-              {/*  value={tabValue}*/}
-              {/*  onChange={(event, value) => setTabValue(value)}*/}
-              {/*  variant="fullWidth"*/}
-              {/*  indicatorColor="secondary"*/}
-              {/*  textColor="primary"*/}
-              {/*  TabIndicatorProps={{*/}
-              {/*    color: "secondary",*/}
-              {/*  }}*/}
-              {/*  style={{*/}
-              {/*    borderBottom: "1px solid #f0f0f0",*/}
-              {/*  }}*/}
-              {/*>*/}
+            <TabsHeader
+              value={tabValue}
+              onTabValueChange={(newTabValue) => setTabValue(newTabValue)}
+            >
+              <Tab
+                label={guardianEditPageTranslations("tabHeader_info")}
+                aria-label="phone"
+                className={classes.tab}
+                value={TABS_IDS.info}
+                style={{ paddingBottom: "-100px" }}
+              />
+              <Tab
+                className={classes.tab}
+                label={guardianEditPageTranslations("tabHeader_editInfo")}
+                value={TABS_IDS.editInfo}
+                aria-label="phone"
+              />
+              <Tab
+                className={classes.tab}
+                label={guardianEditPageTranslations(
+                  "tabHeader_delegatorsShare"
+                )}
+                value={TABS_IDS.delegatorsShare}
+                aria-label="favorite"
+              />
+              <Tab
+                className={classes.tab}
+                label={guardianEditPageTranslations(
+                  "tabHeader_guardianDetailsUrl"
+                )}
+                value={TABS_IDS.certificate}
+                aria-label="favorite"
+              />
+              <Tab
+                className={classes.tab}
+                label={guardianEditPageTranslations("tabHeader_unregister")}
+                value={TABS_IDS.unregister}
+                aria-label="person"
+              />
+            </TabsHeader>
 
-              {/*</Tabs>*/}
-            </div>
             {showDetails && guardianDetails}
 
             {/* Info */}
