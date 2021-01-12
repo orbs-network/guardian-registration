@@ -242,7 +242,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
 
     const [tabValue, setTabValue] = React.useState(TABS_IDS.info);
 
-    const guardianDetails1 = (
+    // DEV_NOTE : O.L : I have started building the "FullGuardianDetails" component, it turned out to be waaaay to mush hassle
+    // for a simple UI style change.
+    const guardianDetailsOriginal = (
       <GuardianDetails
         guardianAddress={cryptoWalletIntegrationStore.mainAddress}
         guardianInfo={orbsAccountStore.guardianInfo}
@@ -384,7 +386,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               />
             </TabsHeader>
 
-            {showDetails && guardianDetails1}
+            {showDetails && guardianDetailsOriginal}
 
             {/* Info */}
             <TabPanel

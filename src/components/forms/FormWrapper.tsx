@@ -6,6 +6,7 @@ interface IProps {}
 
 const useStyles = makeStyles((theme) => ({
   formWrapper: {
+    backgroundColor: theme.palette.background.default,
     padding: "1.5rem",
     maxWidth: "100%",
     overflow: "hidden",

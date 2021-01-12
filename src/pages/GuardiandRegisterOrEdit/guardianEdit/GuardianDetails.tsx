@@ -31,6 +31,13 @@ interface IProps {
 }
 
 const useStyles = makeStyles((theme) => ({
+  paper: {
+    backgroundColor: theme.palette.background.default,
+    padding: "1.5rem",
+    maxWidth: "100%",
+    width: "30rem",
+    overflow: "hidden",
+  },
   title: {
     transition: "0.5s",
     fontWeight: "bold",
@@ -106,16 +113,7 @@ export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
   ]);
 
   return (
-    <Paper
-      elevation={3}
-      {...rest}
-      style={{
-        padding: "1.5rem",
-        maxWidth: "100%",
-        width: "30rem",
-        overflow: "hidden",
-      }}
-    >
+    <Paper elevation={3} {...rest} className={classes.paper}>
       <TitleValuePair
         title={domainTranslations("conceptName_guardianAddress") + " :"}
         value={guardianAddress}
