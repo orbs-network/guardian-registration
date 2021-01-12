@@ -1,7 +1,7 @@
-import React, { ChangeEvent, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
-import { Backdrop, Box, CircularProgress, Tab, Tabs } from "@material-ui/core";
+import { Backdrop, Box, CircularProgress, Tab } from "@material-ui/core";
 import {
   useCryptoWalletIntegrationStore,
   useOrbsAccountStore,
@@ -18,14 +18,13 @@ import { ActionConfirmationModal } from "../../../components/shared/modals/Actio
 import { DelegatorsShareForm } from "../forms/DelegatorsShareForm";
 import { FormWrapper } from "../../../components/forms/FormWrapper";
 import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
-import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 import { BoxProps } from "@material-ui/core/Box/Box";
 import {
   useGuardianEditPageTranslations,
   useModalsTranslations,
 } from "../../../translations/translationsHooks";
 import TabsHeader from "@bit/orbs-network.commons.tabs-header/dist/TabsHeader";
-import { FullGuardianForm } from "../forms/FullGuradianForm";
+import { EGuardianFormActivePart } from "../forms/FullGuradianForm";
 import { FullGuardianDetails } from "./FullGuardianDetails";
 
 interface IProps {}
@@ -267,29 +266,56 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       />
     );
 
-    const guardianDetails = (
-      <FullGuardianDetails
-        guardianAddress={cryptoWalletIntegrationStore.mainAddress}
-        guardianInfo={orbsAccountStore.guardianInfo}
-        delegatorsShare={{
-          defaultValue:
-            orbsAccountStore.rewardsContractSettings
-              .defaultDelegatorsStakingRewardsPercent,
-          isUsingDefaultValue:
-            orbsAccountStore.isUsingDefaultDelegatorsCutPercentage,
-          maxValue:
-            orbsAccountStore.rewardsContractSettings
-              .maxDelegatorsStakingRewardsPercent,
-          value: orbsAccountStore.delegatorsCutPercentage,
-        }}
-        guardianCertificationUrl={{
-          currentGuardianDetailsUrl: orbsAccountStore.detailsPageUrl || "",
-          hasGuardianDetailsUrl: orbsAccountStore.hasGuardianDetailsURL,
-        }}
-        highlightInfo={tabValue === TABS_IDS.editInfo}
-        highlightDelegatorsShare={tabValue === TABS_IDS.delegatorsShare}
-        highlightCertificateUrl={tabValue === TABS_IDS.certificate}
-      />
+    const buildGuardianDetailsForm = useCallback(
+      (actionButtonTitle: string, activePart?: EGuardianFormActivePart) => {
+        const guardianDetails = (
+          <FullGuardianDetails
+            activePart={activePart}
+            actionButtonTitle={actionButtonTitle}
+            submitGeneralInfo={updateGuardianDetails}
+            guardianAddress={cryptoWalletIntegrationStore.mainAddress}
+            guardianInfo={orbsAccountStore.guardianInfo}
+            delegatorsShare={{
+              defaultValue:
+                orbsAccountStore.rewardsContractSettings
+                  .defaultDelegatorsStakingRewardsPercent,
+              isUsingDefaultValue:
+                orbsAccountStore.isUsingDefaultDelegatorsCutPercentage,
+              maxValue:
+                orbsAccountStore.rewardsContractSettings
+                  .maxDelegatorsStakingRewardsPercent,
+              value: orbsAccountStore.delegatorsCutPercentage,
+            }}
+            updateDelegatorsCut={updateDelegatorsShare}
+            guardianCertificationUrl={{
+              currentGuardianDetailsUrl: orbsAccountStore.detailsPageUrl || "",
+              hasGuardianDetailsUrl: orbsAccountStore.hasGuardianDetailsURL,
+            }}
+            updateGuardianDetailsUrl={updateGuardianDetailsPage}
+            highlightInfo={tabValue === TABS_IDS.editInfo}
+            highlightDelegatorsShare={tabValue === TABS_IDS.delegatorsShare}
+            highlightCertificateUrl={tabValue === TABS_IDS.certificate}
+          />
+        );
+
+        return guardianDetails;
+      },
+      [
+        cryptoWalletIntegrationStore.mainAddress,
+        orbsAccountStore.delegatorsCutPercentage,
+        orbsAccountStore.detailsPageUrl,
+        orbsAccountStore.guardianInfo,
+        orbsAccountStore.hasGuardianDetailsURL,
+        orbsAccountStore.isUsingDefaultDelegatorsCutPercentage,
+        orbsAccountStore.rewardsContractSettings
+          .defaultDelegatorsStakingRewardsPercent,
+        orbsAccountStore.rewardsContractSettings
+          .maxDelegatorsStakingRewardsPercent,
+        tabValue,
+        updateDelegatorsShare,
+        updateGuardianDetails,
+        updateGuardianDetailsPage,
+      ]
     );
 
     const showDetails = tabValue !== TABS_IDS.unregister;
@@ -357,7 +383,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               />
             </TabsHeader>
 
-            {showDetails && guardianDetails}
+            {/*{showDetails && guardianDetails}*/}
 
             {/* Info */}
             <TabPanel
@@ -365,7 +391,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               value={tabValue}
               index={TABS_IDS.info}
               dir={theme.direction}
-            />
+            >
+              {buildGuardianDetailsForm("")}
+            </TabPanel>
 
             {/* Edit Details */}
             <TabPanel
@@ -374,15 +402,20 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               index={TABS_IDS.editInfo}
               dir={theme.direction}
             >
-              <FormWrapper>
-                <GuardiansDetailsForm
-                  submitInfo={updateGuardianDetails}
-                  guardianInitialInfo={orbsAccountStore.guardianInfo}
-                  actionButtonTitle={guardianEditPageTranslations(
-                    "action_updateInfo"
-                  )}
-                />
-              </FormWrapper>
+              {buildGuardianDetailsForm(
+                guardianEditPageTranslations("action_updateInfo"),
+                EGuardianFormActivePart.GeneralInfo
+              )}
+
+              {/*<FormWrapper>*/}
+              {/*  <GuardiansDetailsForm*/}
+              {/*    submitInfo={updateGuardianDetails}*/}
+              {/*    guardianInitialInfo={orbsAccountStore.guardianInfo}*/}
+              {/*    actionButtonTitle={guardianEditPageTranslations(*/}
+              {/*      "action_updateInfo"*/}
+              {/*    )}*/}
+              {/*  />*/}
+              {/*</FormWrapper>*/}
             </TabPanel>
             {/* Edit Delegator's share */}
             <TabPanel
@@ -391,25 +424,29 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               index={TABS_IDS.delegatorsShare}
               dir={theme.direction}
             >
-              <FormWrapper>
-                <DelegatorsShareForm
-                  updateDelegatorsCut={updateDelegatorsShare}
-                  currentDelegatorsCut={
-                    orbsAccountStore.delegatorsCutPercentage
-                  }
-                  isUsingDefaultValue={
-                    orbsAccountStore.isUsingDefaultDelegatorsCutPercentage
-                  }
-                  delegatorsCutDefaultValue={
-                    orbsAccountStore.rewardsContractSettings
-                      .defaultDelegatorsStakingRewardsPercent
-                  }
-                  delegatorsCutMaxValue={
-                    orbsAccountStore.rewardsContractSettings
-                      .maxDelegatorsStakingRewardsPercent
-                  }
-                />
-              </FormWrapper>
+              {buildGuardianDetailsForm(
+                guardianEditPageTranslations("action_updateDelegatorsShare"),
+                EGuardianFormActivePart.DelegatorsShare
+              )}
+              {/*<FormWrapper>*/}
+              {/*<DelegatorsShareForm*/}
+              {/*  updateDelegatorsCut={updateDelegatorsShare}*/}
+              {/*  currentDelegatorsCut={*/}
+              {/*    orbsAccountStore.delegatorsCutPercentage*/}
+              {/*  }*/}
+              {/*  isUsingDefaultValue={*/}
+              {/*    orbsAccountStore.isUsingDefaultDelegatorsCutPercentage*/}
+              {/*  }*/}
+              {/*  delegatorsCutDefaultValue={*/}
+              {/*    orbsAccountStore.rewardsContractSettings*/}
+              {/*      .defaultDelegatorsStakingRewardsPercent*/}
+              {/*  }*/}
+              {/*  delegatorsCutMaxValue={*/}
+              {/*    orbsAccountStore.rewardsContractSettings*/}
+              {/*      .maxDelegatorsStakingRewardsPercent*/}
+              {/*  }*/}
+              {/*/>*/}
+              {/*</FormWrapper>*/}
             </TabPanel>
             {/* Edit Guardian Certification  */}
             <TabPanel
@@ -418,14 +455,20 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               index={TABS_IDS.certificate}
               dir={theme.direction}
             >
-              <FormWrapper>
-                <GuardiansDetailsUrlForm
-                  currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}
-                  hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}
-                  updateGuardianDetailsUrl={updateGuardianDetailsPage}
-                  detailsRequirementsLink={DETAILS_REQUIREMENTS_LINK}
-                />
-              </FormWrapper>
+              {buildGuardianDetailsForm(
+                guardianEditPageTranslations(
+                  "action_updateCertifiedCommitteeUrl"
+                ),
+                EGuardianFormActivePart.DelegatorsShare
+              )}
+              {/*<FormWrapper>*/}
+              {/*  <GuardiansDetailsUrlForm*/}
+              {/*    currentGuardianDetailsUrl={orbsAccountStore.detailsPageUrl}*/}
+              {/*    hasGuardianDetailsUrl={orbsAccountStore.hasGuardianDetailsURL}*/}
+              {/*    updateGuardianDetailsUrl={updateGuardianDetailsPage}*/}
+              {/*    detailsRequirementsLink={DETAILS_REQUIREMENTS_LINK}*/}
+              {/*  />*/}
+              {/*</FormWrapper>*/}
             </TabPanel>
             {/* Unregister */}
             <TabPanel

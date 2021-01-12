@@ -11,7 +11,16 @@ import {
   useGuardianDataFormsTranslations,
 } from "../../../translations/translationsHooks";
 import { TitleValuePair } from "../../../components/titleValuePair/TitleValuePair";
-import { FullGuardianForm } from "../forms/FullGuradianForm";
+import {
+  EGuardianFormActivePart,
+  FullGuardianForm,
+} from "../forms/FullGuradianForm";
+import { observer } from "mobx-react";
+import {
+  useCryptoWalletIntegrationStore,
+  useOrbsAccountStore,
+} from "../../../store/storeHooks";
+import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 
 export interface IDefaultableValue<T> {
   isUsingDefaultValue: boolean;
@@ -20,13 +29,29 @@ export interface IDefaultableValue<T> {
 }
 
 interface IProps {
+  /// **** What to show ****
+  activePart?: EGuardianFormActivePart;
+  actionButtonTitle: string;
+
+  /// **** General info ***
   guardianAddress: string;
   guardianInfo: TGuardianInfo;
+  submitGeneralInfo: (
+    guardianRegistrationPayload: TGuardianRegistrationPayload
+  ) => void;
+
+  /// **** Delegators share ***
   delegatorsShare: IDefaultableValue<number> & { maxValue: number };
+  updateDelegatorsCut: (delegatorsCut: number) => void;
+
+  /// **** Guardian details url ***
   guardianCertificationUrl: {
     currentGuardianDetailsUrl: string;
     hasGuardianDetailsUrl?: boolean;
   };
+  updateGuardianDetailsUrl: (guardianDetailsUrl: string) => void;
+
+  /// **** Others ***
   highlightInfo?: boolean;
   highlightDelegatorsShare?: boolean;
   highlightCertificateUrl?: boolean;
@@ -45,165 +70,185 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const FullGuardianDetails = React.memo<IProps & PaperProps>((props) => {
-  const classes = useStyles();
-  const {
-    guardianAddress,
-    guardianInfo,
-    delegatorsShare,
-    guardianCertificationUrl,
+// export const FullGuardianDetails = React.memo<IProps & PaperProps>((props) => {
+export const FullGuardianDetails = observer<React.FunctionComponent<IProps>>(
+  (props) => {
+    const classes = useStyles();
+    const {
+      activePart,
+      actionButtonTitle,
+      guardianAddress,
+      guardianInfo,
+      submitGeneralInfo,
+      updateDelegatorsCut,
+      delegatorsShare,
+      guardianCertificationUrl,
+      updateGuardianDetailsUrl,
 
-    highlightInfo,
-    highlightDelegatorsShare,
-    highlightCertificateUrl,
+      highlightInfo,
+      highlightDelegatorsShare,
+      highlightCertificateUrl,
 
-    ...rest
-  } = props;
+      ...rest
+    } = props;
 
-  const shouldFadeOthers =
-    highlightInfo || highlightDelegatorsShare || highlightCertificateUrl;
+    const shouldFadeOthers =
+      highlightInfo || highlightDelegatorsShare || highlightCertificateUrl;
 
-  const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
-  const domainTranslations = useDomainTranslations();
+    const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
+    const orbsAccountStore = useOrbsAccountStore();
 
-  const delegatorsShareUsingDefaultMessage = delegatorsShare.isUsingDefaultValue
-    ? ` (${guardianDataFormsTranslations("fieldValueNote_usingDefaultValue")})`
-    : null;
+    const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
+    const domainTranslations = useDomainTranslations();
 
-  const guardianCertificateUrlDataText = useMemo(() => {
-    return guardianCertificationUrl.hasGuardianDetailsUrl ? (
-      <Typography component={"span"}>
-        <InTextLink
-          href={
-            guardianCertificationUrl.currentGuardianDetailsUrl?.startsWith(
-              "http"
-            )
-              ? guardianCertificationUrl.currentGuardianDetailsUrl
-              : "http://" + guardianCertificationUrl.currentGuardianDetailsUrl
+    const delegatorsShareUsingDefaultMessage = delegatorsShare.isUsingDefaultValue
+      ? ` (${guardianDataFormsTranslations(
+          "fieldValueNote_usingDefaultValue"
+        )})`
+      : null;
+
+    const guardianCertificateUrlDataText = useMemo(() => {
+      return guardianCertificationUrl.hasGuardianDetailsUrl ? (
+        <Typography component={"span"}>
+          <InTextLink
+            href={
+              guardianCertificationUrl.currentGuardianDetailsUrl?.startsWith(
+                "http"
+              )
+                ? guardianCertificationUrl.currentGuardianDetailsUrl
+                : "http://" + guardianCertificationUrl.currentGuardianDetailsUrl
+            }
+            text={guardianCertificationUrl.currentGuardianDetailsUrl!}
+            shouldfade={!highlightCertificateUrl && shouldFadeOthers}
+          />
+        </Typography>
+      ) : (
+        guardianDataFormsTranslations(
+          "fieldValueNote_youHaveNotSetYourDetailsPageUrl"
+        )
+      );
+    }, [
+      guardianCertificationUrl.currentGuardianDetailsUrl,
+      guardianCertificationUrl.hasGuardianDetailsUrl,
+      guardianDataFormsTranslations,
+      highlightCertificateUrl,
+      shouldFadeOthers,
+    ]);
+
+    return (
+      <Paper elevation={3} {...rest} className={classes.paper}>
+        <Typography>Guardian Address:</Typography>
+        <Typography color={"secondary"} style={{ fontWeight: "bold" }}>
+          {guardianAddress}
+        </Typography>
+
+        <br />
+        <FullGuardianForm
+          activePart={activePart}
+          /// **** Guardian General info ****
+          actionButtonTitle={actionButtonTitle}
+          guardianInitialInfo={guardianInfo}
+          submitInfo={submitGeneralInfo}
+          disableSubmit={false}
+          messageForSubmitButton={"Message for submit button"}
+          /// **** Delegators share ****
+          currentDelegatorsCut={delegatorsShare.value}
+          updateDelegatorsCut={updateDelegatorsCut}
+          delegatorsCutMaxValue={
+            orbsAccountStore.rewardsContractSettings
+              .maxDelegatorsStakingRewardsPercent
           }
-          text={guardianCertificationUrl.currentGuardianDetailsUrl!}
-          shouldfade={!highlightCertificateUrl && shouldFadeOthers}
+          delegatorsCutDefaultValue={
+            orbsAccountStore.rewardsContractSettings
+              .defaultDelegatorsStakingRewardsPercent
+          }
+          // isUsingDefaultValue
+          /// **** Guardian details url ****
+          currentGuardianDetailsUrl={
+            guardianCertificationUrl.currentGuardianDetailsUrl
+          }
+          updateGuardianDetailsUrl={updateGuardianDetailsUrl}
+          hasGuardianDetailsUrl={guardianCertificationUrl.hasGuardianDetailsUrl}
         />
-      </Typography>
-    ) : (
-      guardianDataFormsTranslations(
-        "fieldValueNote_youHaveNotSetYourDetailsPageUrl"
-      )
+
+        {/*<TitleValuePair*/}
+        {/*  title={domainTranslations("conceptName_guardianAddress") + " :"}*/}
+        {/*  value={guardianAddress}*/}
+        {/*  shouldfade={shouldFadeOthers}*/}
+        {/*/>*/}
+        {/*<br />*/}
+        {/*<TitleValuePair*/}
+        {/*  title={guardianDataFormsTranslations("fieldLabel_guardianName") + " :"}*/}
+        {/*  value={guardianInfo.name}*/}
+        {/*  shouldHighlight={highlightInfo}*/}
+        {/*  shouldfade={!highlightInfo && shouldFadeOthers}*/}
+        {/*/>*/}
+        {/*<br />*/}
+        {/*<TitleValuePair*/}
+        {/*  title={*/}
+        {/*    guardianDataFormsTranslations("fieldLabel_guardianWebsite") + " :"*/}
+        {/*  }*/}
+        {/*  value={*/}
+        {/*    <InTextLink*/}
+        {/*      text={guardianInfo.website}*/}
+        {/*      href={guardianInfo.website}*/}
+        {/*      shouldfade={!highlightInfo && shouldFadeOthers}*/}
+        {/*    />*/}
+        {/*  }*/}
+        {/*  shouldHighlight={highlightInfo}*/}
+        {/*  shouldfade={!highlightInfo && shouldFadeOthers}*/}
+        {/*/>*/}
+        {/*<br />*/}
+        {/*<TitleValuePair*/}
+        {/*  title={guardianDataFormsTranslations("fieldLabel_nodeIpAddress") + " :"}*/}
+        {/*  value={guardianInfo.ip}*/}
+        {/*  shouldHighlight={highlightInfo}*/}
+        {/*  shouldfade={!highlightInfo && shouldFadeOthers}*/}
+        {/*/>*/}
+
+        {/*<br />*/}
+        {/*<TitleValuePair*/}
+        {/*  title={*/}
+        {/*    guardianDataFormsTranslations("fieldLabel_nodeEthereumAddress") + " :"*/}
+        {/*  }*/}
+        {/*  value={guardianInfo.orbsAddr}*/}
+        {/*  shouldHighlight={highlightInfo}*/}
+        {/*  shouldfade={!highlightInfo && shouldFadeOthers}*/}
+        {/*/>*/}
+        {/*<br />*/}
+        {/*<TitleValuePair*/}
+        {/*  title={`${guardianDataFormsTranslations(*/}
+        {/*    "fieldLabel_delegatorsShare"*/}
+        {/*  )}${delegatorsShareUsingDefaultMessage} : `}*/}
+        {/*  value={`${*/}
+        {/*    delegatorsShare.isUsingDefaultValue*/}
+        {/*      ? delegatorsShare.defaultValue*/}
+        {/*      : delegatorsShare.value*/}
+        {/*  } %`}*/}
+        {/*  shouldHighlight={highlightDelegatorsShare}*/}
+        {/*  shouldfade={!highlightDelegatorsShare && shouldFadeOthers}*/}
+        {/*/>*/}
+        {/*<br />*/}
+
+        {/*<TitleValuePair*/}
+        {/*  title={*/}
+        {/*    <>*/}
+        {/*      {guardianDataFormsTranslations("fieldLabel_guardianDetailsUrl")} (*/}
+        {/*      <InTextLink*/}
+        {/*        text={guardianDataFormsTranslations(*/}
+        {/*          "fieldValueNote_certifiedCommittee"*/}
+        {/*        )}*/}
+        {/*        href={DETAILS_REQUIREMENTS_LINK}*/}
+        {/*        shouldfade={!highlightCertificateUrl && shouldFadeOthers}*/}
+        {/*      />*/}
+        {/*      ) :*/}
+        {/*    </>*/}
+        {/*  }*/}
+        {/*  value={guardianCertificateUrlDataText}*/}
+        {/*  shouldHighlight={highlightCertificateUrl}*/}
+        {/*  shouldfade={!highlightCertificateUrl && shouldFadeOthers}*/}
+        {/*/>*/}
+      </Paper>
     );
-  }, [
-    guardianCertificationUrl.currentGuardianDetailsUrl,
-    guardianCertificationUrl.hasGuardianDetailsUrl,
-    guardianDataFormsTranslations,
-    highlightCertificateUrl,
-    shouldFadeOthers,
-  ]);
-
-  return (
-    <Paper elevation={3} {...rest} className={classes.paper}>
-      <Typography>Guardian Address:</Typography>
-      <Typography color={"secondary"} style={{ fontWeight: "bold" }}>
-        {guardianAddress}
-      </Typography>
-
-      <br />
-      <FullGuardianForm
-        /// **** Guardian General info ****
-        actionButtonTitle={"action title"}
-        guardianInitialInfo={guardianInfo}
-        submitInfo={(guardianRegistrationPayload) => null}
-        disableSubmit={false}
-        messageForSubmitButton={"Message for submit button"}
-        /// **** Delegators share ****
-        currentDelegatorsCut={delegatorsShare.value}
-        updateDelegatorsCut={(delegatorsCut) => null}
-        delegatorsCutMaxValue={100}
-        delegatorsCutDefaultValue={0}
-        // isUsingDefaultValue
-        /// **** Guardian details url ****
-        currentGuardianDetailsUrl={
-          guardianCertificationUrl.currentGuardianDetailsUrl
-        }
-        updateGuardianDetailsUrl={(guardianDetailsUrl) => null}
-        hasGuardianDetailsUrl={guardianCertificationUrl.hasGuardianDetailsUrl}
-      />
-
-      {/*<TitleValuePair*/}
-      {/*  title={domainTranslations("conceptName_guardianAddress") + " :"}*/}
-      {/*  value={guardianAddress}*/}
-      {/*  shouldfade={shouldFadeOthers}*/}
-      {/*/>*/}
-      {/*<br />*/}
-      {/*<TitleValuePair*/}
-      {/*  title={guardianDataFormsTranslations("fieldLabel_guardianName") + " :"}*/}
-      {/*  value={guardianInfo.name}*/}
-      {/*  shouldHighlight={highlightInfo}*/}
-      {/*  shouldfade={!highlightInfo && shouldFadeOthers}*/}
-      {/*/>*/}
-      {/*<br />*/}
-      {/*<TitleValuePair*/}
-      {/*  title={*/}
-      {/*    guardianDataFormsTranslations("fieldLabel_guardianWebsite") + " :"*/}
-      {/*  }*/}
-      {/*  value={*/}
-      {/*    <InTextLink*/}
-      {/*      text={guardianInfo.website}*/}
-      {/*      href={guardianInfo.website}*/}
-      {/*      shouldfade={!highlightInfo && shouldFadeOthers}*/}
-      {/*    />*/}
-      {/*  }*/}
-      {/*  shouldHighlight={highlightInfo}*/}
-      {/*  shouldfade={!highlightInfo && shouldFadeOthers}*/}
-      {/*/>*/}
-      {/*<br />*/}
-      {/*<TitleValuePair*/}
-      {/*  title={guardianDataFormsTranslations("fieldLabel_nodeIpAddress") + " :"}*/}
-      {/*  value={guardianInfo.ip}*/}
-      {/*  shouldHighlight={highlightInfo}*/}
-      {/*  shouldfade={!highlightInfo && shouldFadeOthers}*/}
-      {/*/>*/}
-
-      {/*<br />*/}
-      {/*<TitleValuePair*/}
-      {/*  title={*/}
-      {/*    guardianDataFormsTranslations("fieldLabel_nodeEthereumAddress") + " :"*/}
-      {/*  }*/}
-      {/*  value={guardianInfo.orbsAddr}*/}
-      {/*  shouldHighlight={highlightInfo}*/}
-      {/*  shouldfade={!highlightInfo && shouldFadeOthers}*/}
-      {/*/>*/}
-      {/*<br />*/}
-      {/*<TitleValuePair*/}
-      {/*  title={`${guardianDataFormsTranslations(*/}
-      {/*    "fieldLabel_delegatorsShare"*/}
-      {/*  )}${delegatorsShareUsingDefaultMessage} : `}*/}
-      {/*  value={`${*/}
-      {/*    delegatorsShare.isUsingDefaultValue*/}
-      {/*      ? delegatorsShare.defaultValue*/}
-      {/*      : delegatorsShare.value*/}
-      {/*  } %`}*/}
-      {/*  shouldHighlight={highlightDelegatorsShare}*/}
-      {/*  shouldfade={!highlightDelegatorsShare && shouldFadeOthers}*/}
-      {/*/>*/}
-      {/*<br />*/}
-
-      {/*<TitleValuePair*/}
-      {/*  title={*/}
-      {/*    <>*/}
-      {/*      {guardianDataFormsTranslations("fieldLabel_guardianDetailsUrl")} (*/}
-      {/*      <InTextLink*/}
-      {/*        text={guardianDataFormsTranslations(*/}
-      {/*          "fieldValueNote_certifiedCommittee"*/}
-      {/*        )}*/}
-      {/*        href={DETAILS_REQUIREMENTS_LINK}*/}
-      {/*        shouldfade={!highlightCertificateUrl && shouldFadeOthers}*/}
-      {/*      />*/}
-      {/*      ) :*/}
-      {/*    </>*/}
-      {/*  }*/}
-      {/*  value={guardianCertificateUrlDataText}*/}
-      {/*  shouldHighlight={highlightCertificateUrl}*/}
-      {/*  shouldfade={!highlightCertificateUrl && shouldFadeOthers}*/}
-      {/*/>*/}
-    </Paper>
-  );
-});
+  }
+);

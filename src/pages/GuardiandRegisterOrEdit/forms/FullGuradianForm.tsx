@@ -1,4 +1,9 @@
-import React, { DetailedHTMLProps, useCallback, useEffect } from "react";
+import React, {
+  DetailedHTMLProps,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
 import { useNumber, useStateful } from "react-hanger";
 import { Grid, TextField, Typography } from "@material-ui/core";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
@@ -15,7 +20,17 @@ import { renderToString } from "react-dom/server";
 import { baseTheme } from "../../../theme/Theme";
 import { InTextLink } from "../../../components/InTextLink";
 
+export enum EGuardianFormActivePart {
+  None,
+  GeneralInfo,
+  DelegatorsShare,
+  GuardianDetailsUrl,
+}
+
 interface IProps {
+  /// **** What to show ****
+  activePart?: EGuardianFormActivePart;
+
   /// **** Guardian General info ****
   actionButtonTitle: string;
   guardianInitialInfo: TGuardianInfo;
@@ -87,6 +102,7 @@ export const FullGuardianForm = React.memo<
 >((props) => {
   const classes = useStyles();
   const {
+    activePart,
     guardianInitialInfo,
     submitInfo,
     actionButtonTitle,
@@ -103,6 +119,15 @@ export const FullGuardianForm = React.memo<
     detailsRequirementsLink,
     ...rest
   } = props;
+
+  const formActivePart: EGuardianFormActivePart =
+    activePart ?? EGuardianFormActivePart.None;
+  const disableGeneralInfoInputs =
+    formActivePart !== EGuardianFormActivePart.GeneralInfo;
+  const disableDelegatorsShareInputs =
+    formActivePart !== EGuardianFormActivePart.DelegatorsShare;
+  const disableGuardianDetailsUrlInputs =
+    formActivePart !== EGuardianFormActivePart.GuardianDetailsUrl;
 
   const { register, handleSubmit, errors } = useForm<TFormData>();
 
@@ -187,7 +212,7 @@ export const FullGuardianForm = React.memo<
   );
 
   // TODO : O.L : Add tx progress indicator
-  const submit = useCallback(
+  const submitGeneralData = useCallback(
     (formData: TFormData) => {
       const guardianRegistrationPayload: TGuardianRegistrationPayload = {
         ip: formData.ipAddress,
@@ -200,10 +225,45 @@ export const FullGuardianForm = React.memo<
     [submitInfo]
   );
 
+  const submitDelegatorsShare = useCallback(
+    (formData: TFormData) => {
+      updateDelegatorsCut(parseFloat(formData.delegatorsCut));
+    },
+    [updateDelegatorsCut]
+  );
+
+  const submitGuardianDetailsUrl = useCallback(
+    (formData: TFormData) => {
+      updateGuardianDetailsUrl(formData.guardianDetailsUrl);
+    },
+    [updateGuardianDetailsUrl]
+  );
+
+  const submitFunction = useMemo<null | ((formData: TFormData) => void)>(() => {
+    switch (formActivePart) {
+      case EGuardianFormActivePart.None:
+        return null;
+      case EGuardianFormActivePart.GeneralInfo:
+        return submitGeneralData;
+      case EGuardianFormActivePart.DelegatorsShare:
+        return submitDelegatorsShare;
+      case EGuardianFormActivePart.GuardianDetailsUrl:
+        return submitGuardianDetailsUrl;
+      default:
+        throw new Error(`Unsupported value of ${formActivePart}`);
+    }
+  }, [
+    formActivePart,
+    submitDelegatorsShare,
+    submitGeneralData,
+    submitGuardianDetailsUrl,
+  ]);
+  const hasSubmitFunction = submitFunction !== null;
+
   // TODO : FUTURE : This forms will not look good on mobile, fix the text overflow
   return (
     <form
-      onSubmit={handleSubmit((formData) => submit(formData))}
+      onSubmit={handleSubmit((formData) => submitGeneralData(formData))}
       className={classes.form}
       {...rest}
     >
@@ -212,6 +272,7 @@ export const FullGuardianForm = React.memo<
         <Grid item container direction={"row"} justify={"space-between"}>
           <Grid item sm={6} className={classes.inputGridItem}>
             <TextField
+              disabled={disableGeneralInfoInputs}
               name={"name"}
               label={guardianDataFormsTranslations("fieldLabel_guardianName")}
               placeholder={guardianDataFormsTranslations(
@@ -233,6 +294,7 @@ export const FullGuardianForm = React.memo<
 
           <Grid item sm={6} className={classes.inputGridItem}>
             <TextField
+              disabled={disableGeneralInfoInputs}
               name={"nodeAddress"}
               label={guardianDataFormsTranslations(
                 "fieldLabel_nodeEthereumAddress"
@@ -263,6 +325,7 @@ export const FullGuardianForm = React.memo<
         <Grid item container direction={"row"} justify={"space-between"}>
           <Grid item sm={6} className={classes.inputGridItem}>
             <TextField
+              disabled={disableGeneralInfoInputs}
               name={"website"}
               label={guardianDataFormsTranslations(
                 "fieldLabel_guardianWebsite"
@@ -290,6 +353,7 @@ export const FullGuardianForm = React.memo<
           </Grid>
           <Grid item sm={6} className={classes.inputGridItem}>
             <TextField
+              disabled={disableDelegatorsShareInputs}
               fullWidth
               name={"delegatorsCut"}
               title={guardianDataFormsTranslations(
@@ -334,6 +398,7 @@ export const FullGuardianForm = React.memo<
         <Grid item container direction={"row"} justify={"space-between"}>
           <Grid item sm={6} className={classes.inputGridItem}>
             <TextField
+              disabled={disableGeneralInfoInputs}
               fullWidth
               name={"ipAddress"}
               label={guardianDataFormsTranslations("fieldLabel_nodeIpAddress")}
@@ -357,6 +422,7 @@ export const FullGuardianForm = React.memo<
           </Grid>
           <Grid item sm={6} className={classes.inputGridItem}>
             <TextField
+              disabled={disableGuardianDetailsUrlInputs}
               fullWidth
               name={"guardianDetailsUrl"}
               title={guardianDataFormsTranslations(
@@ -390,11 +456,16 @@ export const FullGuardianForm = React.memo<
 
       <br />
       <br />
-      <ActionButton type={"submit"} disabled={disableSubmit}>
-        {actionButtonTitle}
-      </ActionButton>
-      <br />
-      <br />
+      {hasSubmitFunction && (
+        <>
+          <ActionButton type={"submit"} disabled={disableSubmit}>
+            {actionButtonTitle}
+          </ActionButton>
+          <br />
+          <br />
+        </>
+      )}
+
       {messageForSubmitButton && (
         <Typography
           variant={"body2"}
