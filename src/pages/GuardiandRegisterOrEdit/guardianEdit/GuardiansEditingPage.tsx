@@ -14,7 +14,6 @@ import { DETAILS_REQUIREMENTS_LINK } from "./sections/EditDelegatorsCertificateS
 import useTheme from "@material-ui/core/styles/useTheme";
 import { GuardianDetails } from "./GuardianDetails";
 import { UnregisterForm } from "../forms/UnregisterForm";
-import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
 import { DelegatorsShareForm } from "../forms/DelegatorsShareForm";
 import { FormWrapper } from "../../../components/forms/FormWrapper";
 import { GuardiansDetailsUrlForm } from "../forms/GuardiansDetailsUrlForm";
@@ -24,6 +23,7 @@ import {
   useModalsTranslations,
 } from "../../../translations/translationsHooks";
 import TabsHeader from "@bit/orbs-network.commons.tabs-header/dist/TabsHeader";
+import ActionConfirmationModal from "@bit/orbs-network.commons.action-confirmation-modal";
 import { EGuardianFormActivePart } from "../forms/FullGuradianForm";
 import { FullGuardianDetails } from "./FullGuardianDetails";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
