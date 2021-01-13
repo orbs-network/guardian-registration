@@ -19,6 +19,7 @@ import { useCryptoWalletConnectionService } from "./services/servicesHooks";
 import { HEADER_HEIGHT_REM } from "./theme/Theme";
 import { useModalsTranslations } from "./translations/translationsHooks";
 import i18n from "i18next";
+import { ContentFitting } from "./components/structure/ContentFitting";
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -84,13 +85,22 @@ const App = observer(() => {
     if (!isConnected) {
       return (
         <Page>
-          <EthereumProviderSection
-            walletConnectionPhase={"connect"}
-            actionFunction={() => cryptoWalletIntegrationStore.askToConnect()}
-            isMetaMaskProvider={
-              cryptoWalletConnectionService.isMetamaskInstalled
-            }
-          />
+          <ContentFitting
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              maxWidth: "40rem",
+            }}
+          >
+            <EthereumProviderSection
+              walletConnectionPhase={"connect"}
+              actionFunction={() => cryptoWalletIntegrationStore.askToConnect()}
+              isMetaMaskProvider={
+                cryptoWalletConnectionService.isMetamaskInstalled
+              }
+            />
+          </ContentFitting>
         </Page>
       );
     } else {

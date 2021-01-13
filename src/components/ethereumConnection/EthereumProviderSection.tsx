@@ -136,7 +136,7 @@ export const EthereumProviderSection = React.memo<IProps>((props) => {
       )}
 
       <ActionButton
-        fullWidth={false}
+        fullWidth={true}
         onClick={actionFunction}
         disabled={!buttonIsEnabled}
       >
