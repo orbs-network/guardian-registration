@@ -132,13 +132,20 @@ export const EthereumProviderSection = React.memo<IProps>((props) => {
         <DetailsList
           conceptName={guardiansAddressDetailsTexts.conceptName}
           details={guardiansAddressDetailsTexts.texts}
+          style={{ width: "100%" }}
         />
       )}
+      <br />
 
       <ActionButton
         fullWidth={true}
         onClick={actionFunction}
         disabled={!buttonIsEnabled}
+        style={
+          {
+            // backgroundColor: "#0D0D0D",
+          }
+        }
       >
         {buttonText}
       </ActionButton>

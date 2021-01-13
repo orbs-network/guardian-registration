@@ -18,13 +18,31 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-start",
     textAlign: "start",
     padding: "0.5em",
+    backgroundColor: theme.palette.background.paper,
+    borderColor: theme.palette.secondary.dark,
+    borderStyle: "solid",
+    borderWidth: "1px",
   },
+  inlineText: {
+    display: "inline-block",
+  },
+
   textsList: {
     listStylePosition: "outside",
     paddingLeft: "1.5rem",
+    width: "100%",
+    border: "1px solid red",
 
     "& li": {
       margin: "0 0 0.2rem 0",
+      listStyle: "none",
+    },
+    "& li::before": {
+      display: "inline-block",
+      content: "'—'",
+      color: theme.palette.secondary.main,
+      width: "1.5em",
+      marginLeft: "-1.5em",
     },
     "& li:last-child": {
       margin: 0,
@@ -48,13 +66,17 @@ export const DetailsList = React.memo<
         {details.map((detail) => (
           <li key={detail!.toString()}>
             {typeof detail === "string" ? (
-              <Typography variant={caption ? "caption" : "body2"}>
+              <Typography
+                variant={caption ? "caption" : "body2"}
+                className={classes.inlineText}
+              >
                 {detail}
               </Typography>
             ) : (
               <Typography
                 variant={caption ? "caption" : "body2"}
                 dangerouslySetInnerHTML={{ __html: detail() }}
+                className={classes.inlineText}
               />
             )}
           </li>

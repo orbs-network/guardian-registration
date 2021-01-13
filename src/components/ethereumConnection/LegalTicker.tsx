@@ -1,7 +1,7 @@
 import React from "react";
 import { Checkbox, FormControlLabel, Typography } from "@material-ui/core";
 import { renderToString } from "react-dom/server";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { baseTheme } from "../../theme/Theme";
 import { InTextLink } from "../InTextLink";
 import configs from "../../configs";
@@ -15,7 +15,14 @@ interface IProps {
   onValueChange: (value: boolean) => void;
 }
 
+const useStyles = makeStyles((theme) => ({
+  ticker: {
+    color: theme.palette.secondary.dark,
+  },
+}));
+
 export const LegalTicker = React.memo<IProps>((props) => {
+  const classes = useStyles();
   const { value, onValueChange } = props;
   const accountConnectionSectionTranslations = useAccountConnectionSectionTranslations();
   const commonsTranslations = useCommonsTranslations();
@@ -79,6 +86,7 @@ export const LegalTicker = React.memo<IProps>((props) => {
           checked={value}
           onChange={(e) => onValueChange(e.target.checked)}
           name={"legalTicker"}
+          className={classes.ticker}
         />
       }
       label={
