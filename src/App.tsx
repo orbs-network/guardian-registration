@@ -1,32 +1,29 @@
-import React, { useEffect, useMemo } from "react";
-import { ContentContainer } from "./components/structure/ContentContainer";
-import { Route, Switch, useLocation } from "react-router-dom";
+import React, {  useEffect } from "react";
+import {  ContentContainer } from "./components/structure/ContentContainer";
+import {  Route,  Switch } from "react-router-dom";
 import {
-  useCryptoWalletIntegrationStore,
-  useOrbsAccountStore,
+   useCryptoWalletIntegrationStore,
+   useOrbsAccountStore,
 } from "./store/storeHooks";
-import { observer } from "mobx-react";
-import { EthereumProviderSection } from "./components/ethereumConnection/EthereumProviderSection";
-import { GuardiansRegisterOrEditPage } from "./pages/GuardiandRegisterOrEdit/GuardianRegisterOrEditPage";
-import { Background } from "./components/structure/Background";
-import { Header } from "./components/structure/Header";
-import { CssBaseline } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Page } from "./components/structure/Page";
-import { useSnackbar } from "notistack";
-import { Footer } from "./components/structure/Footer";
-import { useCryptoWalletConnectionService } from "./services/servicesHooks";
-import { HEADER_HEIGHT_REM } from "./theme/Theme";
-import { useModalsTranslations } from "./translations/translationsHooks";
-import i18n from "i18next";
+import {  observer } from "mobx-react";
+import {  EthereumProviderSection } from "./components/ethereumConnection/EthereumProviderSection";
+import {  GuardiansRegisterOrEditPage } from "./pages/GuardiandRegisterOrEdit/GuardianRegisterOrEditPage";
+import {  Background } from "./components/structure/Background";
+import {  Header } from "./components/structure/Header";
+import {  CssBaseline } from "@material-ui/core";
+import {  makeStyles } from "@material-ui/core/styles";
+import {  Page } from "./components/structure/Page";
+import {  useSnackbar } from "notistack";
+import {  Footer } from "./components/structure/Footer";
+import {  useCryptoWalletConnectionService } from "./services/servicesHooks";
+import {  useModalsTranslations } from "./translations/translationsHooks";
 
 const useStyles = makeStyles(() => ({
   app: {
     // height: "100%",
     // minHeight: `calc(100% - ${HEADER_HEIGHT_REM}rem)`,
-    minHeight: `100%`,
+    minHeight: `100vh`,
     flex: 1,
-    backgroundColor: "#06142e",
     backgroundRepeat: "repeat-y",
     backgroundImage:
       "url(https://www.orbs.com/wp-content/uploads/2019/02/technology-background1.png)",
@@ -34,17 +31,6 @@ const useStyles = makeStyles(() => ({
     backgroundPosition: "top center",
   },
 }));
-
-function getForcedLanguage(pathname: string) {
-  const langMatch = pathname.match(/\/(en|ko|jp)\/?/);
-
-  return langMatch ? langMatch[1] : "";
-}
-
-function updateLanguage(lang: string) {
-  console.log("Updating with " + lang);
-  i18n.changeLanguage(lang);
-}
 
 const App = observer(() => {
   const classes = useStyles();
@@ -56,56 +42,6 @@ const App = observer(() => {
   const isConnected = cryptoWalletIntegrationStore.isConnectedToWallet;
   const modalsTranslations = useModalsTranslations();
 
-  const location = useLocation();
-  const forcedLang = getForcedLanguage(location.pathname);
-
-  // TODO : FUTURE : O.L : Change this to am ore elegant solution
-  // Update language by url
-  useEffect(() => {
-    // debugger;
-    let langBaseName = "";
-    if (forcedLang) {
-      langBaseName = `/${forcedLang}/`;
-      if (i18n.language !== forcedLang) {
-        updateLanguage(forcedLang);
-      }
-    } else {
-      const navigatorLang = navigator.language.split("-")[0];
-      if (i18n.languages.indexOf(navigatorLang) > -1) {
-        if (i18n.language !== navigatorLang) {
-          updateLanguage(navigatorLang);
-        }
-      }
-    }
-  }, [forcedLang]);
-
-  const appContent = useMemo(() => {
-    if (!isConnected) {
-      return (
-        <Page>
-          <EthereumProviderSection
-            walletConnectionPhase={"connect"}
-            actionFunction={() => cryptoWalletIntegrationStore.askToConnect()}
-            isMetaMaskProvider={
-              cryptoWalletConnectionService.isMetamaskInstalled
-            }
-          />
-        </Page>
-      );
-    } else {
-      return (
-        <Switch>
-          <Route path={"/"}>
-            <GuardiansRegisterOrEditPage />
-          </Route>
-        </Switch>
-      );
-    }
-  }, [
-    cryptoWalletConnectionService.isMetamaskInstalled,
-    cryptoWalletIntegrationStore,
-    isConnected,
-  ]);
 
   // Alert about TX error if happened
   const txHadError = orbsAccountStore.txHadError;
@@ -133,8 +69,25 @@ const App = observer(() => {
     <>
       <Header />
       <main className={classes.app}>
-        {/*<Background />*/}
-        <ContentContainer id={"appContainer"}>{appContent}</ContentContainer>
+        <ContentContainer id={"appContainer"}>
+          {!isConnected ? (
+            <Page>
+              <EthereumProviderSection
+                walletConnectionPhase={"connect"}
+                actionFunction={() =>
+                  cryptoWalletIntegrationStore.askToConnect()
+                }
+                isMetaMaskProvider={
+                  cryptoWalletConnectionService.isMetamaskInstalled
+                }
+              />
+            </Page>
+          ) : (
+            <Switch>
+              <Route path='/' component = {GuardiansRegisterOrEditPage} />
+            </Switch>
+          )}
+        </ContentContainer>
         <CssBaseline />
       </main>
       <Footer version={"0.1"} />

@@ -42,7 +42,7 @@ export const GuardianRegistrationPage = React.memo<IProps>((props) => {
     async (guardianRegistrationPayload: TGuardianRegistrationPayload) => {
       try {
         await orbsAccountStore.registerGuardian(guardianRegistrationPayload);
-      } catch (e) {
+      } catch (e: any) {
         enqueueSnackbar(`Error in 'Guardian Registration' TX ${e.message}`, {
           variant: "error",
         });
@@ -54,7 +54,7 @@ export const GuardianRegistrationPage = React.memo<IProps>((props) => {
   const unDelegate = useCallback(async () => {
     try {
       await orbsAccountStore.unDelegateCurrentDelegation();
-    } catch (e) {
+    } catch (e: any) {
       enqueueSnackbar(`Error in 'un-delegating' TX ${e.message}`, {
         variant: "error",
       });

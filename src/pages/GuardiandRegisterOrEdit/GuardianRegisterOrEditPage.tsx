@@ -10,14 +10,14 @@ interface IProps {}
 
 export const GuardiansRegisterOrEditPage = observer<
   React.FunctionComponent<IProps>
->((props) => {
+>(() => {
+  console.log('render')
   const orbsAccountStore = useOrbsAccountStore();
-
   // TODO : ORL : Organize all of this loading "ifs"
   if (orbsAccountStore.errorLoading) {
     return <ErrorLoadingPage />;
   }
-
+  console.log(orbsAccountStore.doneLoading)
   if (!orbsAccountStore.doneLoading) {
     return <LoadingPage />;
   }

@@ -94,6 +94,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         guardianRegistrationPayload.orbsAddr
       );
 
+
       if (orbsNodeBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
         setErrorMessage(
           registerGuardianSectionTranslations(

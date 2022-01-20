@@ -111,7 +111,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 }
               );
             }
-          } catch (e) {
+          } catch (e: any) {
             enqueueSnackbar(
               modalsTranslations("errorMessage_guardianInfo", {
                 errorMessage: e.message,
@@ -151,7 +151,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 }
               );
             }
-          } catch (e) {
+          } catch (e: any) {
             enqueueSnackbar(
               modalsTranslations("errorMessage_delegatorsShare", {
                 errorMessage: e.message,
@@ -191,7 +191,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
                 }
               );
             }
-          } catch (e) {
+          } catch (e: any) {
             enqueueSnackbar(
               modalsTranslations("errorMessage_guardianDetailsPageURL", {
                 errorMessage: e.message,
@@ -224,7 +224,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               variant: "success",
             });
           }
-        } catch (e) {
+        } catch (e: any) {
           enqueueSnackbar(
             modalsTranslations("errorMessage_unregister", {
               errorMessage: e.message,
@@ -467,6 +467,7 @@ function TabPanel(props: TabPanelProps & BoxProps) {
 
   return value === index ? (
     <Box p={3} {...other}>
+      
       {children}
     </Box>
   ) : null;

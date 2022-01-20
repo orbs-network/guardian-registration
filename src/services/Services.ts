@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import configs from "../configs";
+import configs, { INetwork } from "../configs";
 import {
   ICryptoWalletConnectionService,
   CryptoWalletConnectionService,
@@ -20,7 +20,7 @@ export interface IServices {
 }
 
 // DEV_NOTE : For simplicity of early stage dev, we assume that we have ethereum provider, if not, we will not initialize the services.
-export function buildServices(ethereumProvider: IEthereumProvider): IServices {
+export function buildServices(ethereumProvider: IEthereumProvider, network: INetwork): IServices {
   let web3: Web3;
 
   if (ethereumProvider) {
@@ -31,21 +31,22 @@ export function buildServices(ethereumProvider: IEthereumProvider): IServices {
     );
   }
 
+
   return {
     cryptoWalletIntegrationService: new CryptoWalletConnectionService(
       ethereumProvider
     ),
     guardiansService: new GuardiansService(
       web3,
-      configs?.v2contractsAddressesOverride?.guardiansRegistration
+      network?.addresses?.guardiansRegistration
     ),
     stakingRewardsService: new StakingRewardsService(
       web3,
-      configs?.v2contractsAddressesOverride?.stakingRewards
+      network?.addresses?.stakingRewards
     ),
     delegationsService: new DelegationsService(
       web3,
-      configs?.v2contractsAddressesOverride?.delegations
+      network?.addresses?.delegations
     ),
   };
 }

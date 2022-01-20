@@ -6,8 +6,8 @@ import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/core/styles";
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 import { validURL } from "./inoputValidators";
-import ActionButton from "@bit/orbs-network.commons.action-button";
 import { useGuardianDataFormsTranslations } from "../../../translations/translationsHooks";
+import ActionButton from "../../../components/shared/ActionButton";
 
 interface IProps {
   actionButtonTitle: string;

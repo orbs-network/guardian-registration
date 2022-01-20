@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const LanguagesSelector = React.memo((props) => {
+export const LanguagesSelector = () => {
   const classes = useStyles();
   const location = useLocation();
 
@@ -44,4 +44,4 @@ export const LanguagesSelector = React.memo((props) => {
       </Grid>
     </Grid>
   );
-});
+}

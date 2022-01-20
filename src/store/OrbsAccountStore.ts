@@ -309,7 +309,7 @@ export class OrbsAccountStore {
 
       try {
         await this.readDataForAccount(currentAddress);
-      } catch (e) {
+      } catch (e: any) {
         this.failLoadingProcess(e);
         console.error(
           "Error in reacting to address change in Orbs Account Store",
@@ -332,7 +332,7 @@ export class OrbsAccountStore {
       await this.readDataForAccount(
         this.cryptoWalletIntegrationStore.mainAddress
       );
-    } catch (e) {
+    } catch (e:any) {
       this.failLoadingProcess(e);
       console.error(
         "Error in manually reading address data in Orbs Account Store",

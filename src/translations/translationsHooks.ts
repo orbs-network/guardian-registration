@@ -22,9 +22,6 @@ function useSpecificTypeSafeTFunction<T>(prefix: keyof IAppTranslations) {
   const tFunction = useCallback(
     (key: keyof T, options?: TOptions) => {
       return t(`${prefix}.${key}`, options);
-      let a = prefix;
-      let b = t;
-      return "GOGOGOGO";
     },
     [prefix, t]
   );

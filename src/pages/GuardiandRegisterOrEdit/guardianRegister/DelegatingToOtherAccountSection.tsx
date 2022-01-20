@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Paper, Typography, useTheme } from "@material-ui/core";
-import ActionButton from "@bit/orbs-network.commons.action-button";
 import { useDelegatingToAnotherSectionTranslations } from "../../../translations/translationsHooks";
+import ActionButton from "../../../components/shared/ActionButton";
 
 interface IProps {
   userAddress: string;

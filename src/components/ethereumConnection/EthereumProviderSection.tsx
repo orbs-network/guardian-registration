@@ -5,13 +5,14 @@ import { LegalTicker } from "./LegalTicker";
 import { DetailsList } from "../detailsList/Detailslist";
 import { BoldText } from "../texts/boldText";
 import { CountryLegalTicker } from "./CountryLegalTicker";
-import ActionButton from "@bit/orbs-network.commons.action-button";
+
 import {
   useAccountConnectionSectionTranslations,
   useDomainTranslations,
   useNoEthereumProviderSectionTranslations,
 } from "../../translations/translationsHooks";
 import { useGuardiansAddressDetailsTexts } from "../../pages/GuardianFormDetailsList";
+import ActionButton from "../shared/ActionButton";
 type TWalletConnectionPhase = "install" | "connect";
 const INSTALL_PHASE: TWalletConnectionPhase = "install";
 const CONNECT_PHASE: TWalletConnectionPhase = "connect";
