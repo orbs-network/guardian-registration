@@ -20,7 +20,8 @@ export const baseTheme = responsiveFontSizes(
     palette: {
       // TODO : Adjust all styles after structure is done
       // type: "dark",
-      primary: { main: "#09142c" },
+      primary: { main: "#09142c", light: "#ffffff" },
+
       secondary: {
         main: "#74f6fd",
       },

@@ -10,7 +10,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import { Transition } from "react-spring/renderprops-universal";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
-import { GuardianDetails } from "../GuardianDetails";
 import { useBoolean } from "react-hanger";
 import {
   useGuardianDataFormsTranslations,

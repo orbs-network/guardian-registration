@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
-import { Backdrop, Box, CircularProgress, Tab, Tabs } from "@material-ui/core";
+import { Box, Tab, Tabs } from "@material-ui/core";
 import {
   useCryptoWalletIntegrationStore,
   useOrbsAccountStore,
@@ -12,7 +12,7 @@ import { observer } from "mobx-react";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
 import { DETAILS_REQUIREMENTS_LINK } from "./sections/EditDelegatorsCertificateSection";
 import useTheme from "@material-ui/core/styles/useTheme";
-import { GuardianDetails } from "./GuardianDetails";
+import { GuardianDetails } from ".";
 import { UnregisterForm } from "../forms/UnregisterForm";
 import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
 import { DelegatorsShareForm } from "../forms/DelegatorsShareForm";
@@ -24,6 +24,9 @@ import {
   useGuardianEditPageTranslations,
   useModalsTranslations,
 } from "../../../translations/translationsHooks";
+import LoadingModal from "../guardianRegister/LoadingModal";
+import { createTxBlockExplorerLink } from "../../../utils/web3";
+import { useNetwork } from "../../../hooks/useWeb3";
 
 interface IProps {}
 
@@ -77,9 +80,10 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
 
     // TODO : ORL : The whole modal logic is duplicated from 'Subscription UI' - Unite them properly
     const [showModal, setShowModal] = useState(false);
-    const [onDialogAccept, setOnDialogAccept] = useState(() => () =>
-      console.log("Accepted")
+    const [onDialogAccept, setOnDialogAccept] = useState(
+      () => () => console.log("Accepted")
     );
+    const chain = useNetwork();
     const [dialogTexts, setDialogTexts] = useState<{
       title: string;
       content?: string;
@@ -139,9 +143,10 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
         setShowModal(true);
         setOnDialogAccept(() => async () => {
           try {
-            const txRes = await orbsAccountStore.writeGuardianDelegatorsCutPercentage(
-              delegatorsSharePercentage
-            );
+            const txRes =
+              await orbsAccountStore.writeGuardianDelegatorsCutPercentage(
+                delegatorsSharePercentage
+              );
 
             if (txRes) {
               enqueueSnackbar(
@@ -238,7 +243,6 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     }, [enqueueSnackbar, modalsTranslations, orbsAccountStore]);
 
     const [tabValue, setTabValue] = React.useState(TABS_IDS.info);
-
     const guardianDetails = (
       <GuardianDetails
         guardianAddress={cryptoWalletIntegrationStore.mainAddress}
@@ -443,12 +447,12 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             }}
           />
 
-          <Backdrop
-            className={classes.backdrop}
-            open={orbsAccountStore.txPending}
-          >
-            <CircularProgress color="inherit" />
-          </Backdrop>
+          {orbsAccountStore.txPending &&  (
+            <LoadingModal
+            chain = {chain}
+            txHash = {orbsAccountStore.txHash}
+            />
+          )}
         </ContentFitting>
       </Page>
     );
@@ -467,20 +471,7 @@ function TabPanel(props: TabPanelProps & BoxProps) {
 
   return value === index ? (
     <Box p={3} {...other}>
-      
       {children}
     </Box>
   ) : null;
-
-  // return (
-  //   <div
-  //     role="tabpanel"
-  //     hidden={value !== index}
-  //     id={`full-width-tabpanel-${index}`}
-  //     aria-labelledby={`full-width-tab-${index}`}
-  //     {...other}
-  //   >
-  //     {value === index && <Box p={3}>{children}</Box>}
-  //   </div>
-  // );
 }

@@ -20,5 +20,7 @@
   "successMessage_delegatorsShare": "デリゲータのシェアは正常に更新されました",
   "successMessage_guardianDetailsPageURL": "ガーディアンの詳細ページのURLが更新された",
   "successMessage_guardianInfo": "ガーディアンの詳細が正常に更新されました",
-  "successMessage_unregister": "正常に登録が解除されました"
+  "successMessage_unregister": "正常に登録が解除されました",
+  "successMessage_register": "Registered successfully"
+
 }

@@ -1,8 +1,9 @@
-import {  NoEthereumProviderPage } from "../pages/NoEthereumProviderPage";
-import App from "../App";
+import { NoEthereumProviderPage } from "../pages/NoEthereumProviderPage";
 import useLanguage from "../hooks/useLanguage";
 import NetworkWrapper from "./NetworkWrapper";
-import {  makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
+import App from "../App";
+
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -15,13 +16,15 @@ const useStyles = makeStyles(() => ({
 export const AppWrapper = () => {
   useLanguage();
   const classes = useStyles();
+  
   if (!(window as any).ethereum) {
     return <NoEthereumProviderPage />;
   }
+
   return (
     <main className={classes.app}>
       <NetworkWrapper>
-      <App />
+        <App />
       </NetworkWrapper>
     </main>
   );

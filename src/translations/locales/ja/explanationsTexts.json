@@ -6,8 +6,8 @@
   "text_guardianAddress_representsInGuardiansList": "ガーディアンリストにあるガーディアンです",
   "text_guardianAddress_usedByDelegatorsToDelegate": "デリゲータがガーディアンに委任するために使用します",
   "text_nodeAddress_doesNotHoldYourTokens": "ガーディアンORBSトークンを持っていません。",
-  "text_nodeAddress_holdsEthForAutomatedTransactionsGas": "ノードの自動トランザクションのためETHのガス利用料を保有ください",
-  "text_nodeAddress_minimalBalanceRequired": "登録時に最低1ETHの残高が必要です",
+  "text_nodeAddress_holdsEthForAutomatedTransactionsGas": "ノードの自動トランザクションのため{{symbol}}のガス利用料を保有ください",
+  "text_nodeAddress_minimalBalanceRequired": "登録時に最低1{{symbol}}の残高が必要です",
   "text_nodeAddress_shouldBeDifferentFromGuardianAddress": "{{conceptNameGuardianAddress}}とは別である必要があります",
   "text_nodeAddress_usedToSignBlocks": "Orbsブロックチェーンにブロックを署名するためにノードによって使用されます"
 }

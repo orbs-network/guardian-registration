@@ -7,7 +7,7 @@ import {
 } from "mobx";
 import { CryptoWalletConnectionStore } from "./CryptoWalletConnectionStore";
 import { PromiEvent, TransactionReceipt } from "web3-core";
-import { ipvHexToV4 } from "../utils/utils";
+import { delay, ipvHexToV4 } from "../utils/utils";
 import { JSON_RPC_ERROR_CODES } from "../constants/ethereumErrorCodes";
 import {
   ICryptoWalletConnectionService,
@@ -19,6 +19,7 @@ import {
   TGuardianUpdatePayload,
   IDelegationsService,
 } from "@orbs-network/contracts-js";
+import transactionService from "../services/TransactionService";
 
 export type TGuardianInfo = {
   ip: string;
@@ -47,10 +48,11 @@ const emptyGuardianInfo: TGuardianInfo = {
   name: "",
 };
 
-const emptyGuardianContractInteractionTimes: TGuardianContractInteractionTimes = {
-  registrationTime: 0,
-  lastUpdateTime: 0,
-};
+const emptyGuardianContractInteractionTimes: TGuardianContractInteractionTimes =
+  {
+    registrationTime: 0,
+    lastUpdateTime: 0,
+  };
 
 const ONE_HOUR_IN_SECONDS = 60 * 60;
 
@@ -58,10 +60,13 @@ export class OrbsAccountStore {
   @observable public doneLoading = false;
   @observable public errorLoading = false;
   @observable public txPending = false;
+
   @observable public txHadError = false;
   @observable public txCanceled = false;
   @observable public isGuardian = false;
   @observable public guardianInfo: TGuardianInfo = emptyGuardianInfo;
+  @observable public txHash: string | undefined = undefined;
+
   @observable
   public guardianContractInteractionTimes: TGuardianContractInteractionTimes = emptyGuardianContractInteractionTimes;
 
@@ -129,6 +134,12 @@ export class OrbsAccountStore {
     );
   }
 
+  private onTransactionEnded() {
+    this.setTxHash(undefined);
+    this.setTxPending(false);
+    transactionService.clearTransactionHash();
+  }
+
   // **** Contract interactions ****
   private async handlePromievent(
     promievent:
@@ -141,12 +152,13 @@ export class OrbsAccountStore {
     // Indicate tx is pending
     this.setTxPending(true);
     console.log(`Waiting for promievent of ${name}`);
-
     try {
       const res = await promievent;
+
       console.log(`Got Results for promievent of ${name}`);
       return res;
     } catch (e) {
+      this.onTransactionEnded();
       if (
         (e as any).code === JSON_RPC_ERROR_CODES.provider.userRejectedRequest
       ) {
@@ -154,128 +166,99 @@ export class OrbsAccountStore {
       } else {
         throw e;
       }
-    } finally {
-      this.setTxPending(false);
+    }
+  }
+
+  public async createPromiEventAction(
+    promiEvent: PromiEvent<TransactionReceipt>,
+    errorMsg: string,
+    name?: string
+  ) {
+    try {
+      let blockNumber = 0;
+      promiEvent.once("transactionHash", (hash: string) => {
+        this.setTxHash(hash);
+        transactionService.setTransactionHash(hash);
+      });
+      promiEvent.once("receipt", async (receipt) => {
+        blockNumber = receipt.blockNumber;
+      });
+      const txRes = await this.handlePromievent(promiEvent, name);
+
+      await transactionService.onReceiptConfirmation(blockNumber);
+
+      this.manuallyReadAccountData();
+      this.onTransactionEnded();
+
+      return txRes;
+    } catch (e) {
+      this.setTxHadError(true);
+      // TODO : Handle the error
+      console.error(`${errorMsg} ${e}`);
+      throw e;
     }
   }
 
   public async registerGuardian(
     guardianRegistrationPayload: TGuardianRegistrationPayload
   ) {
-    try {
-      const promiEvent = this.guardiansService.registerGuardian(
-        guardianRegistrationPayload
-      );
-
-      const txRes = await this.handlePromievent(
-        promiEvent,
-        "Register guardian"
-      );
-
-      // After registering, lets re-read the data
-      await this.manuallyReadAccountData();
-
-      return txRes;
-    } catch (e) {
-      this.setTxHadError(true);
-      // TODO : Handle the error
-      console.error(`Failed registering guardian ${e}`);
-      throw e;
-    }
+    const promiEvent = this.guardiansService.registerGuardian(
+      guardianRegistrationPayload
+    );
+    return this.createPromiEventAction(
+      promiEvent,
+      "Failed registering guardian",
+      "Register guardian"
+    );
   }
 
   public async updateGuardianInfo(
     guardianUpdatePayload: TGuardianUpdatePayload
   ) {
-    try {
-      const promiEvent = this.guardiansService.updateGuardianInfo(
-        guardianUpdatePayload
-      );
-
-      const txRes = await this.handlePromievent(promiEvent, "Update guardian");
-
-      // After registering, lets re-read the data
-      await this.manuallyReadAccountData();
-
-      return txRes;
-    } catch (e) {
-      this.setTxHadError(true);
-      // TODO : Handle the error
-      console.error(`Failed updating guardian info ${e}`);
-      throw e;
-    }
+    const promiEvent = this.guardiansService.updateGuardianInfo(
+      guardianUpdatePayload
+    );
+    return this.createPromiEventAction(
+      promiEvent,
+      "Failed updating guardian info",
+      "Update guardian"
+    );
   }
 
   public async unregisterGuardian() {
-    try {
-      const promiEvent = this.guardiansService.unregisterGuardian();
-
-      const txRes = await this.handlePromievent(
-        promiEvent,
-        "Unregister guardian"
-      );
-
-      // After registering, lets re-read the data
-      await this.manuallyReadAccountData();
-
-      return txRes;
-    } catch (e) {
-      this.setTxHadError(true);
-      // TODO : Handle the error
-      console.error(`Failed unregistering guardian ${e}`);
-      throw e;
-    }
+    const promiEvent = this.guardiansService.unregisterGuardian();
+    return this.createPromiEventAction(
+      promiEvent,
+      "Failed unregistering guardian",
+      "Unregister guardian"
+    );
   }
 
   public async unDelegateCurrentDelegation() {
-    try {
-      const promiEvent = this.delegationsService.unDelegate(
-        this.cryptoWalletIntegrationStore.mainAddress
-      );
-
-      const txRes = await this.handlePromievent(promiEvent, "UnDelegate");
-
-      // After registering, lets re-read the data
-      await this.manuallyReadAccountData();
-
-      return txRes;
-    } catch (e) {
-      this.setTxHadError(true);
-      // TODO : Handle the error
-      console.error(`Failed unDelegating ${e}`);
-      throw e;
-    }
+    const promiEvent = this.delegationsService.unDelegate(
+      this.cryptoWalletIntegrationStore.mainAddress
+    );
+    return this.createPromiEventAction(
+      promiEvent,
+      "Failed unDelegating",
+      "UnDelegate"
+    );
   }
 
   public async writeGuardianDelegatorsCutPercentage(
     delegatorsCutPercentage: number
   ) {
-    console.log(`Writing :`, delegatorsCutPercentage);
-
     const promiEvent = this.stakingRewardsService.setDelegatorsCutPercentage(
       delegatorsCutPercentage
     );
-
-    try {
-      const txRes = await this.handlePromievent(
-        promiEvent,
-        "Set delegators cut percentage"
-      );
-
-      // After updating, lets re-read the data
-      await this.manuallyReadAccountData();
-
-      return txRes;
-    } catch (e) {
-      // TODO : Handle the error
-      console.error(`Failed setting delegators cut percentage ${e}`);
-      throw e;
-    }
+    return this.createPromiEventAction(
+      promiEvent,
+      "Failed setting delegators cut percentage",
+      "Set delegators cut percentage"
+    );
   }
 
   public async writeGuardianDetailsPageURL(guardianDetailsPageURl: string) {
-    console.log(`Writing :`, guardianDetailsPageURl);
-
     const promiEvent = this.guardiansService.setGuardianDetailsPageUrl(
       guardianDetailsPageURl
     );
@@ -288,7 +271,7 @@ export class OrbsAccountStore {
 
       // After updating, lets re-read the data
       await this.manuallyReadAccountData();
-
+      this.onTransactionEnded();
       return txRes;
     } catch (e) {
       // TODO : Handle the error
@@ -332,7 +315,7 @@ export class OrbsAccountStore {
       await this.readDataForAccount(
         this.cryptoWalletIntegrationStore.mainAddress
       );
-    } catch (e:any) {
+    } catch (e: any) {
       this.failLoadingProcess(e);
       console.error(
         "Error in manually reading address data in Orbs Account Store",
@@ -413,10 +396,11 @@ export class OrbsAccountStore {
           orbsAddr,
         };
 
-        const guardianRegistrationTimeInfo: TGuardianContractInteractionTimes = {
-          registrationTime,
-          lastUpdateTime,
-        };
+        const guardianRegistrationTimeInfo: TGuardianContractInteractionTimes =
+          {
+            registrationTime,
+            lastUpdateTime,
+          };
 
         this.setGuardianInfo(guardianInfo);
         this.setGuardianContractInteractionTimes(guardianRegistrationTimeInfo);
@@ -424,48 +408,50 @@ export class OrbsAccountStore {
   }
 
   private async readAndSetDelegatorsCut(accountAddress: string) {
-    const delegatorsCut = await this.stakingRewardsService.readDelegatorsCutPercentage(
-      accountAddress
-    );
+    const delegatorsCut =
+      await this.stakingRewardsService.readDelegatorsCutPercentage(
+        accountAddress
+      );
 
     console.log("Setting delegtors cut", delegatorsCut);
     this.setDelegatorsCutPercentage(delegatorsCut);
   }
 
   private async readAndSetDetailsPageUrl(accountAddress: string) {
-    const detailsPageUrl = await this.guardiansService.readGuardianDetailsPageUrl(
-      accountAddress
-    );
+    const detailsPageUrl =
+      await this.guardiansService.readGuardianDetailsPageUrl(accountAddress);
 
     this.setDetailsPageURL(detailsPageUrl || undefined);
   }
 
   private async readAndSetRewardsContractSettings() {
-    const rewardsContractSettings = await this.stakingRewardsService.readContractRewardsSettings();
+    const rewardsContractSettings =
+      await this.stakingRewardsService.readContractRewardsSettings();
 
     this.setRewardsContractSettings(rewardsContractSettings);
   }
 
   private async readAndSetGuardianRewardsSettings(accountAddress: string) {
-    const guardianRewardsSettings = await this.stakingRewardsService.readGuardianRewardsSettings(
-      accountAddress
-    );
+    const guardianRewardsSettings =
+      await this.stakingRewardsService.readGuardianRewardsSettings(
+        accountAddress
+      );
 
     this.setGuardianRewardsSettings(guardianRewardsSettings);
   }
 
   private async readAndSetEthereumBalance(accountAddress: string) {
-    const ethBalance = await this.cryptoWalletConnectionService.readEthereumBalance(
-      accountAddress
-    );
+    const ethBalance =
+      await this.cryptoWalletConnectionService.readEthereumBalance(
+        accountAddress
+      );
 
     this.setEthereumBalance(ethBalance);
   }
 
   private async readAndSetSelectedGuardianAddress(accountAddress: string) {
-    const selectedGuardianAddress = await this.delegationsService.readDelegation(
-      accountAddress
-    );
+    const selectedGuardianAddress =
+      await this.delegationsService.readDelegation(accountAddress);
 
     this.setSelectedGuardianAddress(selectedGuardianAddress);
   }
@@ -555,6 +541,11 @@ export class OrbsAccountStore {
   @action("setDetailsPageURL")
   private setDetailsPageURL(detailsPageUrl?: string) {
     this.detailsPageUrl = detailsPageUrl;
+  }
+
+  @action("setTxHash")
+  private setTxHash(value?: string) {
+    this.txHash = value;
   }
 
   @action("setEthereumBalance")

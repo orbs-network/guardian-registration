@@ -24,4 +24,7 @@ export const ipv4ToHex = (ipv4: string) => {
   return ipAsHex;
 };
 
+export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+
 

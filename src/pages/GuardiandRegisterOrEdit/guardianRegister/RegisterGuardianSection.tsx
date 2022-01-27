@@ -5,13 +5,12 @@ import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
 import { GuardianFormDetailsList } from "../../GuardianFormDetailsList";
+import Modal from "../../../components/Modal";
 import {
   ICryptoWalletConnectionService,
   TGuardianRegistrationPayload,
 } from "@orbs-network/contracts-js";
-import useTheme from "@material-ui/core/styles/useTheme";
 import {
-  useCommonsTranslations,
   useDomainTranslations,
   useGuardianDataFormsTranslations,
   useRegisterGuardianSectionTranslations,
@@ -66,7 +65,8 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
 
   const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
   const domainTranslations = useDomainTranslations();
-  const registerGuardianSectionTranslations = useRegisterGuardianSectionTranslations();
+  const registerGuardianSectionTranslations =
+    useRegisterGuardianSectionTranslations();
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
@@ -90,19 +90,19 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         return;
       }
 
-      const orbsNodeBalance = await cryptoWalletConnectionService.readEthereumBalance(
-        guardianRegistrationPayload.orbsAddr
-      );
-
-
-      if (orbsNodeBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
-        setErrorMessage(
-          registerGuardianSectionTranslations(
-            "error_minimalBalanceAtNodeAddressIsRequired"
-          )
+      const orbsNodeBalance =
+        await cryptoWalletConnectionService.readEthereumBalance(
+          guardianRegistrationPayload.orbsAddr
         );
-        return;
-      }
+
+      // if (orbsNodeBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
+      //   setErrorMessage(
+      //     registerGuardianSectionTranslations(
+      //       "error_minimalBalanceAtNodeAddressIsRequired"
+      //     )
+      //   );
+      //   return;
+      // }
 
       // All tests passes, remove old error message if exists
       setErrorMessage("");
@@ -172,10 +172,11 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
 
       <GuardiansDetailsForm
         submitInfo={checkBalanceBeforeRegistration}
-        guardianInitialInfo={emptyInitialInfo}
+        guardianInitialInfo={demoInitialInfo}
         actionButtonTitle={guardianDataFormsTranslations("action_register")}
         messageForSubmitButton={errorMessage}
       />
+     
     </div>
   );
 });

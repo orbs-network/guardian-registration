@@ -11,7 +11,6 @@ import { ReactComponent as UsCountryIconSvg } from "./countryIcons/us.svg";
 import { ReactComponent as JpCountryIconSvg } from "./countryIcons/jp.svg";
 import { ReactComponent as KrCountryIconSvg } from "./countryIcons/kr.svg";
 import Grid from "@material-ui/core/Grid";
-import { Theme } from "@material-ui/core";
 import { useLocation } from "react-router";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -26,7 +25,7 @@ export const LanguagesSelector = () => {
   const location = useLocation();
 
   return (
-    <Grid container alignItems={"center"} justify={"flex-end"} spacing={1}>
+    <Grid container alignItems={"center"} justifyContent={"flex-end"} spacing={1}>
       <Grid item>
         <ChangeLangLink lang="en" location={location}>
           <UsCountryIconSvg className={classes.langIcon} />
