@@ -12,7 +12,7 @@ const initApp =  (chain?: string) => {
   const ethereumProvider = (window as any).ethereum;
   
   configureMobx();
-
+  
   const services = buildServices(ethereumProvider, configs.networks[chain]);
   const stores = getStores(
     services.cryptoWalletIntegrationService,

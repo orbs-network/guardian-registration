@@ -19,6 +19,7 @@ const useStyles = makeStyles(() => ({
    
     backgroundAttachment: "scroll",
     backgroundPosition: "top center",
+    paddingBottom: '150px'
   },
 }));
 const App = observer(() => {

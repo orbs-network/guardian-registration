@@ -1,11 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
 import { GuardianFormDetailsList } from "../../GuardianFormDetailsList";
-import Modal from "../../../components/Modal";
 import {
   ICryptoWalletConnectionService,
   TGuardianRegistrationPayload,
@@ -16,6 +15,8 @@ import {
   useRegisterGuardianSectionTranslations,
 } from "../../../translations/translationsHooks";
 import { renderToString } from "react-dom/server";
+import { MobXProviderContext } from "mobx-react";
+import { getChainName } from "../../../utils/chain";
 
 interface IProps {
   guardianAddress: string;
@@ -67,7 +68,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
   const domainTranslations = useDomainTranslations();
   const registerGuardianSectionTranslations =
     useRegisterGuardianSectionTranslations();
-
+  const {chainId} = useContext(MobXProviderContext)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   );
@@ -75,6 +76,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
   /**
    * We will use this function to perform validations just before calling 'register'
    */
+  
   const checkBalanceBeforeRegistration = useCallback(
     async (guardianRegistrationPayload: TGuardianRegistrationPayload) => {
       if (
@@ -95,14 +97,15 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
           guardianRegistrationPayload.orbsAddr
         );
 
-      // if (orbsNodeBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
-      //   setErrorMessage(
-      //     registerGuardianSectionTranslations(
-      //       "error_minimalBalanceAtNodeAddressIsRequired"
-      //     )
-      //   );
-      //   return;
-      // }
+      if (orbsNodeBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
+        setErrorMessage(
+          registerGuardianSectionTranslations(
+            "error_minimalBalanceAtNodeAddressIsRequired",
+            { name:getChainName(chainId)}
+          )
+        );
+        return;
+      }
 
       // All tests passes, remove old error message if exists
       setErrorMessage("");
@@ -113,6 +116,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       guardianAddress,
       registerGuardian,
       registerGuardianSectionTranslations,
+      chainId
     ]
   );
 

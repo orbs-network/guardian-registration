@@ -57,7 +57,7 @@ function NetworkWrapper({ children }: Props) {
       />
     );
   }
-
+  
   return (
     <MobxProvider chain={chain}>
       <SnackbarProvider maxSnack={3}>{children}</SnackbarProvider>

@@ -61,9 +61,9 @@ const networks: { [key: string]: INetwork } = {
     rpcUrls: ["https://polygon-rpc.com"],
     blockExplorerUrls: ["https://www.polygonscan.com"],
     addresses: {
-      guardiansRegistration: "0x9C9ff40EC1C90bB4F72FF123c204ADC55782946d",
-      stakingRewards: "0x4450bd4e1489cf7629CBFEd837e879Fb71bc4dF0",
-      delegations: "0x19611B0Bda728Bf02821B2fcC81a5fd1d2D8ae45",
+      guardiansRegistration: "0x49E77b78275D6c69c807727870682DbC725E4dc9",
+      stakingRewards: "0x295d1982b1b20Cc0c02A0Da7285826c69EF71Fac",
+      delegations: "0x513d30e66641cB1f2670b5994DD8E2B61ED3C23c",
     },
   },
 };
