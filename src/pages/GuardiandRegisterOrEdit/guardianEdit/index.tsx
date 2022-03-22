@@ -53,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
-  const classes = useStyles();
   const {
     guardianAddress,
     guardianInfo,

@@ -6,7 +6,6 @@ import { config, Transition } from "react-spring/renderprops-universal";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { InTextLink } from "../../../components/InTextLink";
 import { validURL } from "./inoputValidators";
-import ActionButton from "@bit/orbs-network.commons.action-button";
 import {
   useDomainTranslations,
   useGuardianDataFormsTranslations,
@@ -14,6 +13,7 @@ import {
 } from "../../../translations/translationsHooks";
 import { renderToString } from "react-dom/server";
 import { baseTheme } from "../../../theme/Theme";
+import ActionButton from "../../../components/shared/ActionButton";
 
 interface IProps {
   currentGuardianDetailsUrl?: string;

@@ -11,13 +11,17 @@ import {
 } from "../translations/translationsHooks";
 import { renderToString } from "react-dom/server";
 import useTheme from "@material-ui/core/styles/useTheme";
+import { useNetwork } from "../hooks/useWeb3";
+import { config } from "process";
+import configs from "../configs";
 
 interface IProps {}
 
 export const GuardianFormDetailsList = React.memo<IProps>((props) => {
   const guardianAddressExplainingTexts = useGuardiansAddressDetailsTexts();
   const nodeAddressExplainingTexts = useNodeAddressDetailsTexts();
-  const registerGuardianSectionTranslations = useRegisterGuardianSectionTranslations();
+  const registerGuardianSectionTranslations =
+    useRegisterGuardianSectionTranslations();
 
   return (
     <DetailsListContainer>
@@ -64,27 +68,30 @@ export const useNodeAddressDetailsTexts = () => {
   const theme = useTheme();
   const explanationTextsTranslations = useExplanationTextsTranslations();
 
-  const explainingTextOfShouldBeDifferentInnerHtml = useMemo<
-    TInnerHtmlFunction
-  >(() => {
-    return () =>
-      explanationTextsTranslations(
-        "text_nodeAddress_shouldBeDifferentFromGuardianAddress",
-        {
-          conceptNameGuardianAddress: renderToString(
-            <span
-              style={{
-                color: theme.palette.secondary.main,
-                fontWeight: "bold",
-              }}
-            >
-              {explanationTextsTranslations("conceptName_guardianAddress")}
-            </span>
-          ),
-        }
-      );
-  }, [explanationTextsTranslations, theme.palette.secondary.main]);
-
+  const explainingTextOfShouldBeDifferentInnerHtml =
+    useMemo<TInnerHtmlFunction>(() => {
+      return () =>
+        explanationTextsTranslations(
+          "text_nodeAddress_shouldBeDifferentFromGuardianAddress",
+          {
+            conceptNameGuardianAddress: renderToString(
+              <span
+                style={{
+                  color: theme.palette.secondary.main,
+                  fontWeight: "bold",
+                }}
+              >
+                {explanationTextsTranslations("conceptName_guardianAddress")}
+              </span>
+            ),
+          }
+        );
+    }, [explanationTextsTranslations, theme.palette.secondary.main]);
+  const chain = useNetwork();
+  const symbol = chain &&
+  configs.networks[chain] &&
+  chain &&
+  configs.networks[chain].nativeCurrency?.symbol
   const nodeAddressExplainingTexts = useMemo<
     Array<string | TInnerHtmlFunction>
   >(() => {
@@ -92,17 +99,17 @@ export const useNodeAddressDetailsTexts = () => {
       explainingTextOfShouldBeDifferentInnerHtml,
       explanationTextsTranslations("text_nodeAddress_usedToSignBlocks"),
       explanationTextsTranslations(
-        "text_nodeAddress_holdsEthForAutomatedTransactionsGas"
+        "text_nodeAddress_holdsEthForAutomatedTransactionsGas",
+        { symbol}
       ),
-      explanationTextsTranslations("text_nodeAddress_minimalBalanceRequired"),
+      explanationTextsTranslations("text_nodeAddress_minimalBalanceRequired", {
+        symbol
+      }),
       explanationTextsTranslations("text_nodeAddress_doesNotHoldYourTokens"),
     ];
 
     return texts;
-  }, [
-    explainingTextOfShouldBeDifferentInnerHtml,
-    explanationTextsTranslations,
-  ]);
+  }, [explainingTextOfShouldBeDifferentInnerHtml, explanationTextsTranslations, symbol]);
 
   return {
     texts: nodeAddressExplainingTexts,

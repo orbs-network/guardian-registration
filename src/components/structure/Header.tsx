@@ -1,11 +1,11 @@
-import React from "react";
+import { useContext } from "react";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { HEADER_HEIGHT_REM } from "../../theme/Theme";
 import { useHeaderTranslations } from "../../translations/translationsHooks";
 import { LanguagesSelector } from "./languageSelector/LanguagesSelector";
-
-interface IProps {}
+import NetworkIndicator from "../NetworkIndicator";
+import { MobXProviderContext } from "mobx-react";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -20,12 +20,15 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "1em",
     marginBottom: "1em",
   },
-  languageBar: {},
+  languageBar: {
+    position: "relative",
+  },
 }));
 
-export const Header = React.memo<IProps>((props) => {
+export const Header = () => {
   const classes = useStyles();
   const headerTranslations = useHeaderTranslations();
+  const { chainId } = useContext(MobXProviderContext);
 
   return (
     <AppBar className={classes.appBar} position={"fixed"}>
@@ -36,9 +39,10 @@ export const Header = React.memo<IProps>((props) => {
           </Typography>
         </div>
         <div className={classes.languageBar}>
+          <NetworkIndicator chainId={chainId} />
           <LanguagesSelector />
         </div>
       </Toolbar>
     </AppBar>
   );
-});
+};

@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@orbs-network/orbs-ethereum-contracts-v2": "0.0.38",
+    "@types/node": "^16.11.13",
     "bn.js": "^5.1.2",
     "ganache-cli": "^6.9.1",
     "openzeppelin-solidity": "2.0.1",
