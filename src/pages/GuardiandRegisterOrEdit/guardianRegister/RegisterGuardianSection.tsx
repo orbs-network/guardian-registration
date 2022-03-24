@@ -176,7 +176,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
 
       <GuardiansDetailsForm
         submitInfo={checkBalanceBeforeRegistration}
-        guardianInitialInfo={demoInitialInfo}
+        guardianInitialInfo={emptyInitialInfo}
         actionButtonTitle={guardianDataFormsTranslations("action_register")}
         messageForSubmitButton={errorMessage}
       />

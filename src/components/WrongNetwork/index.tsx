@@ -113,6 +113,7 @@ function WrongNetwork({ availableChains = [], selectedChain }: IProps) {
                 <ActionButton
                   className={classes.networkBtn}
                   key={index}
+                  style={{color:'white'}}
                   onClick={() => onSubmit(availableChain, network)}
                 >
                   {network.name}

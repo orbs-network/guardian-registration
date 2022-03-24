@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import { ReactNode, useEffect, useState } from "react";
 import { useLocation } from "react-router";
@@ -5,6 +6,7 @@ import WrongNetwork from "../components/WrongNetwork";
 import { NETWORK_QUERY_PARAM } from "../constants";
 import { useNetwork } from "../hooks/useWeb3";
 import MobxProvider from "../providers/MobxProvider";
+import { getTheme } from "../theme/Theme";
 import { forceChainChange, isWrongNetwork } from "../utils/web3";
 
 interface Props {
@@ -60,7 +62,9 @@ function NetworkWrapper({ children }: Props) {
   
   return (
     <MobxProvider chain={chain}>
+      <ThemeProvider theme={getTheme(chain)}>
       <SnackbarProvider maxSnack={3}>{children}</SnackbarProvider>
+      </ThemeProvider>
     </MobxProvider>
   );
 }

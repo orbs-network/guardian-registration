@@ -7,17 +7,14 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import {  AppWrapper } from "./wrappers/AppWrapper";
 import {  I18nextProvider } from "react-i18next";
-import {  StylesProvider,  ThemeProvider } from "@material-ui/styles";
-import {  baseTheme } from "./theme/Theme";
+import {  StylesProvider } from "@material-ui/styles";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <I18nextProvider i18n={i18n}>
         <StylesProvider injectFirst>
-          <ThemeProvider theme={baseTheme}>
             <AppWrapper />
-          </ThemeProvider>
         </StylesProvider>
       </I18nextProvider>
     </Router>

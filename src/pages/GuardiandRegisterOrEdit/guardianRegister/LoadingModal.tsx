@@ -4,14 +4,15 @@ import { makeStyles } from "@material-ui/core";
 import { createTxBlockExplorerLink } from "../../../utils/web3";
 import Link from "@material-ui/core/Link";
 import LaunchIcon from "@material-ui/icons/Launch";
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: '30px 60px 30px 60px',
+    padding: "30px 60px 30px 60px",
     width: "fit-content",
+    border: `1px solid ${theme.chain.mainColor}`,
   },
   header: {
     position: "relative",
@@ -36,7 +37,7 @@ const useStyles = makeStyles({
     right: -30,
     top: 0,
   },
-});
+}));
 
 interface Props {
   chain?: string;
@@ -58,7 +59,7 @@ function LoadingModal({ chain, txHash }: Props) {
               target="_blank"
               rel="noreferrer"
             >
-              <LaunchIcon style={{color:'white'}} />
+              <LaunchIcon style={{ color: "white" }} />
             </Link>
           )}
         </section>

@@ -9,6 +9,8 @@
 // @ts-ignore
 import ethImg from "./assets/images/eth.png";
 import polygonImg from "./assets/images/polygon.png";
+import polygonNavImg from "./assets/images/polygon-nav.png";
+import ethereumNavImg from "./assets/images/ethereum-nav.png";
 
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY;
 export const IS_DEV = process.env.NODE_ENV !== "production";
@@ -27,6 +29,8 @@ export interface INetwork {
   nativeCurrency?: { name: string; symbol: string; decimals: number };
   rpcUrls?: string[];
   blockExplorerUrls?: string[];
+  nav: string;
+  color: string;
 }
 
 const getTestNetworkAddresses = () => {
@@ -46,6 +50,7 @@ const networks: { [key: string]: INetwork } = {
   "1": {
     name: "Ethereum",
     logo: ethImg,
+    nav: ethereumNavImg,
     addresses:
       process.env.REACT_APP_TEST_NETWORK === "local"
         ? getTestNetworkAddresses()
@@ -53,10 +58,13 @@ const networks: { [key: string]: INetwork } = {
     nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
     rpcUrls: ["https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
     blockExplorerUrls: ["https://etherscan.io"],
+    color: "#03FCF5",
   },
   "137": {
+    color: "#844FDA",
     name: "Polygon",
     logo: polygonImg,
+    nav: polygonNavImg,
     nativeCurrency: { name: "MATIC", symbol: "MATIC", decimals: 18 },
     rpcUrls: ["https://polygon-rpc.com"],
     blockExplorerUrls: ["https://www.polygonscan.com"],

@@ -16,6 +16,7 @@ const useStyles = makeStyles(() => ({
     minHeight: `100vh`,
     flex: 1,
     backgroundRepeat: "repeat-y",
+    paddingTop: '50px',
    
     backgroundAttachment: "scroll",
     backgroundPosition: "top center",

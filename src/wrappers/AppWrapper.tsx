@@ -3,7 +3,8 @@ import useLanguage from "../hooks/useLanguage";
 import NetworkWrapper from "./NetworkWrapper";
 import { makeStyles } from "@material-ui/styles";
 import App from "../App";
-
+import { getTheme } from "../theme/Theme";
+import { ThemeProvider } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -16,9 +17,13 @@ const useStyles = makeStyles(() => ({
 export const AppWrapper = () => {
   useLanguage();
   const classes = useStyles();
-  
+
   if (!(window as any).ethereum) {
-    return <NoEthereumProviderPage />;
+    return (
+      <ThemeProvider theme={getTheme('1')}>
+        <NoEthereumProviderPage />
+      </ThemeProvider>
+    );
   }
 
   return (

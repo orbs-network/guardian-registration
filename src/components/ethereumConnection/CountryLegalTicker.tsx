@@ -1,8 +1,6 @@
 import React from "react";
 import { Checkbox, FormControlLabel, Typography } from "@material-ui/core";
 import { renderToString } from "react-dom/server";
-import { ThemeProvider } from "@material-ui/core/styles";
-import { baseTheme } from "../../theme/Theme";
 import { useAccountConnectionSectionTranslations } from "../../translations/translationsHooks";
 
 interface IProps {
@@ -11,18 +9,17 @@ interface IProps {
 }
 
 export const CountryLegalTicker = React.memo<IProps>((props) => {
-  const accountConnectionSectionTranslations = useAccountConnectionSectionTranslations();
+  const accountConnectionSectionTranslations =
+    useAccountConnectionSectionTranslations();
   const { value, onValueChange } = props;
 
   // DEV_NOTE : IMPORTANT: O.L : While 'rendering to string' we will lose the them if not applying it directly inside the rendered component.
   const innerHtmlForLegalAgreement = renderToString(
-    <ThemeProvider theme={baseTheme}>
-      <Typography>
-        {accountConnectionSectionTranslations(
-          "ticker_message_confirmIAmNotACitizenOrResident"
-        )}
-      </Typography>
-    </ThemeProvider>
+    <Typography>
+      {accountConnectionSectionTranslations(
+        "ticker_message_confirmIAmNotACitizenOrResident"
+      )}
+    </Typography>
   );
 
   return (
