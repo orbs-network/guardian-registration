@@ -88,8 +88,8 @@ interface IConfig {
 const configs: IConfig = {
   urlBase: process.env.PUBLIC_BASE_PATH || "",
   ETHEREUM_PROVIDER_WS: `wss://mainnet.infura.io/ws/v3/${INFURA_KEY}`,
-  privacyPolicyUrl: "https://www.orbs.com/guardian-portal-privacy-policy/",
-  termsOfUseUrl: "https://www.orbs.com/guardian-portal-terms-of-use/",
+  privacyPolicyUrl: "https://www.orbs.com/assets/docs/guardians-registration/V3-Orbs-Guardian-Website-privacy-policy.pdf",
+  termsOfUseUrl: "https://www.orbs.com/assets/docs/guardians-registration/guardian-registration-terms-of-use.pdf",
   networks,
 };
 export default configs;
