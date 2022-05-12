@@ -27,6 +27,9 @@ import {
 import LoadingModal from "../guardianRegister/LoadingModal";
 import { createTxBlockExplorerLink } from "../../../utils/web3";
 import { useNetwork } from "../../../hooks/useWeb3";
+import { useHistory } from "react-router-dom";
+import { UNREGISTER_CHAIN_PARAM } from "../../../constants";
+import useGuardianActions from "../../../hooks/useGuardianActions";
 
 interface IProps {}
 
@@ -75,7 +78,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
     const orbsAccountStore = useOrbsAccountStore();
     const modalsTranslations = useModalsTranslations();
-
+    const { unregisterGuardian } = useGuardianActions();
     const guardianEditPageTranslations = useGuardianEditPageTranslations();
 
     // TODO : ORL : The whole modal logic is duplicated from 'Subscription UI' - Unite them properly
@@ -211,7 +214,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       [enqueueSnackbar, modalsTranslations, orbsAccountStore]
     );
 
-    const unregisterGuardian = useCallback(async () => {
+    const unregisterGuardianClick = useCallback(async () => {
       setDialogTexts({
         title: modalsTranslations("modalTitle_unregister"),
         content: modalsTranslations("modalContent_unregister"),
@@ -220,27 +223,10 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
         onCancelMessage: modalsTranslations("actionCanceled_default"),
       });
       setShowModal(true);
-      setOnDialogAccept(() => async () => {
-        try {
-          const txRes = await orbsAccountStore.unregisterGuardian();
-
-          if (txRes) {
-            enqueueSnackbar(modalsTranslations("successMessage_unregister"), {
-              variant: "success",
-            });
-          }
-        } catch (e: any) {
-          enqueueSnackbar(
-            modalsTranslations("errorMessage_unregister", {
-              errorMessage: e.message,
-            }),
-            {
-              variant: "error",
-            }
-          );
-        }
-      });
-    }, [enqueueSnackbar, modalsTranslations, orbsAccountStore]);
+       setOnDialogAccept( () => {
+         return   unregisterGuardian
+       })
+    }, [modalsTranslations, unregisterGuardian]);
 
     const [tabValue, setTabValue] = React.useState(TABS_IDS.info);
     const guardianDetails = (
@@ -420,7 +406,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               index={TABS_IDS.unregister}
               dir={theme.direction}
             >
-              <UnregisterForm unregisterGuardian={unregisterGuardian} />
+              <UnregisterForm unregisterGuardian={unregisterGuardianClick} />
             </TabPanel>
           </div>
 
@@ -447,11 +433,8 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             }}
           />
 
-          {orbsAccountStore.txPending &&  (
-            <LoadingModal
-            chain = {chain}
-            txHash = {orbsAccountStore.txHash}
-            />
+          {orbsAccountStore.txPending && (
+            <LoadingModal chain={chain} txHash={orbsAccountStore.txHash} />
           )}
         </ContentFitting>
       </Page>

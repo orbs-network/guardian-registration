@@ -1,6 +1,6 @@
 import { ContentContainer } from "../components/structure/ContentContainer";
-import { Route, Switch } from "react-router-dom";
-import { observer } from "mobx-react";
+import { Route, Switch, useParams } from "react-router-dom";
+import { MobXProviderContext, observer } from "mobx-react";
 import { EthereumProviderSection } from "../components/ethereumConnection/EthereumProviderSection";
 import { GuardiansRegisterOrEditPage } from "../pages/GuardiandRegisterOrEdit";
 import { Header } from "../components/structure/Header";
@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Page } from "../components/structure/Page";
 import { Footer } from "../components/structure/Footer";
 import useLogic from "./useLogic";
-import TxStatus from "../components/TxStatus";
+import RegisterAndUnregister from "./RegisterAndUnregister";
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -32,13 +32,16 @@ const App = observer(() => {
     cryptoWalletConnectionService,
   } = useLogic();
 
-  // TODO : O.L : Change background image to the orbs one.
+  
+
   return (
     <>
+    <RegisterAndUnregister />
       <Header />
       {/* <TxStatus /> */}
       <main className={classes.app}>
         <ContentContainer id={"appContainer"}>
+       
           {!isConnected ? (
             <Page>
               <EthereumProviderSection

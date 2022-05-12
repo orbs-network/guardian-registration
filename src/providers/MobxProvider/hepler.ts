@@ -5,7 +5,7 @@ import {
    getStores,
 } from "../../store/storesInitialization";
 
-const initApp =  (chain?: string) => {
+const initApp =  async(chain?: string) => {
   if(!chain){
     return 
   }
@@ -13,7 +13,7 @@ const initApp =  (chain?: string) => {
   
   configureMobx();
   
-  const services = buildServices(ethereumProvider, configs.networks[chain]);
+  const services = await buildServices(ethereumProvider, configs.networks[chain]);
   const stores = getStores(
     services.cryptoWalletIntegrationService,
     services.guardiansService,

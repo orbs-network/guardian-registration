@@ -1,12 +1,12 @@
 import { ThemeProvider } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import { ReactNode, useEffect, useState } from "react";
-import { useLocation } from "react-router";
 import WrongNetwork from "../components/WrongNetwork";
 import { NETWORK_QUERY_PARAM } from "../constants";
 import { useNetwork } from "../hooks/useWeb3";
 import MobxProvider from "../providers/MobxProvider";
 import { getTheme } from "../theme/Theme";
+import { getParamsFromUrl } from "../utils/utils";
 import { forceChainChange, isWrongNetwork } from "../utils/web3";
 
 interface Props {
@@ -29,14 +29,14 @@ const addEventsToEthereumProvider = () => {
 
 function NetworkWrapper({ children }: Props) {
   const [forcedChain, setForcedChain] = useState<string | null>(null);
-  const location = useLocation();
+
   useEffect(() => {
     addEventsToEthereumProvider();
   }, []);
   const chain = useNetwork();
 
   const detectForcedNetwork = () => {
-    const res = new URLSearchParams(location.search).get(NETWORK_QUERY_PARAM);
+    const res = getParamsFromUrl(NETWORK_QUERY_PARAM);
     setForcedChain(res);
   };
 

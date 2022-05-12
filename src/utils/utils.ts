@@ -27,4 +27,7 @@ export const ipv4ToHex = (ipv4: string) => {
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 
-
+export const getParamsFromUrl = (name: string) => {
+  const query = new URLSearchParams(window.location.search);
+  return query.get(name)
+}

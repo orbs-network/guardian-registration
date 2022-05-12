@@ -22,7 +22,6 @@ interface IContaractAdresses {
 }
 
 export interface INetwork {
-  addresses?: IContaractAdresses;
   name: string;
   logo?: string;
   requiredConfirmations?: number;
@@ -31,34 +30,30 @@ export interface INetwork {
   blockExplorerUrls?: string[];
   nav: string;
   color: string;
+  contractsRegistry: string;
 }
 
-const getTestNetworkAddresses = () => {
-  try {
-    const addresses = require("./local/addresses.json");
-    return {
-      delegations: addresses.delegations,
-      stakingRewards: addresses.stakingRewards,
-      guardiansRegistration: addresses.guardiansRegistration,
-    };
-  } catch (error) {
-    console.log("seems that ganache is not running");
-  }
-};
 
 const networks: { [key: string]: INetwork } = {
   "1": {
     name: "Ethereum",
     logo: ethImg,
     nav: ethereumNavImg,
-    addresses:
-      process.env.REACT_APP_TEST_NETWORK === "local"
-        ? getTestNetworkAddresses()
-        : undefined,
     nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
     rpcUrls: ["https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
     blockExplorerUrls: ["https://etherscan.io"],
     color: "#03FCF5",
+    contractsRegistry: "0xD859701C81119aB12A1e62AF6270aD2AE05c7AB3",
+  },
+  "3": {
+    name: "Ropsten",
+    logo: ethImg,
+    nav: ethereumNavImg,
+    nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
+    rpcUrls: ["https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
+    blockExplorerUrls: ["https://etherscan.io"],
+    color: "#03FCF5",
+    contractsRegistry: "0x5D7779231a6344edE6178623f31007cF2D16DFd7",
   },
   "137": {
     color: "#844FDA",
@@ -68,11 +63,7 @@ const networks: { [key: string]: INetwork } = {
     nativeCurrency: { name: "MATIC", symbol: "MATIC", decimals: 18 },
     rpcUrls: ["https://polygon-rpc.com"],
     blockExplorerUrls: ["https://www.polygonscan.com"],
-    addresses: {
-      guardiansRegistration: "0x49E77b78275D6c69c807727870682DbC725E4dc9",
-      stakingRewards: "0x295d1982b1b20Cc0c02A0Da7285826c69EF71Fac",
-      delegations: "0x513d30e66641cB1f2670b5994DD8E2B61ED3C23c",
-    },
+    contractsRegistry: "0x35eA0D75b2a3aB06393749B4651DfAD1Ffd49A77",
   },
 };
 
@@ -88,8 +79,10 @@ interface IConfig {
 const configs: IConfig = {
   urlBase: process.env.PUBLIC_BASE_PATH || "",
   ETHEREUM_PROVIDER_WS: `wss://mainnet.infura.io/ws/v3/${INFURA_KEY}`,
-  privacyPolicyUrl: "https://www.orbs.com/assets/docs/guardians-registration/V3-Orbs-Guardian-Website-privacy-policy.pdf",
-  termsOfUseUrl: "https://www.orbs.com/assets/docs/guardians-registration/guardian-registration-terms-of-use.pdf",
+  privacyPolicyUrl:
+    "https://www.orbs.com/assets/docs/guardians-registration/V3-Orbs-Guardian-Website-privacy-policy.pdf",
+  termsOfUseUrl:
+    "https://www.orbs.com/assets/docs/guardians-registration/guardian-registration-terms-of-use.pdf",
   networks,
 };
 export default configs;
