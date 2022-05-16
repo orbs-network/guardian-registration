@@ -10,7 +10,7 @@ import { useOrbsAccountStore } from "../store/storeHooks";
 import { getParamsFromUrl } from "../utils/utils";
 import { triggerNetworkChange } from "../utils/web3";
 
-const getChainName = (chain?: string) => {
+const getChainName = (chain?: string | number) => {
   if (!chain) {
     return;
   }
@@ -26,8 +26,6 @@ const RegisterAndUnregister = observer(() => {
   const { unregisterGuardian, registerGuardian } = useGuardianActions();
   const needToSwitchChain = chainId !== actionChain;
   const chainName = useMemo(() => getChainName(actionChain), [actionChain]);
-
-
 
   useEffect(() => {
     const unregisterChain = getParamsFromUrl(UNREGISTER_CHAIN_PARAM);
@@ -82,20 +80,27 @@ const RegisterAndUnregister = observer(() => {
     }
   };
 
-
-  const onClick = () => {
-    window.history.replaceState(null, '/', '/?test=123');
-  }
-
   return (
     <>
-    <button style={{marginTop: '200px'}} onClick={onClick}>test</button>
       {orbsAccountStore.txPending && (
         <LoadingModal chain={chainId} txHash={orbsAccountStore.txHash} />
       )}
 
       <ActionConfirmationModal
-        title={`Please unregister from ${chainName}`}
+        title={
+          <>
+            {needToSwitchChain ? (
+              <>
+                You have successfully unregistered on {getChainName(chainId)}.{" "}
+                <br />
+                Proceed to unregistering on{" "}
+                {getChainName(orbsAccountStore.registeredChains[0])}.
+              </>
+            ) : (
+              `Proceed to unregistering on ${getChainName(chainId)}.`
+            )}
+          </>
+        }
         contentText=""
         instructionText=""
         open={showUnregisterPopup}
@@ -103,7 +108,18 @@ const RegisterAndUnregister = observer(() => {
         onAccept={onUnregisterAccept}
       />
       <ActionConfirmationModal
-        title={`Please register to ${chainName}`}
+        title={
+          needToSwitchChain ? (
+            <>
+              You have successfully registered on {getChainName(chainId)}.{" "}
+              <br />
+              Proceed to registering on{" "}
+              {getChainName(orbsAccountStore.unregisteredChains[0])}.
+            </>
+          ) : (
+            `Proceed registering to ${getChainName(chainId)}.`
+          )
+        }
         contentText=""
         instructionText=""
         open={showRegisterPopup}

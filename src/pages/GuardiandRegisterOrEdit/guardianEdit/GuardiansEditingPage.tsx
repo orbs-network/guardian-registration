@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, ReactNode } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
 import { Box, Tab, Tabs } from "@material-ui/core";
@@ -30,6 +30,7 @@ import { useNetwork } from "../../../hooks/useWeb3";
 import { useHistory } from "react-router-dom";
 import { UNREGISTER_CHAIN_PARAM } from "../../../constants";
 import useGuardianActions from "../../../hooks/useGuardianActions";
+import { getChainName, getChainNames } from "../../../utils/chain";
 
 interface IProps {}
 
@@ -69,6 +70,8 @@ const TABS_IDS = {
   unregister: "unregister",
 };
 
+
+
 export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
   (props) => {
     const classes = useStyles();
@@ -89,8 +92,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const chain = useNetwork();
     const [dialogTexts, setDialogTexts] = useState<{
       title: string;
-      content?: string;
+      content?: string | ReactNode;
       instruction?: string;
+
       acceptText?: string;
       cancelText?: string;
       onCancelMessage?: string;
@@ -217,16 +221,30 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const unregisterGuardianClick = useCallback(async () => {
       setDialogTexts({
         title: modalsTranslations("modalTitle_unregister"),
-        content: modalsTranslations("modalContent_unregister"),
+        content: (
+          <>
+            {modalsTranslations("modalContent_unregister")}
+            {orbsAccountStore.registeredChains.length > 1 && (
+              <>
+                <br />
+                <br />
+                You are registered on both{" "}
+                {getChainNames(orbsAccountStore.registeredChains)}.
+                <br />
+                This transaction will unregister you on {getChainName(orbsAccountStore.registeredChains[0].toString())}.
+              </>
+            )}
+          </>
+        ),
         instruction: modalsTranslations("modalInstruction_unregister"),
         acceptText: modalsTranslations("acceptText_yes"),
         onCancelMessage: modalsTranslations("actionCanceled_default"),
       });
       setShowModal(true);
-       setOnDialogAccept( () => {
-         return   unregisterGuardian
-       })
-    }, [modalsTranslations, unregisterGuardian]);
+      setOnDialogAccept(() => {
+        return unregisterGuardian;
+      });
+    }, [modalsTranslations, unregisterGuardian, orbsAccountStore]);
 
     const [tabValue, setTabValue] = React.useState(TABS_IDS.info);
     const guardianDetails = (

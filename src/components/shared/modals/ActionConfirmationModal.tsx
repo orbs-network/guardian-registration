@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   Button,
   Dialog,
@@ -19,8 +19,8 @@ interface IProps {
   onCancel?: () => void;
 
   // Content
-  title: string;
-  contentText?: string;
+  title: string | ReactNode;
+  contentText?: string | ReactNode;
   instructionText?: string;
   acceptText?: string;
   cancelText?: string;

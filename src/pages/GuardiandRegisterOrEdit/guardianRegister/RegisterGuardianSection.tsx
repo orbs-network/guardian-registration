@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState, useRef } from "react";
 import { GuardiansDetailsForm } from "../forms/GuradiansDetailsForm";
 import { TGuardianInfo } from "../../../store/OrbsAccountStore";
 import { Avatar, Typography } from "@material-ui/core";
@@ -16,7 +16,9 @@ import {
 } from "../../../translations/translationsHooks";
 import { renderToString } from "react-dom/server";
 import { MobXProviderContext } from "mobx-react";
-import { getChainName } from "../../../utils/chain";
+import { getChainName, getChainNames } from "../../../utils/chain";
+import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
+import { useOrbsAccountStore } from "../../../store/storeHooks";
 
 interface IProps {
   guardianAddress: string;
@@ -58,17 +60,14 @@ const MINIMAL_REQUIRED_ETH_BALANCE = 1;
 
 export const RegisterGuardianSection = React.memo<IProps>((props) => {
   const classes = useStyles();
-  const {
-    guardianAddress,
-    registerGuardian,
-    cryptoWalletConnectionService,
-  } = props;
+  const { guardianAddress, registerGuardian, cryptoWalletConnectionService } =
+    props;
 
   const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
   const domainTranslations = useDomainTranslations();
   const registerGuardianSectionTranslations =
     useRegisterGuardianSectionTranslations();
-  const {chainId} = useContext(MobXProviderContext)
+  const { chainId } = useContext(MobXProviderContext);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   );
@@ -76,7 +75,9 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
   /**
    * We will use this function to perform validations just before calling 'register'
    */
-  
+
+  const orbsAccountStore = useOrbsAccountStore();
+
   const checkBalanceBeforeRegistration = useCallback(
     async (guardianRegistrationPayload: TGuardianRegistrationPayload) => {
       if (
@@ -101,7 +102,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         setErrorMessage(
           registerGuardianSectionTranslations(
             "error_minimalBalanceAtNodeAddressIsRequired",
-            { name:getChainName(chainId)}
+            { name: getChainName(chainId) }
           )
         );
         return;
@@ -109,14 +110,20 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
 
       // All tests passes, remove old error message if exists
       setErrorMessage("");
-      registerGuardian(guardianRegistrationPayload);
+      if (orbsAccountStore.unregisteredChains.length > 1) {
+        regsiterDataRef.current = guardianRegistrationPayload;
+        setShowRegisterPoup(true);
+      } else {
+        registerGuardian(guardianRegistrationPayload);
+      }
     },
     [
       cryptoWalletConnectionService,
       guardianAddress,
-      registerGuardian,
       registerGuardianSectionTranslations,
-      chainId
+      chainId,
+      orbsAccountStore.unregisteredChains.length,
+      registerGuardian,
     ]
   );
 
@@ -130,6 +137,16 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       ),
     }
   );
+
+  const [showRegisterPoup, setShowRegisterPoup] = useState(false);
+  const regsiterDataRef = useRef<TGuardianRegistrationPayload>(
+    {} as TGuardianRegistrationPayload
+  );
+
+  const onrRgisterAccept = () => {
+    registerGuardian(regsiterDataRef.current);
+    setShowRegisterPoup(false)
+  };
 
   return (
     <div
@@ -146,6 +163,23 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         maxWidth: "100%",
       }}
     >
+      <ActionConfirmationModal
+        title={
+          <>
+            {`You are unregistered from both ${getChainNames(
+              orbsAccountStore.unregisteredChains
+            )}`}.
+            <br />
+            This transaction will register you on {getChainName(chainId)}.
+          </>
+        }
+        contentText=""
+        instructionText=""
+        open={showRegisterPoup}
+        acceptText="Proceed"
+        onAccept={onrRgisterAccept}
+        onCancel={() => setShowRegisterPoup(false)}
+      />
       <Avatar className={classes.avatar}>
         <PersonIcon />
       </Avatar>
@@ -180,7 +214,6 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         actionButtonTitle={guardianDataFormsTranslations("action_register")}
         messageForSubmitButton={errorMessage}
       />
-     
     </div>
   );
 });

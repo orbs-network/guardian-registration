@@ -7,4 +7,14 @@ const getChainName = (chain: string) => {
     return chainConfig ? chainConfig.name : 'Ether'
 }
 
-export {getChainName}
+
+const getChainNames = (chains: number[]) => {
+    let names: string[] = [];
+    for (const chain of chains) {
+      const name = getChainName(chain.toString());
+      names.push(name);
+    }
+    return names.join(' & ');
+  };
+
+export {getChainName, getChainNames}
