@@ -7,5 +7,11 @@
   "tabHeader_editInfo": "정보 수정",
   "tabHeader_guardianDetailsUrl": "가디언 정보 url",
   "tabHeader_info": "정보",
-  "tabHeader_unregister": "등록해제"
+  "tabHeader_unregister": "등록해제",
+  "unregister_text": "This transaction will unregister you on {{network}}",
+  "you_are_registered_on_both": "You are registered on both {{network1}} & {{network2}}",
+  "you_have_successfully_unregistered_on": "You have successfully unregistered on {{network}}",
+  "proceed_to_unregistering_on": "Proceed to unregistering on {{network}}",
+  "switch_to": "Switch to {{network}}",
+  "proceed": "Proceed"
 }

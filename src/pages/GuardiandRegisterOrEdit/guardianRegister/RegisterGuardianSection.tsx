@@ -145,9 +145,9 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
 
   const onrRgisterAccept = () => {
     registerGuardian(regsiterDataRef.current);
-    setShowRegisterPoup(false)
+    setShowRegisterPoup(false);
   };
-
+  const names = getChainNames(orbsAccountStore.unregisteredChains);
   return (
     <div
       id={"RegisterGuardianSection"}
@@ -166,17 +166,23 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       <ActionConfirmationModal
         title={
           <>
-            {`You are unregistered from both ${getChainNames(
-              orbsAccountStore.unregisteredChains
-            )}`}.
+            {`${registerGuardianSectionTranslations(
+              "You_need_to_register_on_both",
+              { network1: names[0], network2: names[1] }
+            )}`}
+            .
             <br />
-            This transaction will register you on {getChainName(chainId)}.
+            {registerGuardianSectionTranslations(
+              "this_transaction_will_register_you_on",
+              { network: getChainName(chainId) }
+            )}
+            .
           </>
         }
         contentText=""
         instructionText=""
         open={showRegisterPoup}
-        acceptText="Proceed"
+        acceptText={registerGuardianSectionTranslations('proceed')}
         onAccept={onrRgisterAccept}
         onCancel={() => setShowRegisterPoup(false)}
       />

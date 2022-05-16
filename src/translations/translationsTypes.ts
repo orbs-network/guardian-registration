@@ -71,6 +71,10 @@ export interface IRegisterGuardianSectionTranslations {
   title_yourGuardianAddressIs: string;
   text_pleaseNote: string;
   action_register: string;
+  You_need_to_register_on_both: string;
+  this_transaction_will_register_you_on: string
+  proceed_registering_on: string;
+  proceed: string;
 }
 
 export interface IDelegatingToAnotherAccountSectionTranslations {
@@ -125,6 +129,13 @@ export interface IGuardianEditPageTranslations {
   action_updateDelegatorsShare: string;
   action_updateCertifiedCommitteeUrl: string;
   action_unregister: string;
+  unregister_text: string;
+  you_are_registered_on_both: string;
+  proceed_to_unregistering_on: string;
+  you_have_successfully_unregistered_on: string;
+  switch_to: string;
+  proceed: string;
+ 
 }
 
 export interface IModalsTranslations {

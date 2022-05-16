@@ -7,5 +7,12 @@
   "tabHeader_editInfo": "edit info",
   "tabHeader_guardianDetailsUrl": "guardian details url",
   "tabHeader_info": "info",
-  "tabHeader_unregister": "unregister"
+  "tabHeader_unregister": "unregister",
+  "unregister_text":"This transaction will unregister you on {{network}}",
+  "you_are_registered_on_both": "You are registered on both {{network1}} & {{network2}}",
+  "you_have_successfully_unregistered_on": "You have successfully unregistered on {{network}}",
+  "proceed_to_unregistering_on": "Proceed to unregistering on {{network}}",
+  "switch_to":"Switch to {{network}}",
+  "proceed": "Proceed"
+
 }

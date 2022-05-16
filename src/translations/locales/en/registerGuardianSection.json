@@ -4,5 +4,11 @@
   "error_nodeAddressCannotBeTheSameAsGuardianAddress": "Your Orbs node address cannot be the same as your Guardian address {{guardianAddress}}",
   "text_pleaseNote": "Please Notice",
   "title_guardianRegistration": "Guardian Registration",
-  "title_yourGuardianAddressIs": "Your {{conceptGuardianName}} is"
+  "title_yourGuardianAddressIs": "Your {{conceptGuardianName}} is",
+  "You_need_to_register_on_both":"You need to register on both {{network1}} & {{network2}}",
+  "this_transaction_will_register_you_on": "This transaction will register you on {{network}}",
+  "proceed_registering_on":"Proceed registering on {{network}}",
+  "proceed": "Proceed"
+
+
 }

@@ -14,7 +14,7 @@ const getChainNames = (chains: number[]) => {
       const name = getChainName(chain.toString());
       names.push(name);
     }
-    return names.join(' & ');
+    return names
   };
 
 export {getChainName, getChainNames}

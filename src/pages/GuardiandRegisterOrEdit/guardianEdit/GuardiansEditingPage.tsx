@@ -1,4 +1,4 @@
-import React, { useCallback, useState, ReactNode } from "react";
+import React, { useCallback, useState, ReactNode, useContext } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
 import { Box, Tab, Tabs } from "@material-ui/core";
@@ -8,7 +8,7 @@ import {
 } from "../../../store/storeHooks";
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
-import { observer } from "mobx-react";
+import { MobXProviderContext, observer } from "mobx-react";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
 import { DETAILS_REQUIREMENTS_LINK } from "./sections/EditDelegatorsCertificateSection";
 import useTheme from "@material-ui/core/styles/useTheme";
@@ -83,6 +83,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const modalsTranslations = useModalsTranslations();
     const { unregisterGuardian } = useGuardianActions();
     const guardianEditPageTranslations = useGuardianEditPageTranslations();
+    const {chainId} = useContext(MobXProviderContext)
 
     // TODO : ORL : The whole modal logic is duplicated from 'Subscription UI' - Unite them properly
     const [showModal, setShowModal] = useState(false);
@@ -219,6 +220,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     );
 
     const unregisterGuardianClick = useCallback(async () => {
+      const names = getChainNames(orbsAccountStore.registeredChains)
       setDialogTexts({
         title: modalsTranslations("modalTitle_unregister"),
         content: (
@@ -228,10 +230,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               <>
                 <br />
                 <br />
-                You are registered on both{" "}
-                {getChainNames(orbsAccountStore.registeredChains)}.
+                {guardianEditPageTranslations('you_are_registered_on_both', {network1: names[0],  network2:names[1]})}.
                 <br />
-                This transaction will unregister you on {getChainName(orbsAccountStore.registeredChains[0].toString())}.
+                {guardianEditPageTranslations('unregister_text', {network: getChainName(chainId)})}.
               </>
             )}
           </>
@@ -244,7 +245,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       setOnDialogAccept(() => {
         return unregisterGuardian;
       });
-    }, [modalsTranslations, unregisterGuardian, orbsAccountStore]);
+    }, [modalsTranslations, unregisterGuardian, orbsAccountStore,chainId, guardianEditPageTranslations]);
 
     const [tabValue, setTabValue] = React.useState(TABS_IDS.info);
     const guardianDetails = (

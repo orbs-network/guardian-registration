@@ -11,9 +11,11 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import configs from "../../../configs";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   buttonChangeLangLink: {
+    cursor: 'pointer',
     "&:hover": {
       opacity: 0.8,
     },
@@ -37,10 +39,6 @@ function addLangToCurrentLocation(
   return locationWithProperLang;
 }
 
-function addLangToCurrentLocationBasic(lang: string, base = "") {
-  return `/${lang}`;
-}
-
 interface IProps {
   location: any;
   lang: string;
@@ -53,17 +51,17 @@ export const ChangeLangLink: React.FC<IProps> = ({
   ...others
 }) => {
   const classes = useStyles();
-  // TODO : FUTURE : O.L : Change this 'a' to 'Link'
+  const {i18n} = useTranslation()
+
   return (
-    // <a href={addLangToCurrentLocation(location, preLangBasename, lang)} {...others}>
-    //   {children}
-    // </a>
-    <Link
+  
+    <div
+    onClick={() => i18n.changeLanguage(lang)}
       className={classes.buttonChangeLangLink}
-      to={addLangToCurrentLocation(location, configs.urlBase, lang)}
+      // to={addLangToCurrentLocation(location, configs.urlBase, lang)}
       {...others}
     >
       {children}
-    </Link>
+    </div>
   );
 };

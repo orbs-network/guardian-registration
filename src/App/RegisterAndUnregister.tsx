@@ -7,6 +7,10 @@ import { REGISTER_CHAIN_PARAM, UNREGISTER_CHAIN_PARAM } from "../constants";
 import useGuardianActions from "../hooks/useGuardianActions";
 import LoadingModal from "../pages/GuardiandRegisterOrEdit/guardianRegister/LoadingModal";
 import { useOrbsAccountStore } from "../store/storeHooks";
+import {
+  useGuardianEditPageTranslations,
+  useRegisterGuardianSectionTranslations,
+} from "../translations/translationsHooks";
 import { getParamsFromUrl } from "../utils/utils";
 import { triggerNetworkChange } from "../utils/web3";
 
@@ -26,6 +30,9 @@ const RegisterAndUnregister = observer(() => {
   const { unregisterGuardian, registerGuardian } = useGuardianActions();
   const needToSwitchChain = chainId !== actionChain;
   const chainName = useMemo(() => getChainName(actionChain), [actionChain]);
+  const guardianEditPageTranslations = useGuardianEditPageTranslations();
+  const registerGuardianSectionTranslations =
+    useRegisterGuardianSectionTranslations();
 
   useEffect(() => {
     const unregisterChain = getParamsFromUrl(UNREGISTER_CHAIN_PARAM);
@@ -91,39 +98,64 @@ const RegisterAndUnregister = observer(() => {
           <>
             {needToSwitchChain ? (
               <>
-                You have successfully unregistered on {getChainName(chainId)}.{" "}
-                <br />
-                Proceed to unregistering on{" "}
-                {getChainName(orbsAccountStore.registeredChains[0])}.
+                {guardianEditPageTranslations(
+                  "you_have_successfully_unregistered_on",
+                  { network: getChainName(chainId) }
+                )}
+                . <br />
+                {guardianEditPageTranslations("proceed_to_unregistering_on", {
+                  network: getChainName(orbsAccountStore.registeredChains[0]),
+                })}
+                .
               </>
             ) : (
-              `Proceed to unregistering on ${getChainName(chainId)}.`
+              `${guardianEditPageTranslations("proceed_to_unregistering_on", {
+                network: getChainName(chainId),
+              })}.`
             )}
           </>
         }
         contentText=""
         instructionText=""
         open={showUnregisterPopup}
-        acceptText={needToSwitchChain ? `Switch to ${chainName}` : "Proceed"}
+        acceptText={
+          needToSwitchChain
+            ? `${guardianEditPageTranslations("switch_to", {
+                network: chainName,
+              })}`
+            : guardianEditPageTranslations("proceed")
+        }
         onAccept={onUnregisterAccept}
       />
       <ActionConfirmationModal
         title={
           needToSwitchChain ? (
             <>
-              You have successfully registered on {getChainName(chainId)}.{" "}
+              {guardianEditPageTranslations(
+                "you_have_successfully_unregistered_on",
+                { network: getChainName(chainId) }
+              )}
+              .
               <br />
-              Proceed to registering on{" "}
-              {getChainName(orbsAccountStore.unregisteredChains[0])}.
+              {registerGuardianSectionTranslations('proceed_registering_on', {network: getChainName(orbsAccountStore.unregisteredChains[0])})}
+              
             </>
           ) : (
-            `Proceed registering to ${getChainName(chainId)}.`
+            `${registerGuardianSectionTranslations("proceed_registering_on", {
+              network: getChainName(chainId),
+            })}.`
           )
         }
         contentText=""
         instructionText=""
         open={showRegisterPopup}
-        acceptText={needToSwitchChain ? `Switch to ${chainName}` : "Proceed"}
+        acceptText={
+          needToSwitchChain
+            ? `${guardianEditPageTranslations("switch_to", {
+                network: chainName,
+              })}`
+            : guardianEditPageTranslations("proceed")
+        }
         cancelText="no"
         onAccept={onRegisterClick}
       />
