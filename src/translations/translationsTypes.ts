@@ -72,9 +72,10 @@ export interface IRegisterGuardianSectionTranslations {
   text_pleaseNote: string;
   action_register: string;
   You_need_to_register_on_both: string;
-  this_transaction_will_register_you_on: string
+  this_transaction_will_register_you_on: string;
   proceed_registering_on: string;
   proceed: string;
+  you_have_successfully_registered_on: string;
 }
 
 export interface IDelegatingToAnotherAccountSectionTranslations {
@@ -135,7 +136,6 @@ export interface IGuardianEditPageTranslations {
   you_have_successfully_unregistered_on: string;
   switch_to: string;
   proceed: string;
- 
 }
 
 export interface IModalsTranslations {
@@ -162,4 +162,6 @@ export interface IModalsTranslations {
   errorMessage_guardianDetailsPageURL: string;
   errorMessage_unregister: string;
   successMessage_register: string;
+  transaction_pending: string;
+  close_window_warning: string;
 }

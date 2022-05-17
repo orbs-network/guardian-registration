@@ -21,6 +21,8 @@
   "successMessage_guardianDetailsPageURL": "가디언 상세정보 URL이 업데이트되었습니다",
   "successMessage_guardianInfo": "가디언 정보가 업데이트되었습니다",
   "successMessage_unregister": "등록해제가 완료되었습니다",
-  "successMessage_register": "Registered successfully"
+  "successMessage_register": "Registered successfully",
+  "transaction_pending":"트랜잭션이 확인 대기중 입니다",
+  "close_window_warning":"이 창을 닫지 말고 기다려주세요"
 
 }

@@ -7,8 +7,9 @@
   "title_yourGuardianAddressIs": "Your {{conceptGuardianName}} is",
   "You_need_to_register_on_both":"You need to register on both {{network1}} & {{network2}}",
   "this_transaction_will_register_you_on": "This transaction will register you on {{network}}",
-  "proceed_registering_on":"Proceed registering on {{network}}",
-  "proceed": "Proceed"
+  "proceed_registering_on":"Proceed registering on {{network}}.",
+  "proceed": "Proceed",
+  "you_have_successfully_registered_on":"You have successfully registered on {{network}}"
 
 
 }

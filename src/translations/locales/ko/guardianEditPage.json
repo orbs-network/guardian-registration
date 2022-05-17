@@ -8,10 +8,10 @@
   "tabHeader_guardianDetailsUrl": "가디언 정보 url",
   "tabHeader_info": "정보",
   "tabHeader_unregister": "등록해제",
-  "unregister_text": "This transaction will unregister you on {{network}}",
-  "you_are_registered_on_both": "You are registered on both {{network1}} & {{network2}}",
-  "you_have_successfully_unregistered_on": "You have successfully unregistered on {{network}}",
-  "proceed_to_unregistering_on": "Proceed to unregistering on {{network}}",
-  "switch_to": "Switch to {{network}}",
-  "proceed": "Proceed"
+  "unregister_text": "이 트랜잭션으로 {{network}}에 등록해제하게 됩니다",
+  "you_are_registered_on_both": "{{network1}}과 {{network2}} 양쪽에 모두 등록되었습니다",
+  "you_have_successfully_unregistered_on": "{{network}}에서 성공적으로 등록해제되었습니다",
+  "proceed_to_unregistering_on": "{{network}}에서 등록해제를 진행합니다",
+  "switch_to": "{{network}}으로 전환해주세요",
+  "proceed": "진행합니다"
 }

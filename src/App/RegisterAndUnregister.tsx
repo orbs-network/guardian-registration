@@ -131,8 +131,8 @@ const RegisterAndUnregister = observer(() => {
         title={
           needToSwitchChain ? (
             <>
-              {guardianEditPageTranslations(
-                "you_have_successfully_unregistered_on",
+              {registerGuardianSectionTranslations(
+                "you_have_successfully_registered_on",
                 { network: getChainName(chainId) }
               )}
               .
