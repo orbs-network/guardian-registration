@@ -137,7 +137,7 @@ const RegisterAndUnregister = observer(() => {
               )}
               .
               <br />
-              {registerGuardianSectionTranslations('proceed_registering_on', {network: getChainName(orbsAccountStore.unregisteredChains[0])})}
+              {registerGuardianSectionTranslations('proceed_registering_on', {network: getChainName(orbsAccountStore.unregisteredChains[0])})}.
               
             </>
           ) : (
