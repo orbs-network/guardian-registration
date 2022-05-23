@@ -20,5 +20,7 @@
   "successMessage_delegatorsShare": "Delegators share successfully updated",
   "successMessage_guardianDetailsPageURL": "Guardian details page URL updated",
   "successMessage_guardianInfo": "Guardian details successfully updated",
-  "successMessage_unregister": "Unregistered successfully"
+  "successMessage_unregister": "Unregistered successfully",
+  "successMessage_register": "Registered successfully"
+
 }

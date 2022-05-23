@@ -5,13 +5,14 @@ import { LegalTicker } from "./LegalTicker";
 import { DetailsList } from "../detailsList/Detailslist";
 import { BoldText } from "../texts/boldText";
 import { CountryLegalTicker } from "./CountryLegalTicker";
-import ActionButton from "@bit/orbs-network.commons.action-button";
+
 import {
   useAccountConnectionSectionTranslations,
   useDomainTranslations,
   useNoEthereumProviderSectionTranslations,
 } from "../../translations/translationsHooks";
 import { useGuardiansAddressDetailsTexts } from "../../pages/GuardianFormDetailsList";
+import ActionButton from "../shared/ActionButton";
 type TWalletConnectionPhase = "install" | "connect";
 const INSTALL_PHASE: TWalletConnectionPhase = "install";
 const CONNECT_PHASE: TWalletConnectionPhase = "connect";
@@ -28,11 +29,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    border: `1px solid ${theme.chain.mainColor}`,
     textAlign: "center",
     // justifyContent: "space-between",
     padding: "2em",
     backgroundColor: "rgba(0,0,0, 0.2)",
-    borderRadius: "5%",
+    borderRadius: "20px",
     // width: "clamp(20%, 40em, 100%)",
     width: "fit-content",
     maxWidth: "90%",

@@ -38,10 +38,9 @@ export const DetailsList = React.memo<
 >((props) => {
   const classes = useStyles();
   const { conceptName, details, caption, ...others } = props;
-
   return (
     <div className={classes.container} {...others}>
-      <Typography>
+      <Typography >
         <BoldText>{conceptName}:</BoldText>
       </Typography>
       <ul className={classes.textsList}>

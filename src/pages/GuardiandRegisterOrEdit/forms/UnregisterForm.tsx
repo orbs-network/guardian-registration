@@ -4,8 +4,8 @@ import { useBoolean } from "react-hanger";
 import { useForm } from "react-hook-form";
 import { Transition } from "react-spring/renderprops-universal";
 import { makeStyles } from "@material-ui/core/styles";
-import ActionButton from "@bit/orbs-network.commons.action-button";
 import { useGuardianEditPageTranslations } from "../../../translations/translationsHooks";
+import ActionButton from "../../../components/shared/ActionButton";
 
 interface IProps {
   unregisterGuardian: () => void;

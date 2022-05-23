@@ -92,9 +92,11 @@ export const Footer = React.memo<IProps>((props) => {
             <InTextLink
               text={commonsTranslations("termsOfUse")}
               href={configs.termsOfUseUrl}
+              target='_blank'
               style={{ paddingInlineEnd: "1em", justifySelf: "center" }}
             />
             <InTextLink
+            target='_blank'
               href={configs.privacyPolicyUrl}
               text={commonsTranslations("privacyPolicy")}
             />

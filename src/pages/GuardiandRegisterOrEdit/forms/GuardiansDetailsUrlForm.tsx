@@ -1,19 +1,19 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Button, TextField, Typography } from "@material-ui/core";
+import React, { useCallback, useEffect } from "react";
+import {  TextField, Typography } from "@material-ui/core";
 import { useStateful, useBoolean } from "react-hanger";
 import { useForm } from "react-hook-form";
-import { config, Transition } from "react-spring/renderprops-universal";
-import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { InTextLink } from "../../../components/InTextLink";
 import { validURL } from "./inoputValidators";
-import ActionButton from "@bit/orbs-network.commons.action-button";
+import useTheme from "@material-ui/core/styles/useTheme";
+
 import {
   useDomainTranslations,
   useGuardianDataFormsTranslations,
   useGuardianEditPageTranslations,
 } from "../../../translations/translationsHooks";
 import { renderToString } from "react-dom/server";
-import { baseTheme } from "../../../theme/Theme";
+import ActionButton from "../../../components/shared/ActionButton";
 
 interface IProps {
   currentGuardianDetailsUrl?: string;
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
   const classes = useStyles();
+  const theme = useTheme()
   const {
     currentGuardianDetailsUrl,
     updateGuardianDetailsUrl,
@@ -53,17 +54,17 @@ export const GuardiansDetailsUrlForm = React.memo<IProps>((props) => {
     <Typography
       component={"span"}
       variant={"caption"}
+     
       dangerouslySetInnerHTML={{
         __html: guardianDataFormsTranslations(
           "fieldExplanation_certifiedCommittee",
           {
             certifiedCommitteeLink: renderToString(
-              <ThemeProvider theme={baseTheme}>
-                <InTextLink
-                  text={domainTranslations("conceptName_certifiedCommittee")}
-                  href={detailsRequirementsLink}
-                />
-              </ThemeProvider>
+              <InTextLink
+                style={{color: theme.palette.text.primary}}
+                text={domainTranslations("conceptName_certifiedCommittee")}
+                href={detailsRequirementsLink}
+              />
             ),
           }
         ),

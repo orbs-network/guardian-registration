@@ -11,7 +11,7 @@ interface IProps {
 const useStyles = makeStyles((theme) => ({
   link: {
     transition: "0.5s",
-    color: theme.palette.secondary.light,
+    color: theme.palette.secondary.main,
     "&:hover": {
       color: theme.palette.secondary.dark,
     },

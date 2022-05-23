@@ -150,4 +150,5 @@ export interface IModalsTranslations {
   errorMessage_delegatorsShare: string;
   errorMessage_guardianDetailsPageURL: string;
   errorMessage_unregister: string;
+  successMessage_register: string;
 }

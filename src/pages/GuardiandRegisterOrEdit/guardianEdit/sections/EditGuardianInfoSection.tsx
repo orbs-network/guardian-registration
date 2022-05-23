@@ -10,13 +10,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import { Transition } from "react-spring/renderprops-universal";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
-import { GuardianDetails } from "../GuardianDetails";
-import ActionButton from "@bit/orbs-network.commons.action-button";
 import { useBoolean } from "react-hanger";
 import {
   useGuardianDataFormsTranslations,
   useGuardianEditPageTranslations,
 } from "../../../../translations/translationsHooks";
+import ActionButton from "../../../../components/shared/ActionButton";
 
 interface IProps {
   guardianAddress: string;

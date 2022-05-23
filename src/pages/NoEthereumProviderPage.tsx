@@ -7,11 +7,8 @@ import { Background } from "../components/structure/Background";
 import { Header } from "../components/structure/Header";
 import { Page } from "../components/structure/Page";
 import { makeStyles } from "@material-ui/core/styles";
-import { useNoEthereumProviderSectionTranslations } from "../translations/translationsHooks";
 
-type TWalletConnectionPhase = "install" | "connect";
 
-interface IProps {}
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -26,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const NoEthereumProviderPage = React.memo<IProps>((props) => {
+export const NoEthereumProviderPage = () => {
   const classes = useStyles();
   const hasPressed = useBoolean(false);
 
@@ -51,4 +48,4 @@ export const NoEthereumProviderPage = React.memo<IProps>((props) => {
       </main>
     </>
   );
-});
+}

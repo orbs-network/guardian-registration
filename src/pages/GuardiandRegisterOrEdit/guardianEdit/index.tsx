@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   titleHighlight: {
-    color: theme.palette.secondary.light,
+    color: theme.palette.secondary.main,
   },
   titleFade: {
     color: theme.palette.text.disabled,
@@ -53,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const GuardianDetails = React.memo<IProps & PaperProps>((props) => {
-  const classes = useStyles();
   const {
     guardianAddress,
     guardianInfo,

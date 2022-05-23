@@ -1,18 +1,22 @@
-import React from "react";
+import { useContext, useMemo } from "react";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { HEADER_HEIGHT_REM } from "../../theme/Theme";
 import { useHeaderTranslations } from "../../translations/translationsHooks";
 import { LanguagesSelector } from "./languageSelector/LanguagesSelector";
-
-interface IProps {}
+import NetworkIndicator from "../NetworkIndicator";
+import { MobXProviderContext } from "mobx-react";
+import configs from "../../configs";
+import useTheme from "@material-ui/core/styles/useTheme";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
     height: `${HEADER_HEIGHT_REM}rem`,
-    paddingTop: "0.5rem",
-    paddingBottom: "0.5rem",
     boxSizing: "border-box",
+  },
+  toolBar: {
+    height: "100%",
+    position: "relative",
   },
   title: {
     flexGrow: 1,
@@ -20,25 +24,58 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "1em",
     marginBottom: "1em",
   },
-  languageBar: {},
+  languageBar: {
+    position: "relative",
+  },
+  networkBg: {
+    overflow: "hidden",
+    height: "100%",
+    width:'100%',
+    position: "absolute",
+    top:0,
+    right: 0,
+    "& img": {
+      transform: "translate(0, -50%) scale(1)",
+      position: "absolute",
+      right: "0",
+      top: "50%",
+    },
+  },
 }));
 
-export const Header = React.memo<IProps>((props) => {
+const getNavImage = (chainId?: number) => {
+  const network = chainId && configs.networks[chainId];
+  if (!network) {
+    return;
+  }
+  return network.nav;
+};
+
+export const Header = () => {
   const classes = useStyles();
+  const theme = useTheme()
   const headerTranslations = useHeaderTranslations();
+  const { chainId } = useContext(MobXProviderContext);
+  const navImage = useMemo(() => getNavImage(chainId), [chainId]);
 
   return (
     <AppBar className={classes.appBar} position={"fixed"}>
-      <Toolbar>
+      <Toolbar className={classes.toolBar}>
+        {navImage && (
+          <div className={classes.networkBg}>
+            <img src={navImage} />
+          </div>
+        )}
         <div className={classes.title}>
-          <Typography variant="h5">
+          <Typography style={{color: theme.palette.text.primary }} variant="h5">
             {headerTranslations("title_appName")}
           </Typography>
         </div>
         <div className={classes.languageBar}>
+          <NetworkIndicator chainId={chainId} />
           <LanguagesSelector />
         </div>
       </Toolbar>
     </AppBar>
   );
-});
+};
