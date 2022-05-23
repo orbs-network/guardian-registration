@@ -49,7 +49,6 @@ const HideOnScroll = React.memo((props) => {
 
   const trigger = useScrollTrigger();
 
-  console.log(trigger);
 
   return (
     <Slide appear={false} direction="up" in={trigger}>
