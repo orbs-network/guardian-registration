@@ -33,6 +33,7 @@ export interface INetwork {
   contractsRegistry: string;
 }
 
+export const REQUIRED_CHAINS = [1, 3]
 
 const networks: { [key: string]: INetwork } = {
   "1": {

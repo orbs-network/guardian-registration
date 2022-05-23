@@ -5,7 +5,7 @@
   "text_pleaseNote": "Please Notice",
   "title_guardianRegistration": "Guardian Registration",
   "title_yourGuardianAddressIs": "Your {{conceptGuardianName}} is",
-  "You_need_to_register_on_both":"You need to register on both {{network1}} & {{network2}}",
+  "You_need_to_register_on_both":"You must register on {{requiredNetwork}}. \n {{optionalNetwork}} is optional but failing to register will not allow delegation on {{optionalNetwork}}",
   "this_transaction_will_register_you_on": "This transaction will register you on {{network}}",
   "proceed_registering_on":"Proceed registering on {{network}}",
   "proceed": "Proceed",

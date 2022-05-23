@@ -16,7 +16,7 @@ import {
 } from "../../../translations/translationsHooks";
 import { renderToString } from "react-dom/server";
 import { MobXProviderContext } from "mobx-react";
-import { getChainName, getChainNames } from "../../../utils/chain";
+import { getChainName, getChainNames, getOptionalChainName, getRequiredChainName } from "../../../utils/chain";
 import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
 import { useOrbsAccountStore } from "../../../store/storeHooks";
 
@@ -168,7 +168,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
           <>
             {`${registerGuardianSectionTranslations(
               "You_need_to_register_on_both",
-              { network1: names[0], network2: names[1] }
+              { requiredNetwork: getRequiredChainName(orbsAccountStore.unregisteredChains), optionalNetwork: getOptionalChainName(orbsAccountStore.unregisteredChains) }
             )}`}
             .
             <br />

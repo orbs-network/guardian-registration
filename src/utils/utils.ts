@@ -1,3 +1,5 @@
+import configs, { REQUIRED_CHAINS } from "../configs";
+
 export const ipvHexToV4 = (ipHex: string) => {
   const withoutPrefix = ipHex.slice(2);
 
@@ -26,10 +28,10 @@ export const ipv4ToHex = (ipv4: string) => {
 
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-
 export const getParamsFromUrl = (name: string) => {
   const query = new URLSearchParams(window.location.search);
-  return query.get(name)
-}
+  return query.get(name);
+};
+
 
 

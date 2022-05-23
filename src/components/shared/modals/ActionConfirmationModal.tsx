@@ -66,10 +66,12 @@ export const ActionConfirmationModal = React.memo<IProps>((props) => {
       open={open}
       onClose={onCancel}
       aria-labelledby="action-confirmation-dialog"
-      maxWidth={"xs"}
-      style={{}}
+     
+      PaperProps={{
+        style: {maxWidth:'750px'}
+      }}
     >
-      <DialogTitle id="action-confirmation-dialog-title">{title}</DialogTitle>
+      <DialogTitle style={{whiteSpace: 'pre-line'}} id="action-confirmation-dialog-title">{title}</DialogTitle>
       {contentText && (
         <DialogContent>
           <DialogContentText>{contentText}</DialogContentText>

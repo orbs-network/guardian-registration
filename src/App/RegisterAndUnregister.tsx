@@ -2,24 +2,21 @@ import { MobXProviderContext, observer } from "mobx-react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { ActionConfirmationModal } from "../components/shared/modals/ActionConfirmationModal";
-import configs from "../configs";
+import configs, { REQUIRED_CHAINS } from "../configs";
 import { REGISTER_CHAIN_PARAM, UNREGISTER_CHAIN_PARAM } from "../constants";
 import useGuardianActions from "../hooks/useGuardianActions";
 import LoadingModal from "../pages/GuardiandRegisterOrEdit/guardianRegister/LoadingModal";
 import { useOrbsAccountStore } from "../store/storeHooks";
 import {
   useGuardianEditPageTranslations,
+  useModalsTranslations,
   useRegisterGuardianSectionTranslations,
 } from "../translations/translationsHooks";
+import { getChainName, isOptionalChain } from "../utils/chain";
 import { getParamsFromUrl } from "../utils/utils";
 import { triggerNetworkChange } from "../utils/web3";
 
-const getChainName = (chain?: string | number) => {
-  if (!chain) {
-    return;
-  }
-  return configs.networks[chain].name;
-};
+
 
 const RegisterAndUnregister = observer(() => {
   const { chainId } = useContext(MobXProviderContext);
@@ -33,6 +30,7 @@ const RegisterAndUnregister = observer(() => {
   const guardianEditPageTranslations = useGuardianEditPageTranslations();
   const registerGuardianSectionTranslations =
     useRegisterGuardianSectionTranslations();
+  const modalText = useModalsTranslations()
 
   useEffect(() => {
     const unregisterChain = getParamsFromUrl(UNREGISTER_CHAIN_PARAM);
@@ -86,6 +84,12 @@ const RegisterAndUnregister = observer(() => {
       registerGuardian(data, () => setShowRegisterPopup(false));
     }
   };
+
+
+  const cancelRegistration = () => {
+    window.history.replaceState(null, "/", window.location.pathname);
+    setShowRegisterPopup(false)
+  }
 
   return (
     <>
@@ -149,6 +153,7 @@ const RegisterAndUnregister = observer(() => {
         contentText=""
         instructionText=""
         open={showRegisterPopup}
+        onCancel={isOptionalChain(orbsAccountStore.unregisteredChains[0]) ? cancelRegistration  :   undefined}
         acceptText={
           needToSwitchChain
             ? `${guardianEditPageTranslations("switch_to", {
@@ -156,7 +161,7 @@ const RegisterAndUnregister = observer(() => {
               })}`
             : guardianEditPageTranslations("proceed")
         }
-        cancelText="no"
+        cancelText={modalText('cancelText_default')}
         onAccept={onRegisterClick}
       />
     </>
