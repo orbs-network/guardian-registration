@@ -132,7 +132,7 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
     {
       conceptGuardianName: renderToString(
         <span className={classes.boldText}>
-          {domainTranslations("conceptName_guardianName")}
+          {domainTranslations("conceptName_guardianAddress")}
         </span>
       ),
     }
