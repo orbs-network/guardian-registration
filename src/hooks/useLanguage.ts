@@ -11,6 +11,8 @@ function updateLanguage(lang: string) {
     console.log("Updating with " + lang);
     i18n.changeLanguage(lang);
   }
+
+  
 function useLanguage() {
   const location = useLocation();
   const forcedLang = getForcedLanguage(location.pathname);

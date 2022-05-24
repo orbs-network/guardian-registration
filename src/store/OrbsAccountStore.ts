@@ -20,6 +20,8 @@ import {
   IDelegationsService,
 } from "@orbs-network/contracts-js";
 import transactionService from "../services/TransactionService";
+import { checkIfRegisteredByChain } from "./utils";
+import { IRegistrationByChain } from "../types";
 
 export type TGuardianInfo = {
   ip: string;
@@ -60,7 +62,7 @@ export class OrbsAccountStore {
   @observable public doneLoading = false;
   @observable public errorLoading = false;
   @observable public txPending = false;
-
+  @observable public registrationStatusByChain: IRegistrationByChain[] = [];
   @observable public txHadError = false;
   @observable public txCanceled = false;
   @observable public isGuardian = false;
@@ -121,6 +123,20 @@ export class OrbsAccountStore {
 
   @computed public get hasGuardianDetailsURL(): boolean {
     return !!this.detailsPageUrl;
+  }
+
+  @computed public get registeredChains(): number[] {
+
+    return this.registrationStatusByChain
+      .filter((m) => m.isRegistered)
+      .map((m) => m.chain);
+  }
+
+
+  @computed public get unregisteredChains(): number[] {
+    return this.registrationStatusByChain
+      .filter((m) => !m.isRegistered)
+      .map((m) => m.chain);
   }
 
   /**
@@ -325,6 +341,12 @@ export class OrbsAccountStore {
   }
 
   private async readDataForAccount(accountAddress: string) {
+    const res = await checkIfRegisteredByChain(accountAddress);    
+    if(res){
+      this.setRegistrationStatusByChain(res)
+    }
+   
+
     // DEV_NOTE: We wait to check if this account is a Guardian because it
     //           Affects on whether we need to read more data or not.
     try {
@@ -369,6 +391,7 @@ export class OrbsAccountStore {
     const isGuardian = await this.guardiansService.isRegisteredGuardian(
       accountAddress
     );
+
     this.setIsGuardian(isGuardian);
   }
 
@@ -490,6 +513,11 @@ export class OrbsAccountStore {
   @action("setTxPending")
   private setTxPending(txPending: boolean) {
     this.txPending = txPending;
+  }
+
+  @action("setRegistrationStatusByChain")
+  private setRegistrationStatusByChain(value: IRegistrationByChain[]) {
+    this.registrationStatusByChain = value;
   }
 
   @action("setTxCanceled")

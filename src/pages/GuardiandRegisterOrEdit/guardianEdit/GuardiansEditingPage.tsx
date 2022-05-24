@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, ReactNode, useContext } from "react";
 import { Page } from "../../../components/structure/Page";
 import { ContentFitting } from "../../../components/structure/ContentFitting";
 import { Box, Tab, Tabs } from "@material-ui/core";
@@ -8,7 +8,7 @@ import {
 } from "../../../store/storeHooks";
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
-import { observer } from "mobx-react";
+import { MobXProviderContext, observer } from "mobx-react";
 import { TGuardianUpdatePayload } from "@orbs-network/contracts-js";
 import { DETAILS_REQUIREMENTS_LINK } from "./sections/EditDelegatorsCertificateSection";
 import useTheme from "@material-ui/core/styles/useTheme";
@@ -27,6 +27,10 @@ import {
 import LoadingModal from "../guardianRegister/LoadingModal";
 import { createTxBlockExplorerLink } from "../../../utils/web3";
 import { useNetwork } from "../../../hooks/useWeb3";
+import { useHistory } from "react-router-dom";
+import { UNREGISTER_CHAIN_PARAM } from "../../../constants";
+import useGuardianActions from "../../../hooks/useGuardianActions";
+import { getChainName, getChainNames } from "../../../utils/chain";
 
 interface IProps {}
 
@@ -66,6 +70,8 @@ const TABS_IDS = {
   unregister: "unregister",
 };
 
+
+
 export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
   (props) => {
     const classes = useStyles();
@@ -75,8 +81,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
     const orbsAccountStore = useOrbsAccountStore();
     const modalsTranslations = useModalsTranslations();
-
+    const { unregisterGuardian } = useGuardianActions();
     const guardianEditPageTranslations = useGuardianEditPageTranslations();
+    const {chainId} = useContext(MobXProviderContext)
 
     // TODO : ORL : The whole modal logic is duplicated from 'Subscription UI' - Unite them properly
     const [showModal, setShowModal] = useState(false);
@@ -86,8 +93,9 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
     const chain = useNetwork();
     const [dialogTexts, setDialogTexts] = useState<{
       title: string;
-      content?: string;
+      content?: string | ReactNode;
       instruction?: string;
+
       acceptText?: string;
       cancelText?: string;
       onCancelMessage?: string;
@@ -211,36 +219,33 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
       [enqueueSnackbar, modalsTranslations, orbsAccountStore]
     );
 
-    const unregisterGuardian = useCallback(async () => {
+    const unregisterGuardianClick = useCallback(async () => {
+      const names = getChainNames(orbsAccountStore.registeredChains)
       setDialogTexts({
         title: modalsTranslations("modalTitle_unregister"),
-        content: modalsTranslations("modalContent_unregister"),
+        content: (
+          <>
+            {modalsTranslations("modalContent_unregister")}
+            {orbsAccountStore.registeredChains.length > 1 && (
+              <>
+                <br />
+                <br />
+                {guardianEditPageTranslations('you_are_registered_on_both', {network1: names[0],  network2:names[1]})}.
+                <br />
+                {guardianEditPageTranslations('unregister_text', {network: getChainName(chainId)})}.
+              </>
+            )}
+          </>
+        ),
         instruction: modalsTranslations("modalInstruction_unregister"),
         acceptText: modalsTranslations("acceptText_yes"),
         onCancelMessage: modalsTranslations("actionCanceled_default"),
       });
       setShowModal(true);
-      setOnDialogAccept(() => async () => {
-        try {
-          const txRes = await orbsAccountStore.unregisterGuardian();
-
-          if (txRes) {
-            enqueueSnackbar(modalsTranslations("successMessage_unregister"), {
-              variant: "success",
-            });
-          }
-        } catch (e: any) {
-          enqueueSnackbar(
-            modalsTranslations("errorMessage_unregister", {
-              errorMessage: e.message,
-            }),
-            {
-              variant: "error",
-            }
-          );
-        }
+      setOnDialogAccept(() => {
+        return unregisterGuardian;
       });
-    }, [enqueueSnackbar, modalsTranslations, orbsAccountStore]);
+    }, [modalsTranslations, unregisterGuardian, orbsAccountStore,chainId, guardianEditPageTranslations]);
 
     const [tabValue, setTabValue] = React.useState(TABS_IDS.info);
     const guardianDetails = (
@@ -420,7 +425,7 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
               index={TABS_IDS.unregister}
               dir={theme.direction}
             >
-              <UnregisterForm unregisterGuardian={unregisterGuardian} />
+              <UnregisterForm unregisterGuardian={unregisterGuardianClick} />
             </TabPanel>
           </div>
 
@@ -447,11 +452,8 @@ export const GuardianEditingPage = observer<React.FunctionComponent<IProps>>(
             }}
           />
 
-          {orbsAccountStore.txPending &&  (
-            <LoadingModal
-            chain = {chain}
-            txHash = {orbsAccountStore.txHash}
-            />
+          {orbsAccountStore.txPending && (
+            <LoadingModal chain={chain} txHash={orbsAccountStore.txHash} />
           )}
         </ContentFitting>
       </Page>

@@ -4,5 +4,11 @@
   "error_nodeAddressCannotBeTheSameAsGuardianAddress": "노드주소는 가디언 주소({{guardianAddress}})를 같이 사용할 수 없습니다",
   "text_pleaseNote": "주의사항: ",
   "title_guardianRegistration": "가디언 등록",
+
+  "You_need_to_register_on_both":"{{requiredNetwork}} 등록은 필수이며 \n {{optionalNetwork}} 등록은 선택이지만 등록하지 않는다면 {optionalNetwork}}에서는 위임받을 수 없습니다.",
+  "this_transaction_will_register_you_on": "이 트랜잭션으로 {{network}}에 등록하게 됩니다",
+  "proceed_registering_on":"{{network}}에 등록진행합니다",
+  "proceed": "진행합니다",
+  "you_have_successfully_registered_on":"{{network}}에 성공적으로 등록되었습니다",
   "title_yourGuardianAddressIs": "등록하실 {{conceptGuardianName}}:"
 }

@@ -63,7 +63,7 @@ export const Header = () => {
       <Toolbar className={classes.toolBar}>
         {navImage && (
           <div className={classes.networkBg}>
-            <img src={navImage} />
+            <img alt='' src={navImage} />
           </div>
         )}
         <div className={classes.title}>

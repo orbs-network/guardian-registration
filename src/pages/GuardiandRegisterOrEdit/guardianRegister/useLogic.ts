@@ -1,6 +1,7 @@
 import { TGuardianRegistrationPayload } from "@orbs-network/contracts-js";
 import { useSnackbar } from "notistack";
 import { useCallback } from "react";
+import useGuardianActions from "../../../hooks/useGuardianActions";
 import { useNetwork } from "../../../hooks/useWeb3";
 import { useCryptoWalletConnectionService } from "../../../services/servicesHooks";
 import {
@@ -15,30 +16,7 @@ function useLogic() {
   const cryptoWalletIntegrationStore = useCryptoWalletIntegrationStore();
   const orbsAccountStore = useOrbsAccountStore();
   const chain = useNetwork();
-  const modalsTranslations = useModalsTranslations();
-  const registerGuardian = useCallback(
-    async (guardianRegistrationPayload: TGuardianRegistrationPayload) => {
-      try {
-        const txRes = await orbsAccountStore.registerGuardian(
-          guardianRegistrationPayload
-        );
-        if (txRes) {
-          enqueueSnackbar(
-            modalsTranslations("successMessage_register"),
-            {
-              variant: "success",
-            }
-          );
-        }
-      } catch (e: any) {
-        enqueueSnackbar(`Error in 'Guardian Registration' TX ${e.message}`, {
-          variant: "error",
-        });
-      }
-    },
-    [enqueueSnackbar, modalsTranslations, orbsAccountStore]
-  );
-
+  const {registerGuardian} = useGuardianActions()
   const unDelegate = useCallback(async () => {
     try {
       await orbsAccountStore.unDelegateCurrentDelegation();

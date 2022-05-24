@@ -1,5 +1,5 @@
-import {  Provider } from "mobx-react";
-import  { ReactNode,  useMemo } from "react";
+import { Provider } from "mobx-react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import init from "./hepler";
 
 interface Props {
@@ -7,16 +7,34 @@ interface Props {
   chain?: string;
 }
 
-function MobxProvider({children, chain}: Props) {
-  const res = useMemo(() => init(chain), [chain]);
+function MobxProvider({ children, chain }: Props) {
+  const [stores, setStores] = useState<any>(null);
+  const [services, setServices] = useState<any>(null);
 
-  if(!chain || !res){
-    return null
+
+  const onChain = useCallback(async (chain: string) => {
+    const res = await init(chain);
+    setServices(res?.services);
+    setStores(res?.stores);
+  }, []);
+
+
+  useEffect(() => {
+    if (chain) {
+      onChain(chain);
+    }
+  }, [chain, onChain]);
+
+
+  if (!stores || !services) {
+    return null;
   }
-  
-  const { services, stores } = res;
 
-  return <Provider {...stores} {...services} chainId={chain}>{children}</Provider>;
+  return (
+    <Provider {...stores} {...services} chainId={chain}>
+      {children}
+    </Provider>
+  );
 }
 
 export default MobxProvider;

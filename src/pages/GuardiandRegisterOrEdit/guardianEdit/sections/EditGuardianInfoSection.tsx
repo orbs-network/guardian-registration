@@ -47,7 +47,6 @@ export const EditGuardianInfoSection = React.memo<IProps>((props) => {
 
   const isEditingData = useBoolean(false);
 
-  console.log({ isEditingData: isEditingData.value });
   const { lastUpdateTime, registrationTime } = guardianContractInteractionTimes;
   const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
   const guardianEditPageTranslations = useGuardianEditPageTranslations();

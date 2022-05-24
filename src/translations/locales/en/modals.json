@@ -21,6 +21,8 @@
   "successMessage_guardianDetailsPageURL": "Guardian details page URL updated",
   "successMessage_guardianInfo": "Guardian details successfully updated",
   "successMessage_unregister": "Unregistered successfully",
-  "successMessage_register": "Registered successfully"
+  "successMessage_register": "Registered successfully",
+  "transaction_pending":"Transaction Pending",
+  "close_window_warning":"Don't close the window"
 
 }

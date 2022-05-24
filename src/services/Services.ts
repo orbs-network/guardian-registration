@@ -11,6 +11,7 @@ import {
   IDelegationsService,
   DelegationsService,
 } from "@orbs-network/contracts-js";
+import ContractRegistry from "../contracts/contract-registry";
 
 export interface IServices {
   cryptoWalletIntegrationService: ICryptoWalletConnectionService;
@@ -20,7 +21,10 @@ export interface IServices {
 }
 
 // DEV_NOTE : For simplicity of early stage dev, we assume that we have ethereum provider, if not, we will not initialize the services.
-export function buildServices(ethereumProvider: IEthereumProvider, network: INetwork): IServices {
+export async function buildServices(
+  ethereumProvider: IEthereumProvider,
+  network: INetwork
+): Promise<IServices> {
   let web3: Web3;
 
   if (ethereumProvider) {
@@ -31,24 +35,31 @@ export function buildServices(ethereumProvider: IEthereumProvider, network: INet
     );
   }
 
+  const getContracts = () => {
+    const contractRegistry = new ContractRegistry(
+      web3,
+      network.contractsRegistry
+    );
+    return contractRegistry.getContracts();
+  };
+
+  const contracts = await getContracts();
   
-
-
   return {
     cryptoWalletIntegrationService: new CryptoWalletConnectionService(
       ethereumProvider
     ),
     guardiansService: new GuardiansService(
       web3,
-      network?.addresses?.guardiansRegistration
+      contracts.guardiansRegistration
     ),
     stakingRewardsService: new StakingRewardsService(
       web3,
-      network?.addresses?.stakingRewards
+      contracts.stakingRewards
     ),
     delegationsService: new DelegationsService(
       web3,
-      network?.addresses?.delegations
+      contracts.delegations
     ),
   };
 }

@@ -4,5 +4,14 @@
   "error_nodeAddressCannotBeTheSameAsGuardianAddress": "Orbsノードアドレスとガーディアンのアドレス{{guardianAddress}}は同じにすることはできません",
   "text_pleaseNote": "ご注意ください",
   "title_guardianRegistration": "ガーディアン登録",
-  "title_yourGuardianAddressIs": "あなたの{{conceptGuardianName}}は"
+  "title_yourGuardianAddressIs": "あなたの{{conceptGuardianName}}は",
+  "You_need_to_register_on_both":"You must register on {{requiredNetwork}}. \n {{optionalNetwork}} is optional but failing to register will not allow delegation on {{optionalNetwork}}",
+  "this_transaction_will_register_you_on": "このトランザクションでは{{network}}での登録を実行します。",
+  "proceed_registering_on":"{{network}}への登録に進みます。",
+  "proceed": "続行します。",
+  "you_have_successfully_registered_on":"{{network}}への登録に成功しました。"
+
+
+
+
 }

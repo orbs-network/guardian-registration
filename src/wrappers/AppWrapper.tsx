@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const AppWrapper = () => {
-  useLanguage();
+  //  useLanguage();
   const classes = useStyles();
 
   if (!(window as any).ethereum) {

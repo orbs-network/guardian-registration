@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core";
 import { createTxBlockExplorerLink } from "../../../utils/web3";
 import Link from "@material-ui/core/Link";
 import LaunchIcon from "@material-ui/icons/Launch";
+import { useModalsTranslations } from "../../../translations/translationsHooks";
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -46,12 +47,13 @@ interface Props {
 
 function LoadingModal({ chain, txHash }: Props) {
   const classes = useStyles();
+  const modalTranslations = useModalsTranslations()
   return (
     <Modal>
       <div className={classes.container}>
         <section className={classes.header}>
           {" "}
-          <h4 className={classes.title}>Transaction Pending</h4>
+          <h4 className={classes.title}>{modalTranslations('transaction_pending')}</h4>
           {txHash && (
             <Link
               className={classes.link}
@@ -64,7 +66,7 @@ function LoadingModal({ chain, txHash }: Props) {
           )}
         </section>
 
-        <p className={classes.subTitle}>Don't close the window</p>
+        <p className={classes.subTitle}>{modalTranslations('close_window_warning')}</p>
         <CircularProgress className={classes.spinner} size={50} />
       </div>
     </Modal>

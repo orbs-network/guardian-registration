@@ -7,5 +7,13 @@
   "tabHeader_editInfo": "情報を編集",
   "tabHeader_guardianDetailsUrl": "ガーディアンの詳細URL",
   "tabHeader_info": "情報",
-  "tabHeader_unregister": "未登録"
+  "tabHeader_unregister": "未登録",
+  "unregister_text": "このトランザクションにより、{{network}}の登録が解除されます。",
+  "you_are_registered_on_both": "{{network1}}と{{network2}}の両方に登録されています",
+  "you_have_successfully_unregistered_on": "{{network}} への登録に成功しました。",
+  "proceed_to_unregistering_on": "{{network}} での登録解除に進みます。",
+  "switch_to":"{{network}}に切り替えます。",
+  "proceed": "続行します。"
+
+
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   Button,
   Dialog,
@@ -6,8 +6,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Typography,
-  useMediaQuery,
   useTheme,
 } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -18,11 +16,11 @@ interface IProps {
   open: boolean;
   // handleClose: () => void;
   onAccept: () => void;
-  onCancel: () => void;
+  onCancel?: () => void;
 
   // Content
-  title: string;
-  contentText?: string;
+  title: string | ReactNode;
+  contentText?: string | ReactNode;
   instructionText?: string;
   acceptText?: string;
   cancelText?: string;
@@ -68,32 +66,34 @@ export const ActionConfirmationModal = React.memo<IProps>((props) => {
       open={open}
       onClose={onCancel}
       aria-labelledby="action-confirmation-dialog"
-      maxWidth={"xs"}
-      style={{}}
+     
+      PaperProps={{
+        style: {maxWidth:'750px'}
+      }}
     >
-      <DialogTitle id="action-confirmation-dialog-title">{title}</DialogTitle>
+      <DialogTitle style={{whiteSpace: 'pre-line'}} id="action-confirmation-dialog-title">{title}</DialogTitle>
       {contentText && (
         <DialogContent>
-          <DialogContentText>
-            <Typography>{contentText}</Typography>
-          </DialogContentText>
+          <DialogContentText>{contentText}</DialogContentText>
         </DialogContent>
       )}
       <DialogContent>
-        <DialogContentText>
-          <Typography variant={"body2"}>{instructionText}</Typography>
+        <DialogContentText variant={"body2"}>
+          {instructionText}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button
-          className={classes.button}
-          autoFocus
-          onClick={onCancel}
-          color="secondary"
-          variant={"contained"}
-        >
-          {cancelText || modalsTranslations("cancelText_default")}
-        </Button>
+        {onCancel && (
+          <Button
+            className={classes.button}
+            autoFocus
+            onClick={onCancel}
+            color="secondary"
+            variant={"contained"}
+          >
+            {cancelText || modalsTranslations("cancelText_default")}
+          </Button>
+        )}
         <Button
           className={classes.button}
           onClick={onAccept}

@@ -10,15 +10,13 @@ import {  I18nextProvider } from "react-i18next";
 import {  StylesProvider } from "@material-ui/styles";
 
 ReactDOM.render(
-  <React.StrictMode>
     <Router>
       <I18nextProvider i18n={i18n}>
         <StylesProvider injectFirst>
             <AppWrapper />
         </StylesProvider>
       </I18nextProvider>
-    </Router>
-  </React.StrictMode>,
+    </Router>,
   document.getElementById("root")
 );
 
