@@ -25,7 +25,7 @@
   "fieldTooltipTitle_delegatorsShare": "$t(domain.conceptName_delegatorsShare) ($t(domain.conceptExplanation_delegatorsShare))",
   "fieldTooltipTitle_guardianName": "커뮤니티에 공개되는 가디언의 이름",
   "fieldTooltipTitle_guardianWebsite": "델리게이터가 가디언 정보를 확인할 때 참고할 홈페이지",
-  "fieldTooltipTitle_nodeEthereumAddress": "{{GuardianAddress}}와 같은 주소는 사용할 수 없습니다",
+  "fieldTooltipTitle_nodeEthereumAddress": "{{GuardianAddress}}와 동일한 주소는 사용할 수 없습니다",
   "fieldTooltipTitle_nodeIpAddress": "노드가 올바르게 네트워크와 연결되려면 올바른 IPv4 주소를 입력해야합니다.",
   "fieldValueNote_certifiedCommittee": "인증 위원회",
   "fieldValueNote_usingDefaultValue": "기본값 사용",
