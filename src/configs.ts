@@ -41,7 +41,7 @@ const networks: { [key: string]: INetwork } = {
     logo: ethImg,
     nav: ethereumNavImg,
     nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
-    rpcUrls: ["https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
+    rpcUrls: ["https://rpcman.orbs.network/rpc?chainId=1&appId=guardian-registration&key=943b6d32040df8de03ff37b6ed4125cd98fee2ac"],
     blockExplorerUrls: ["https://etherscan.io"],
     color: "#03FCF5",
     contractsRegistry: "0xD859701C81119aB12A1e62AF6270aD2AE05c7AB3",
