@@ -62,7 +62,7 @@ const networks: { [key: string]: INetwork } = {
     logo: polygonImg,
     nav: polygonNavImg,
     nativeCurrency: { name: "MATIC", symbol: "MATIC", decimals: 18 },
-    rpcUrls: ["https://polygon-rpc.com"],
+    rpcUrls: ["https://rpcman.orbs.network/rpc?chainId=137&appId=guardian-registration&key=943b6d32040df8de03ff37b6ed4125cd98fee2ac"],
     blockExplorerUrls: ["https://www.polygonscan.com"],
     contractsRegistry: "0x35eA0D75b2a3aB06393749B4651DfAD1Ffd49A77",
   },
