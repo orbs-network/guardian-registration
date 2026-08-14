@@ -19,6 +19,8 @@ import { MobXProviderContext } from "mobx-react";
 import { getChainName, getChainNames, getOptionalChainName, getRequiredChainName } from "../../../utils/chain";
 import { ActionConfirmationModal } from "../../../components/shared/modals/ActionConfirmationModal";
 import { useOrbsAccountStore } from "../../../store/storeHooks";
+import Web3 from "web3";
+import configs from "../../../configs";
 
 interface IProps {
   guardianAddress: string;
@@ -56,18 +58,17 @@ const emptyInitialInfo: TGuardianInfo = {
   name: "",
 };
 
-const MINIMAL_REQUIRED_ETH_BALANCE = 1;
-
 export const RegisterGuardianSection = React.memo<IProps>((props) => {
   const classes = useStyles();
-  const { guardianAddress, registerGuardian, cryptoWalletConnectionService } =
-    props;
+  const { guardianAddress, registerGuardian } = props;
 
   const guardianDataFormsTranslations = useGuardianDataFormsTranslations();
   const domainTranslations = useDomainTranslations();
   const registerGuardianSectionTranslations =
     useRegisterGuardianSectionTranslations();
   const { chainId } = useContext(MobXProviderContext);
+  const minimumNodeBalance =
+    configs.networks[chainId]?.minimumNodeBalance || "1";
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   );
@@ -93,16 +94,26 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
         return;
       }
 
-      const orbsNodeBalance =
-        await cryptoWalletConnectionService.readEthereumBalance(
-          guardianRegistrationPayload.orbsAddr
+      const web3 = new Web3(Web3.givenProvider);
+      const orbsNodeBalanceInWei = await web3.eth.getBalance(
+        guardianRegistrationPayload.orbsAddr
+      );
+      const hasInsufficientBalance = web3.utils
+        .toBN(orbsNodeBalanceInWei)
+        .lt(
+          web3.utils.toBN(
+            web3.utils.toWei(minimumNodeBalance, "ether")
+          )
         );
 
-      if (orbsNodeBalance < MINIMAL_REQUIRED_ETH_BALANCE) {
+      if (hasInsufficientBalance) {
         setErrorMessage(
           registerGuardianSectionTranslations(
             "error_minimalBalanceAtNodeAddressIsRequired",
-            { name: getChainName(chainId) }
+            {
+              balance: minimumNodeBalance,
+              name: getChainName(chainId),
+            }
           )
         );
         return;
@@ -118,10 +129,10 @@ export const RegisterGuardianSection = React.memo<IProps>((props) => {
       }
     },
     [
-      cryptoWalletConnectionService,
       guardianAddress,
       registerGuardianSectionTranslations,
       chainId,
+      minimumNodeBalance,
       orbsAccountStore.unregisteredChains.length,
       registerGuardian,
     ]

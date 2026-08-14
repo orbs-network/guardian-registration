@@ -88,10 +88,9 @@ export const useNodeAddressDetailsTexts = () => {
         );
     }, [explanationTextsTranslations, theme.palette.secondary.main]);
   const chain = useNetwork();
-  const symbol = chain &&
-  configs.networks[chain] &&
-  chain &&
-  configs.networks[chain].nativeCurrency?.symbol
+  const symbol = chain && configs.networks[chain]?.nativeCurrency?.symbol;
+  const minimumNodeBalance =
+    chain && configs.networks[chain]?.minimumNodeBalance;
   const nodeAddressExplainingTexts = useMemo<
     Array<string | TInnerHtmlFunction>
   >(() => {
@@ -100,16 +99,22 @@ export const useNodeAddressDetailsTexts = () => {
       explanationTextsTranslations("text_nodeAddress_usedToSignBlocks"),
       explanationTextsTranslations(
         "text_nodeAddress_holdsEthForAutomatedTransactionsGas",
-        { symbol}
+        { symbol }
       ),
       explanationTextsTranslations("text_nodeAddress_minimalBalanceRequired", {
-        symbol
+        balance: minimumNodeBalance,
+        symbol,
       }),
       explanationTextsTranslations("text_nodeAddress_doesNotHoldYourTokens"),
     ];
 
     return texts;
-  }, [explainingTextOfShouldBeDifferentInnerHtml, explanationTextsTranslations, symbol]);
+  }, [
+    explainingTextOfShouldBeDifferentInnerHtml,
+    explanationTextsTranslations,
+    minimumNodeBalance,
+    symbol,
+  ]);
 
   return {
     texts: nodeAddressExplainingTexts,
