@@ -24,6 +24,7 @@ interface IContaractAdresses {
 export interface INetwork {
   name: string;
   logo?: string;
+  minimumNodeBalance: string;
   requiredConfirmations?: number;
   nativeCurrency?: { name: string; symbol: string; decimals: number };
   rpcUrls?: string[];
@@ -38,6 +39,7 @@ export const REQUIRED_CHAINS = [1, 3]
 const networks: { [key: string]: INetwork } = {
   "1": {
     name: "Ethereum",
+    minimumNodeBalance: "0.1",
     logo: ethImg,
     nav: ethereumNavImg,
     nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
@@ -48,6 +50,7 @@ const networks: { [key: string]: INetwork } = {
   },
   "3": {
     name: "Ropsten",
+    minimumNodeBalance: "1",
     logo: ethImg,
     nav: ethereumNavImg,
     nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
@@ -59,9 +62,10 @@ const networks: { [key: string]: INetwork } = {
   "137": {
     color: "#844FDA",
     name: "Polygon",
+    minimumNodeBalance: "1",
     logo: polygonImg,
     nav: polygonNavImg,
-    nativeCurrency: { name: "MATIC", symbol: "MATIC", decimals: 18 },
+    nativeCurrency: { name: "POL", symbol: "POL", decimals: 18 },
     rpcUrls: ["https://rpcman.orbs.network/rpc?chainId=137&appId=guardian-registration&key=943b6d32040df8de03ff37b6ed4125cd98fee2ac"],
     blockExplorerUrls: ["https://www.polygonscan.com"],
     contractsRegistry: "0x35eA0D75b2a3aB06393749B4651DfAD1Ffd49A77",
