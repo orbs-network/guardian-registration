@@ -13,7 +13,8 @@
 src/translations/syncTranslations.zsh
 
 # Generated contracts types
-/src/contracts
+/src/contracts/*
+!/src/contracts/contract-registry.ts
 
 # production
 /build
